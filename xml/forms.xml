@@ -1,0 +1,44 @@
+<FORMS>
+<LOGIN>
+<form id="login" method="post">
+    <div id="usernamewrapper">
+    <label for="username">Username</label>
+    <br/>
+    <input type="text" name="username" id="username" required=""/>
+    </div>
+    <br/>
+    <div id="passwordwrapper">
+    <label for="password">Password</label>
+    <br/>
+    <input type="text" name="password" id="password" required=""/>
+    </div>
+    <br/>
+    <div id="buttonwrapper" style="height: 31px">
+        <button type="submit" class="submit login">Login</button>
+        <button type="button" class="submit register" id="register">Register</button>
+    </div>
+</form>
+</LOGIN>
+
+<CREATEDATABASE>
+<form id="create-DB">
+    <div id="DB-name-wrapper">
+        <label for="DB-name">Database Name</label>
+        <br/>
+        <input type="text" name="DB-name" id="DB-name" required=""/>
+    </div>
+    <br/>
+    <!--<div id="collation-selector-wrapper">
+        <label for="collation-selector">Collation</label>
+        <select id="collation-selector" name="collation-selector">
+            <option>a</option>
+            <option>b</option>
+        </select>
+    </div>-->
+    <br/>
+    <div>
+        <button type="submit" class="submit create">Create</button>
+    </div>
+</form>
+</CREATEDATABASE>
+</FORMS>

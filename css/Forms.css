@@ -1,0 +1,120 @@
+div#form {
+    display: none;
+    position: absolute;
+    top: 20vh;
+    margin-left: calc(50vw - (31.5625rem / 2));
+    width: 25rem;
+    height: 20rem;
+    background-image: linear-gradient(to bottom right, #7d4b7d 10%, #b25bb2 95%);
+    border: 0.1875rem solid var(--BorderColor);
+    border-radius: 1rem;
+    pointer-events: all;
+}
+
+div#form-header {
+    display: flex;
+    height: 2.5rem;
+    border-bottom: 0.1875rem solid var(--BorderColor);
+}
+
+div#menu-title {
+    position: relative;
+    grid-column: 1;
+    font-size: 2.1875rem;
+    margin: auto;
+    left: 1rem;
+    color: white;
+    height: fit-content;
+}
+
+#close-menu {
+    grid-column: 2;
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    float: right;
+    border-bottom: 0.1875rem solid var(--BorderColor);
+    border-left: 0.1875rem solid var(--BorderColor);
+    border-bottom-left-radius: 50%;
+    
+}
+
+span#x {
+    cursor: pointer;
+    font-size: 1.75rem;
+    position: absolute;
+    color: var(--PlusColor);
+    top: 0.3125rem;
+    left: 0.625rem; 
+}
+
+#login, #create-DB {
+    position: relative;
+    width: fit-content;
+    margin: auto;
+}
+
+#login > *, #create-DB > * {
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 15.625rem;
+}
+
+div#usernamewrapper, div#passwordwrapper {
+    height: 4rem;
+    margin-top: 2rem;
+}
+
+div#usernamewrapper > *, div#passwordwrapper > *, 
+div#DB-name-wrapper > *, div#collation-selector-wrapper > * {
+    outline: none;
+    border: none;
+}
+
+div#usernamewrapper > input, div#passwordwrapper > input,
+div#DB-name-wrapper > input, div#collation-selector-wrapper > select {
+    width: 16rem;
+}
+
+#login > div > label,
+#create-DB > div > label {
+    font-size: 2rem;
+    color: white;
+}
+
+#login > div > input#username, 
+#login > div > input#password,
+#create-DB > div > input#DB-name,
+#create-DB > div > select#collation-selector {
+    margin-top: 0.5rem;
+}
+
+#login > div > button,
+#create-DB > div > button {
+    position: relative;
+    margin-top: 0.5rem;
+    border-bottom: 0.1875rem solid var(--BorderColor);
+    border-right: 0.1875rem solid var(--BorderColor);
+    border-top: transparent;
+    border-left: transparent;
+    border-radius: 0.3125rem;
+    width: fit-content;;
+     color: rgb(207, 63, 207);
+     font-size: 1rem;
+     background-color: white;
+}
+
+#login > div > .login {
+    float: left;
+    left: 2.25rem;
+}
+
+#login > div > .register {
+    float: right;
+    right: 2.25rem;
+}
+
+div#buttonwrapper {
+    margin-top: 1.5rem;
+}
