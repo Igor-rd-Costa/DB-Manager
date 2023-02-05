@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loginimg.style = 'scale: 105%';
         loginwrapper.style = 'background-image: radial-gradient(circle at center, rgb(221, 221, 221, 0.5) 5%, transparent 95%)';
     })
-
     loginwrapper.addEventListener('mouseout', () => {
         loginimg.style = 'scale: 100%';
         loginwrapper.style = 'background-image: ';
@@ -18,7 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
         LoadLoginForm();
         document.getElementById('header').style = 'pointer-events:none;';
         loginimg.style = 'pointer-events: none;';
+        
     })
+
+    //Register events
+
+
 
 
 let textwrapper = document.getElementById('main-text-wrapper');
@@ -53,24 +57,21 @@ maintext.addEventListener('mouseout', () => {
         AnimateElement(textwrapper, { color: 'white'}, { color: 'rgb(230, 230, 230)'}, 250);
     }
 })
-function createElement(element, content, attr, attrvalue)
-{   
-    const newelement = document.createElement(element);
-    if(content)
-    {
-    const textcontent = document.createTextNode(content);
-    newelement.appendChild(textcontent);
-    }
-    if(attr)
-    {
-        const attribute = document.createAttribute(attr);
-        attribute.value = attrvalue;
-        newelement.setAttributeNode(attribute);
 
-    }
-    return newelement;
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let sizeone = 1;
 let sizetwo = 0;
@@ -155,3 +156,22 @@ document.body.addEventListener('wheel', (event) => {
         })
 })
 })
+
+function createElement(element, content, attr, attrvalue)
+{   
+    const newelement = document.createElement(element);
+    if(content)
+    {
+    const textcontent = document.createTextNode(content);
+    newelement.appendChild(textcontent);
+    }
+    if(attr)
+    {
+        const attribute = document.createAttribute(attr);
+        attribute.value = attrvalue;
+        newelement.setAttributeNode(attribute);
+
+    }
+    return newelement;
+
+}

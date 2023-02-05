@@ -14,13 +14,13 @@ function SQL_Fetch($FetchedDatabase, $FetchQuery)
     $connection = SQL_Connect('localhost', 'root', '', $FetchedDatabase);
     $query = $FetchQuery;
     
-    return $result = mysqli_query($connection, $query);
-
+    $result = mysqli_query($connection, $query);
+    return $result;
 }
 
 function USER_Login()
 {
-    if(isset($_POST['username'], $_POST['password']))
+    if(isset($_POST['usernameLogin'], $_POST['passwordLogin']))
     {
         $connection = SQL_Connect('localhost', 'root', '', 'users');
         $query = "SELECT * from users";
@@ -28,19 +28,26 @@ function USER_Login()
 
         while($row = mysqli_fetch_assoc($result))
         {
-            if( $row['Username'] === $_POST['username'] && $row['Password'] === $_POST['password'])
+            if( $row['Username'] === $_POST['usernameLogin'] && $row['Password'] === $_POST['passwordLogin'])
             {
                 include "Classes/User.php";
                 session_start();
-                $_SESSION['login'] = true;
                 $User = new User($row['Username']);
-                $_SESSION['user'] = $User;
+                $_SESSION['User'] = $User;
                 header('Location: http://localhost/BancodeDados/pages/main.php');
                 exit;
             } 
         }
     
     }
+}
+
+function USER_Register(array $RegisterData)
+{
+    include "Classes/RegisterRequest.php";
+    $RegisterRequest = new RegisterRequest($RegisterData);
+
+    return $RegisterRequest;
 }
 
 ?>

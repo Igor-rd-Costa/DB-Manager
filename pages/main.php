@@ -2,11 +2,11 @@
 include "../php/Functions.php";
 include "../php/Classes/User.php";
 session_start(); 
-if(!$_SESSION['login'])
+if(!$_SESSION['User'])
 {
     header('Location: http://localhost/BancodeDados/');
 }
-$User = $_SESSION['user'];
+$User = $_SESSION['User'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,10 +14,10 @@ $User = $_SESSION['user'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/styles.css">
-    <script src="../scripts/functions.js"></script>
-    <script src="../scripts/script.js"></script>
-    <script src="../scripts/FormsScript.js"></script>
+    <link rel="stylesheet" href="http://localhost/BancodeDados/css/styles.css">
+    <script src="http://localhost/BancodeDados/scripts/functions.js"></script>
+    <script src="http://localhost/BancodeDados/scripts/script.js"></script>
+    <script src="http://localhost/BancodeDados/scripts/FormsScript.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -31,7 +31,7 @@ $User = $_SESSION['user'];
                 <div id="pr-options">
                     
                         <ul id="pr-option-list">
-                            <li><a href="../?logoutRequest=true">Logout</a></li>
+                            <li><a href="http://localhost/BancodeDados/?logoutRequest=true">Logout</a></li>
                         </ul>    
                     </div>
             </div>

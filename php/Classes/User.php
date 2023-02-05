@@ -8,11 +8,6 @@ class User
         $this->Username = $name;
     }
 
-    function __destruct()
-    {
-        echo "Object destroyed";
-    }
-
     function EchoUsername() {
         echo $this->Username;
     }
