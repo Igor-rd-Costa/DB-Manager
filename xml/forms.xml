@@ -4,24 +4,53 @@
     <div id="usernamewrapper">
     <label for="username">Username</label>
     <br/>
-    <input type="text" name="username" id="username" required=""/>
+    <input type="text" name="usernameLogin" id="username" required=""/>
     </div>
     <br/>
     <div id="passwordwrapper">
     <label for="password">Password</label>
     <br/>
-    <input type="text" name="password" id="password" required=""/>
+    <input type="text" name="passwordLogin" id="password" required=""/>
     </div>
     <br/>
     <div id="buttonwrapper" style="height: 31px">
         <button type="submit" class="submit login">Login</button>
-        <button type="button" class="submit register" id="register">Register</button>
+        <button type="button" class="submit register" id="button-register">Register</button>
     </div>
 </form>
 </LOGIN>
 
+<REGISTER>
+<form id="register" method="post">
+    <div id="register-info">
+        <label for="firstname" class="input-firstnamelabel">First Name</label>
+        <input type="text" name="firstnameRegister" id="firstname" class="input-firstname" required=""/>
+        <br/>
+        <label for="lastname" class="input-lastnamelabel">Last Name</label>
+        <input type="text" name="lastnameRegister" id="lastname" class="input-lastname" required=""/>
+        <br/>
+        <label for="email" class="input-emaillabel">E-Mail</label>
+        <input type="text" name="emailRegister" id="email" class="input-email" required=""/>
+        <br/>
+        <label for="username" class="input-usernamelabel">Username</label>
+        <input type="text" name="usernameRegister" id="username" class="input-username" required=""/>
+        <br/>
+        <label for="password" class="input-passwordlabel">Password</label>
+        <input type="text" name="passwordRegister" id="password" class="input-password" required=""/>
+    </div>
+    <button type="submit" class="submit register" id="register-button">Register</button>
+</form>
+</REGISTER>
+
+
+
+
+
+
+
+
 <CREATEDATABASE>
-<form id="create-DB">
+<form id="create-DB" method="post">
     <div id="DB-name-wrapper">
         <label for="DB-name">Database Name</label>
         <br/>

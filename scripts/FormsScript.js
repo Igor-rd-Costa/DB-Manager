@@ -35,5 +35,59 @@ document.addEventListener('DOMContentLoaded', () => {
          document.getElementById('x').style = 'color: var(--PlusColor); scale: 100%';
          document.getElementById('close-menu').style = 'background-image: ';
     })
+
+    document.getElementById('formwrapper').addEventListener('mousedown', (event) => {
+        const target = event.target;
+        if(target.tagName === "BUTTON")
+        {
+            target.style = 'border-bottom-width: 2px; border-right-width: 2px;';
+        }
+        if(target.id === "button-register")
+        {
+            LoadRegisterForm();
+        }
+    })
+
+    document.getElementById('formwrapper').addEventListener('mouseup', (event) => {
+        const target = event.target;
+        if(target.tagName === "BUTTON")
+        {
+            target.style = 'border-bottom-width: 3px; border-right-width: 3px;';
+        }
+    })
+
+    document.getElementById('formwrapper').addEventListener('mouseover', (event) => {
+        const target = event.target;
+        if(target.tagName === "BUTTON")
+        {
+            target.style = 'scale: 102%;';
+        }
+        
+    })
+
+    document.getElementById('formwrapper').addEventListener('mouseout', (event) => {
+        const target = event.target;
+        if(target.tagName === "BUTTON")
+        {
+            target.style = 'scale: 100%;';
+        }
+    })
+
+    document.getElementById('formwrapper').addEventListener('focusin', (event) => {
+        const target = event.target;
+        if(target.tagName === "INPUT"){
+
+            target.style = 'border-bottom: 3px solid var(--BorderColor); border-right: 3px solid var(--BorderColor); border-top: none; border-left: none, margin-bottom: 0px';
+        }
+
+        
+    })
     
+    document.getElementById('formwrapper').addEventListener('focusout', (event) => {
+        const target = event.target;
+            if(target.tagName === "INPUT"){
+            target.style = 'border-bottom: 3px solid transparent; border-right: 3px solid transparent; border-top: none; border-left: none, margin-bottom: 0px';
+            }
+        })
+
 })

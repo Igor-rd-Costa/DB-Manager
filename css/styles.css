@@ -41,21 +41,35 @@ div#filler {
 }
 
 div#profilewrapper {
-    position: relative;
-    width: 6rem;
-    height: 3.125rem;
+    width: fit-content;
+    display: grid;
+    grid-template-columns: auto 46px;
+    grid-template-rows: 50px auto;
+    align-items: center;
 }
 
+
+span#username {
+    grid-column: 1;
+    grid-row: 1;
+    height: fit-content;
+    color: white;
+    margin-right: 0.25rem;
+}
 img#user-img {
-    position: relative;
+    grid-column: 2;
+    grid-row: 1;
+    float: right;
     width: 2.5rem;
     height: 2.5rem;
     border: 0.0625rem solid var(--BorderColor);
     border-radius: 50%;
-    margin-top: 0.25rem;
+    margin-right: 0.25rem;
 }
 
 div#pr-options {
+    grid-column: 1 / 3;
+    grid-row: 2;
     font-size: 1.15rem;
     display: none;
     position: relative;
@@ -81,12 +95,6 @@ div#pr-options > ul > li {
 div#pr-options > ul > li > a {
     text-decoration: none;
     color: black;
-}
-
-span#username {
-    position: relative;
-    color: white;
-    bottom: 1rem;
 }
 
 div#side-menu {

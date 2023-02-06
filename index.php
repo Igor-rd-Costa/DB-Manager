@@ -1,17 +1,23 @@
 <?php
 session_start();
+session_unset();
 include "php/Functions.php";
-if(isset($_POST["username"],$_POST["password"]))
+if(isset($_POST["usernameLogin"],$_POST["passwordLogin"]))
 {
-  USER_Login();
+    include "php/Classes/User.php";
+    $_SESSION['User'] = new User($_POST);
 }
-
 if(isset($_GET['logoutRequest']))
 {
     session_destroy();
     header("Location: http://localhost/BancodeDados/");
 }
 
+if(isset($_POST["usernameRegister"], $_POST["passwordRegister"]))
+{
+    include "php/Classes/RegisterRequest.php";
+    $RegisterRequest = new RegisterRequest($_POST);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,25 +25,24 @@ if(isset($_GET['logoutRequest']))
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="css/Index.css"/>
-    <link rel="stylesheet" href="css/Forms.css"/>
+    <link rel="stylesheet" href="http://localhost/BancodeDados/css/Index.css"/>
+    <link rel="stylesheet" href="http://localhost/BancodeDados/css/Forms.css"/>
     <link rel="php" href="login.php"/>
-    <script src="scripts/Functions.js"></script>
-    <script src="scripts/IndexScript.js"></script>
-    <script src="scripts/FormsScript.js"></script>
-    <title>Document</title>
+    <script src="http://localhost/BancodeDados/scripts/Functions.js"></script>
+    <script src="http://localhost/BancodeDados/scripts/IndexScript.js"></script>
+    <script src="http://localhost/BancodeDados/scripts/FormsScript.js"></script>
+    <title>DB Manager</title>
 </head>
 <body>
 <div class="background-gradient">
 <header id="header">
-    <div id="main-img-wrapper"></div>
-    <div id="test1"></div>
         <div id="loginwrapper">
             <span>
-            <img id="login-img" src="img/User.png" alt="Login"/>
+            <img id="login-img" src="http://localhost/BancodeDados/img/User.png" alt="Login"/>
             </span>
         </div>
 </header>
+
 <div id="mainwrapper">
 <div id="main-text-wrapper">
     <span class="large-font" id="main-text">Database Management</span>
@@ -51,8 +56,6 @@ if(isset($_GET['logoutRequest']))
 
 </div>
 </div>
-</div>
-<div class="testss">
 </div>
 <div id="form">
         <div id="form-header">
