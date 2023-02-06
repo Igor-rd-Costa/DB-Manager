@@ -36,8 +36,9 @@ body {
 }
 
 header#header {
+    height: 3.125rem;
     display: flex;
-    flex-direction: row;
+    justify-content: end;
 }
 
 div#main-img-wrapper {
@@ -48,17 +49,22 @@ div#main-img-wrapper {
 div#loginwrapper {
     position: relative;
     cursor: pointer;
-    height: fit-content;
-    width: fit-content;
+    height: 3.125rem;
+    width: 3.125rem;
+    display: grid;
+    align-items: center;
+    justify-items: center;
 }
 
 img#login-img {
     position: relative;
     float: right;
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     margin-top: 0.125rem;
     margin-right: 0.125rem;
+    border: 1px transparent;
+    border-radius: 50%;
 }
 
 #mainwrapper {
@@ -86,7 +92,7 @@ img#login-img {
 
 div#mainwrapper {
     width: 100vw;
-    height: calc(100vh - 2.125rem);
+    height: calc(100vh - 3.125rem);
 }
 
 

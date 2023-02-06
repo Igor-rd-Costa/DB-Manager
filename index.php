@@ -31,13 +31,11 @@ if(isset($_POST["usernameRegister"], $_POST["passwordRegister"]))
     <script src="http://localhost/BancodeDados/scripts/Functions.js"></script>
     <script src="http://localhost/BancodeDados/scripts/IndexScript.js"></script>
     <script src="http://localhost/BancodeDados/scripts/FormsScript.js"></script>
-    <title>Document</title>
+    <title>DB Manager</title>
 </head>
 <body>
 <div class="background-gradient">
 <header id="header">
-    <div id="main-img-wrapper"></div>
-    <div id="test1"></div>
         <div id="loginwrapper">
             <span>
             <img id="login-img" src="http://localhost/BancodeDados/img/User.png" alt="Login"/>
@@ -58,9 +56,6 @@ if(isset($_POST["usernameRegister"], $_POST["passwordRegister"]))
 
 </div>
 </div>
-</div>
-<div class="testss">
-    <?php print_r($_SESSION); ?>
 </div>
 <div id="form">
         <div id="form-header">

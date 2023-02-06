@@ -6,11 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loginwrapper.addEventListener('mouseover', () => {
         loginimg.style = 'scale: 105%';
-        loginwrapper.style = 'background-image: radial-gradient(circle at center, rgb(221, 221, 221, 0.5) 5%, transparent 95%)';
     })
     loginwrapper.addEventListener('mouseout', () => {
         loginimg.style = 'scale: 100%';
-        loginwrapper.style = 'background-image: ';
     })
 
     loginwrapper.addEventListener('click', () => {
@@ -19,11 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loginimg.style = 'pointer-events: none;';
         
     })
-
-    //Register events
-
-
-
 
 let textwrapper = document.getElementById('main-text-wrapper');
 let maintext = document.getElementById('main-text');
