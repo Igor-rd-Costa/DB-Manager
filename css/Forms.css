@@ -90,6 +90,7 @@ div#DB-name-wrapper > input, div#collation-selector-wrapper > select {
     margin-top: 0.5rem;
 }
 
+
 #login > div > button,
 #create-DB > div > button {
     position: relative;
@@ -117,4 +118,96 @@ div#DB-name-wrapper > input, div#collation-selector-wrapper > select {
 
 div#buttonwrapper {
     margin-top: 1.5rem;
+}
+
+div#register-info {
+    box-sizing: border-box;
+    width: 100%;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: max-content minmax(0px, 100%);
+    grid-template-rows: repeat(5, 1.8rem);
+    grid-template-areas: 
+    "firstnamelabel firstname"
+    "lastnamelabel lastname"
+    "emaillabel email"
+    "usernamelabel username"  
+    "passwordlabel password";
+    gap: 10px;
+}
+div#register-info, form#register > button {
+    justify-items: left;
+    margin-top: 20px;
+    
+}
+
+div#register-info > input {
+    box-sizing: border-box;
+    width: 99%;
+    outline: none;
+    margin-right: 1px;
+    border-bottom: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: none;
+    border-left: none;
+}
+
+div#register-info > label {
+    color: white;
+    margin-left: 10px;
+    margin-right: 3px;
+}
+
+.input-firstnamelabel {
+    grid-area: firstnamelabel;
+    
+}
+
+.input-firstname {
+    grid-area: firstname;
+    
+}
+
+.input-lastnamelabel {
+    grid-area: lastnamelabel;
+}
+
+.input-lastname {
+    grid-area: lastname;
+}
+
+.input-emaillabel {
+    grid-area: emaillabel;
+}
+
+.input-email {
+    grid-area: email;
+}
+
+.input-usernamelabel {
+    grid-area: usernamelabel;
+}
+
+.input-username {
+    grid-area: username;
+}
+
+.input-passwordlabel {
+    grid-area: passwordlabel;
+}
+
+.input-password {
+    grid-area: password;
+}
+
+form#register > button#register-button {
+    border-bottom: 0.1875rem solid var(--BorderColor);
+    border-right: 0.1875rem solid var(--BorderColor);
+    border-top: transparent;
+    border-left: transparent;
+    border-radius: 0.3125rem;
+    width: fit-content;
+    color: rgb(207, 63, 207);
+    font-size: 1rem;
+    background-color: white;
 }
