@@ -2,11 +2,11 @@
 include "../php/Functions.php";
 include "../php/Classes/User.php";
 session_start(); 
-if(!$_SESSION['User'])
+if(!$User = $_SESSION['User'])
 {
     header('Location: http://localhost/BancodeDados/');
 }
-$User = $_SESSION['User'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,20 +26,16 @@ $User = $_SESSION['User'];
         <div id="header">
             <div id="filler"></div>
             <div id="profilewrapper">
-                <span id="username"><?php echo $User->Username  ?></span>
+                <span id="username"><?php print $User->Username;?></span>
                 <img id="user-img" src="../img/User.png" alt="Profile"/>
                 <div id="pr-options">
-                    
-                        <ul id="pr-option-list">
-                            <li><a href="http://localhost/BancodeDados/?logoutRequest=true">Logout</a></li>
-                        </ul>    
-                    </div>
+                    <ul id="pr-option-list">
+                        <li><a href="http://localhost/BancodeDados/?logoutRequest=true">Logout</a></li>
+                    </ul>    
+                </div>
             </div>
         </div>
-            <div id="side-menu">
-            <?php
-        ?>
-        </div>
+            <div id="side-menu"></div>
         <div id="dbwrapper">
             <div id="addDB">
                 <div id="horz-line"></div><div id="vert-line"></div>

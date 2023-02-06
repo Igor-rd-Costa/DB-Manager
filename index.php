@@ -1,23 +1,22 @@
 <?php
 session_start();
-if(isset($_SESSION['login']))
+session_unset();
+include "php/Functions.php";
+if(isset($_POST["usernameLogin"],$_POST["passwordLogin"]))
 {
-    header('Location: http://localhost/BancodeDados/pages/main.php');
+    include "php/Classes/User.php";
+    $_SESSION['User'] = new User($_POST);
 }
 if(isset($_GET['logoutRequest']))
 {
     session_destroy();
     header("Location: http://localhost/BancodeDados/");
 }
-include "php/Functions.php";
-if(isset($_POST["usernameLogin"],$_POST["passwordLogin"]))
-{
-  USER_Login();
-}
 
 if(isset($_POST["usernameRegister"], $_POST["passwordRegister"]))
 {
-    $RegisterRequest = USER_Register($_POST);
+    include "php/Classes/RegisterRequest.php";
+    $RegisterRequest = new RegisterRequest($_POST);
 }
 ?>
 <!DOCTYPE html>
@@ -61,10 +60,7 @@ if(isset($_POST["usernameRegister"], $_POST["passwordRegister"]))
 </div>
 </div>
 <div class="testss">
-    <?php 
-    print_r($_POST);
-    echo "<br>";
-    ?>
+    <?php print_r($_SESSION); ?>
 </div>
 <div id="form">
         <div id="form-header">
