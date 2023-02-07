@@ -1,0 +1,34 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+CREATE DATABASE IF NOT EXISTS `db_users` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `db_users`;
+
+CREATE TABLE `users` (
+  `UserID` int(9) NOT NULL,
+  `FirstName` varchar(50) NOT NULL,
+  `LastName` varchar(100) NOT NULL,
+  `Email` varchar(100) NOT NULL,
+  `Username` varchar(50) NOT NULL,
+  `Password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `users` (`UserID`, `FirstName`, `LastName`, `Email`, `Username`, `Password`) VALUES
+(1, 'Admin', 'Admin', 'Admin@gmail.com', 'Admin', '$2y$10$2d2b3cc58b3f242975f6euFqSXD600tfsVeL2LjslFLecQfSdK5H6@$2y$10$2d2b3cc58b3f242975f6e47a7aa40401');
+
+
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`UserID`),
+  ADD UNIQUE KEY `Email_UN` (`Email`),
+  ADD UNIQUE KEY `Username_UN` (`Username`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
