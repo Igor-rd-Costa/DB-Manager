@@ -52,7 +52,7 @@ if(isset($_POST["usernameRegister"], $_POST["passwordRegister"]))
 <div id="secondary-text-wrapper">
     <span class="large-font" id="secondary-text">Create</span>
     <br/>
-    <span class="small-font" id="sub-secondary-text"></span>
+    <!--<span class="small-font" id="sub-secondary-text"></span>-->
 
 </div>
 </div>
