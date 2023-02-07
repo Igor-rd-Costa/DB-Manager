@@ -7,7 +7,7 @@ class User
     
     function __construct(array $Info) 
     {
-        $connection = SQL_Connect('localhost', 'root', '', 'users');
+        $connection = SQL_Connect('localhost', 'root', '', 'DB_Users');
         $query = "SELECT * from users";
         $result = mysqli_query($connection, $query);
 

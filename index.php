@@ -2,6 +2,17 @@
 session_start();
 session_unset();
 include "php/Functions.php";
+
+try {
+    mysqli_connect('localhost', 'root', '', 'DB_Users');
+}
+catch(mysqli_sql_exception $e)
+{
+    $connection = mysqli_connect('localhost', 'root', '');
+    $sql = file_get_contents("DB_Setup.sql");
+    mysqli_multi_query($connection, $sql);
+}
+
 if(isset($_POST["usernameLogin"],$_POST["passwordLogin"]))
 {
     include "php/Classes/User.php";
