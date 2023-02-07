@@ -10,7 +10,7 @@ class RegisterRequest
     
     function __construct(array $UserData)
     {
-            $this->Connection = SQL_Connect('localhost', 'root', '', 'users');
+            $this->Connection = SQL_Connect('localhost', 'root', '', 'DB_Users');
             if(
             $this->ValidateEmail($UserData['emailRegister']) &&
             $this->ValidateUsername($UserData['usernameRegister']) &&
