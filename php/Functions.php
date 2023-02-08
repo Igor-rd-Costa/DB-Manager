@@ -1,7 +1,8 @@
 <?php
-function SQL_Connect($server, $user, $password, $table)
+function SQL_Connect($table = null)
 {
-    $connection = mysqli_connect($server, $user, $password, $table);
+    include "./config.php";
+    $connection = mysqli_connect($Server_Hostname, $Server_User, $Server_Password, $table);
     if(!$connection) 
         {
             die("CONNECTION FAILED");
