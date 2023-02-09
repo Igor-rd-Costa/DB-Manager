@@ -10,11 +10,7 @@ class RegisterRequest
     
     function __construct(array $UserData)
     {
-<<<<<<< Updated upstream
             $this->Connection = SQL_Connect('db_users');
-=======
-            $this->Connection = SQL_Connect('users');
->>>>>>> Stashed changes
             if(
             $this->ValidateEmail($UserData['emailRegister']) &&
             $this->ValidateUsername($UserData['usernameRegister']) &&

@@ -7,11 +7,7 @@ class User
     
     function __construct(array $Info) 
     {
-<<<<<<< Updated upstream
         $connection = SQL_Connect('db_users');
-=======
-        $connection = SQL_Connect('users');
->>>>>>> Stashed changes
         $query = "SELECT * from users";
         $result = mysqli_query($connection, $query);
 
