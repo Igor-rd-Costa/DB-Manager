@@ -1,4 +1,4 @@
-<?php 
+<?php
 include "../php/Functions.php";
 include "../php/Classes/User.php";
 session_start(); 

@@ -1,10 +1,12 @@
+
+
 div#form {
     display: none;
     position: absolute;
     top: 20vh;
     margin-left: calc(50vw - (31.5625rem / 2));
     width: 25rem;
-    height: 20rem;
+    height: 22rem;
     background-image: linear-gradient(to bottom right, #7d4b7d 10%, #b25bb2 95%);
     border: 0.1875rem solid var(--BorderColor);
     border-radius: 1rem;
@@ -62,7 +64,8 @@ span#x {
 }
 
 div#usernamewrapper, div#passwordwrapper {
-    height: 4rem;
+    height: fit-content;
+    width: fit-content;
     margin-top: 2rem;
 }
 
@@ -75,6 +78,12 @@ div#DB-name-wrapper > *, div#collation-selector-wrapper > * {
 div#usernamewrapper > input, div#passwordwrapper > input,
 div#DB-name-wrapper > input, div#collation-selector-wrapper > select {
     width: 16rem;
+}
+
+div#error-wrapper {
+    width: 16rem;
+    height: 4.25rem;
+    color: red;
 }
 
 #login > div > label,
@@ -116,9 +125,7 @@ div#DB-name-wrapper > input, div#collation-selector-wrapper > select {
     right: 2.25rem;
 }
 
-div#buttonwrapper {
-    margin-top: 1.5rem;
-}
+
 
 div#register-info {
     box-sizing: border-box;

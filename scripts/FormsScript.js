@@ -89,5 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
             target.style = 'border-bottom: 3px solid transparent; border-right: 3px solid transparent; border-top: none; border-left: none, margin-bottom: 0px';
             }
         })
-
+        
+    document.getElementById('formwrapper').addEventListener('submit', (event) => {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        event.preventDefault();
+        SendLoginRequest(username, password);
+    })
 })

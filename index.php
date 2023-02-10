@@ -2,7 +2,6 @@
 session_start();
 session_unset();
 include "php/Functions.php";
-
 try {
     SQL_Connect("db_users");
 }
@@ -14,11 +13,6 @@ catch(mysqli_sql_exception $e)
 
 }
 
-if(isset($_POST["usernameLogin"],$_POST["passwordLogin"]))
-{
-    include "php/Classes/User.php";
-    $_SESSION['User'] = new User($_POST);
-}
 if(isset($_GET['logoutRequest']))
 {
     session_destroy();
