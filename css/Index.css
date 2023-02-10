@@ -3,7 +3,9 @@
     --PlusColor: rgb(111, 39, 111); 
 }
 
-
+* {
+    box-sizing: border-box;
+}
 
 .small-font {
     font-size: 1.5em;
@@ -85,10 +87,8 @@ img#login-img {
 
 #sub-main-text {
     position: relative;
-    display: inline-block;
-    left: 0px;
     width: 10.3125rem;
-}
+}   
 
 div#mainwrapper {
     width: 100vw;
@@ -102,8 +102,6 @@ div.background-gradient {
 
 #sub-secondary-text {
     position: relative;
-    display: inline-block;
-    left: 0px;
     width: 10.25rem;
 }
 

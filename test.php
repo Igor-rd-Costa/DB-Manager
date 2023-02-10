@@ -1,4 +1,5 @@
 <?php
+include "php/Functions.php";
 $request = $_REQUEST['request'];
 
 $dom = new DOMDocument('1.0', 'utf-8');
@@ -20,6 +21,23 @@ switch($request)
         $element = $dom->getElementsByTagName("CREATEDATABASE")[0]->childNodes->item(1);
         echo $dom->saveXML($element);
     break;
+    case 'LoginRequest':
+        include "php/Classes/User.php";
+    
+        $User = new User($_POST);
+        
+        if($User->LoginStatus)
+        {
+            session_start();
+            $_SESSION["User"] = $User;
+            echo true;
+        }
+        else
+        {
+            echo false;
+        }
+     break;
+        
 }
 
 

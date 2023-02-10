@@ -6,13 +6,14 @@
     <br/>
     <input type="text" name="usernameLogin" id="username" required=""/>
     </div>
-    <br/>
+    
     <div id="passwordwrapper">
     <label for="password">Password</label>
     <br/>
     <input type="text" name="passwordLogin" id="password" required=""/>
     </div>
-    <br/>
+    <div id="error-wrapper">
+    </div>
     <div id="buttonwrapper" style="height: 31px">
         <button type="submit" class="submit login">Login</button>
         <button type="button" class="submit register" id="button-register">Register</button>

@@ -1,6 +1,7 @@
 <?php
 class User 
 {
+    public $LoginStatus;
     public $Username;
     public $Email;
     protected $Password;
@@ -10,7 +11,8 @@ class User
         $connection = SQL_Connect('db_users');
         $query = "SELECT * from users";
         $result = mysqli_query($connection, $query);
-
+        $is_login_correct = false;
+        
         while($row = mysqli_fetch_assoc($result))
         {
             $typedpassword = $Info['passwordLogin'];
@@ -21,10 +23,12 @@ class User
                     $this->Username = $row["Username"];
                     $this->Email = $row["Email"];
                     $this->Password = $row["Password"];
-                    header("Location: http://localhost/BancodeDados/pages/main.php");
+                    $this->LoginStatus = true;
             }
-            else echo "USERNAME OR PASSWORD ARE WRONG!";
-        } 
-        
+            else
+            {
+                $this->LoginStatus = false;
+            }
+        }
     }
 }

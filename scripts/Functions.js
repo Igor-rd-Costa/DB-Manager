@@ -1,7 +1,6 @@
 
 function LoadRegisterForm()
 {
-    console.log("Hello");
     var xmlhttp = new XMLHttpRequest();
     
     xmlhttp.onreadystatechange=function(){
@@ -15,7 +14,7 @@ function LoadRegisterForm()
     xmlhttp.send();
 };
 
-function LoadLoginForm()
+function LoadLoginForm(error)
 {
     document.getElementById('form').style = 'display: block';
 
@@ -25,7 +24,12 @@ function LoadLoginForm()
         if(this.readyState == 4 && this.status == 200)
         {
             document.getElementById('menu-title').innerHTML = "Login";
+           
             document.getElementById('formwrapper').innerHTML = this.response;
+            if(error)
+            {
+                document.getElementById("error-wrapper").innerHTML = error;
+            }
         }
     }
     xmlhttp.open('GET', 'test.php?request=Login', true);
@@ -71,3 +75,28 @@ function AnimateElement(element, from, to, duration, direction = 'normal', timin
         });
         return animation;
     }
+
+
+function SendLoginRequest(username, password)
+{
+    var xmlhttp = new XMLHttpRequest();
+    
+    xmlhttp.onreadystatechange=function(){
+        if(this.readyState == 4 && this.status == 200)
+        {
+            if(!this.responseText)
+            {
+                document.getElementById("error-wrapper").innerHTML = "Password or Username incorrect, please check the information provided and try again.";
+            }
+            else
+            {
+                window.location.href = "http://localhost/BancodeDados/pages/main.php";
+                
+            }
+            
+        }
+    }
+    xmlhttp.open('POST', 'test.php?request=LoginRequest', true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttp.send('usernameLogin='+username+'&passwordLogin='+password);
+}
