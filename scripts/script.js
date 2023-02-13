@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const element = document.getElementById('gradient');
     let display = false;
-    AnimateElement(element, { opacity: '1'}, { opacity: '0'}, 5000);
     //Database Adder events
     const addDB_element = document.getElementById('addDB');
     addDB_element.addEventListener('click', () => {
@@ -28,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Database displayer events
 
-    for(x = 1; x <= 7; x++)
+    /* for(x = 1; x <= 7; x++)
     {
         var DatabaseID = "database" + x;
         const selected = document.getElementById(DatabaseID);
@@ -38,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selected.addEventListener('mouseout', () => {
             selected.style = 'background-color: transparent; scale: 100%';
         })
-    }
+    } */
     
     
 

@@ -6,7 +6,7 @@ div#form {
     top: 20vh;
     margin-left: calc(50vw - (31.5625rem / 2));
     width: 25rem;
-    height: 22rem;
+    height: 25rem;
     background-image: linear-gradient(to bottom right, #7d4b7d 10%, #b25bb2 95%);
     border: 0.1875rem solid var(--BorderColor);
     border-radius: 1rem;
@@ -15,7 +15,7 @@ div#form {
 
 div#form-header {
     display: flex;
-    height: 2.5rem;
+    height: 2.5rem; 
     border-bottom: 0.1875rem solid var(--BorderColor);
 }
 

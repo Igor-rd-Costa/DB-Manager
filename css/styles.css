@@ -3,6 +3,9 @@
     --PlusColor: rgb(111, 39, 111); 
 }
 
+* {
+    box-sizing: border-box;
+}
 body {
     position: inherit;
     padding: 0px;
@@ -12,13 +15,6 @@ body {
     background-image: linear-gradient(to bottom right, rgb(119, 37, 119, 1) 15%, rgb(207, 63, 207, 1) 85%);    
 }
 
-div#gradient {
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    background-image: linear-gradient(to bottom right, #7d4b7d 5%, #b25bb2 95%);
-    z-index: -1;
-}
 div#outsidewrapper {
     display: grid;
     grid-template-columns: repeat(5, 306px);

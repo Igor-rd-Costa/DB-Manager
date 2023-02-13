@@ -1,3 +1,18 @@
+function AnimateElement(element, from, to, duration, direction = 'normal', timing = 'linear')
+    {
+        const animation = element.animate([
+            from,
+            to
+        ], {
+            duration: duration,
+            iterations: 1,
+            fill: 'forwards',
+            direction: direction,
+            easing: timing
+
+        });
+        return animation;
+    }
 
 function LoadRegisterForm()
 {
@@ -10,7 +25,7 @@ function LoadRegisterForm()
             document.getElementById('formwrapper').innerHTML = this.response;
         }
     }
-    xmlhttp.open('GET', 'test.php?request=Register', true);
+    xmlhttp.open('GET', 'asyncRequests.php?request=Register', true);
     xmlhttp.send();
 };
 
@@ -32,7 +47,7 @@ function LoadLoginForm(error)
             }
         }
     }
-    xmlhttp.open('GET', 'test.php?request=Login', true);
+    xmlhttp.open('GET', 'asyncRequests.php?request=Login', true);
     xmlhttp.send();
 }
 
@@ -51,37 +66,14 @@ function LoadDatabaseAdderForm()
             document.getElementById('formwrapper').innerHTML = this.response;
         }
     }
-    xmlhttp.open('GET', '../test.php?request=CreateDB', true);
+    xmlhttp.open('GET', '../asyncRequests.php?request=CreateDB', true);
     xmlhttp.send();
 }
 
-
-
-
-
-
-function AnimateElement(element, from, to, duration, direction = 'normal', timing = 'linear')
-    {
-        const animation = element.animate([
-            from,
-            to
-        ], {
-            duration: duration,
-            iterations: 1,
-            fill: 'forwards',
-            direction: direction,
-            easing: timing
-
-        });
-        return animation;
-    }
-
-
-function SendLoginRequest(username, password)
+function REQUEST_Login(username, password)
 {
-    var xmlhttp = new XMLHttpRequest();
-    
-    xmlhttp.onreadystatechange=function(){
+    var xmlhttplogin = new XMLHttpRequest();
+    xmlhttplogin.onreadystatechange=function(){
         if(this.readyState == 4 && this.status == 200)
         {
             if(!this.responseText)
@@ -91,12 +83,45 @@ function SendLoginRequest(username, password)
             else
             {
                 window.location.href = "http://localhost/BancodeDados/pages/main.php";
-                
             }
-            
         }
     }
-    xmlhttp.open('POST', 'test.php?request=LoginRequest', true);
+    xmlhttplogin.open('POST', 'asyncRequests.php?request=LoginRequest', true);
+    xmlhttplogin.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttplogin.send('usernameLogin=' + username + '&passwordLogin=' + password);
+}
+
+function REQUEST_Register(firstname, lastname, email, username, password)
+{
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange=function(){
+        if(this.readyState == 4 && this.status == 200)
+        {
+            if(!this.responseText)
+            {
+               console.log("Registration Failed");
+            }
+            else
+            {
+                REQUEST_Login(username, password);
+            }
+        }
+    }
+    xmlhttp.open('POST', 'asyncRequests.php?request=RegisterRequest', true);
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xmlhttp.send('usernameLogin='+username+'&passwordLogin='+password);
+    xmlhttp.send('REG_FirstName=' + firstname + '&REG_LastName=' + lastname + '&REG_Email=' + email + '&REG_Username=' + username + '&REG_Password=' + password);
+}
+
+function REQUEST_CreateTable()
+{
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange=function(){
+        if(this.readyState == 4 && this.status == 200)
+        {
+        
+        }
+    }
+    xmlhttp.open('POST', 'asyncRequests.php?request=CreateTable', true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttp.send();
 }

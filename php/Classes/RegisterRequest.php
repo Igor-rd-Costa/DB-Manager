@@ -1,22 +1,27 @@
 <?php 
 class RegisterRequest
 {
+    public $RegisterStatus = false;
+    public $LoginRequest = array("usernameLogin" => null, "passwordLogin" => null);
     protected $Connection;
     protected $FirstName;
     protected $LastName;
     protected $Email;
     protected $Username;
     protected $Password;
+    protected $RegisterError;
     
     function __construct(array $UserData)
     {
             $this->Connection = SQL_Connect('db_users');
             if(
-            $this->ValidateEmail($UserData['emailRegister']) &&
-            $this->ValidateUsername($UserData['usernameRegister']) &&
-            $this->ValidatePassword($UserData['passwordRegister']) &&
-            $this->ValidateNames($UserData["firstnameRegister"], $UserData["lastnameRegister"]))
+            $this->ValidateNames($UserData["REG_FirstName"], $UserData["REG_LastName"]) &&
+            $this->ValidateEmail($UserData['REG_Email']) &&
+            $this->ValidateUsername($UserData['REG_Username']) &&
+            $this->ValidatePassword($UserData['REG_Password']))
             {
+                $this->LoginRequest["usernameLogin"] = $UserData['REG_Username'];
+                $this->LoginRequest["passwordLogin"] = $UserData['REG_Password'];
                 $this->SendRegistrationRequest();
             }
     }
@@ -66,9 +71,21 @@ class RegisterRequest
 
     private function SendRegistrationRequest()
     {
-        $query = "INSERT INTO users (UserID, FirstName, LastName, Email, Username, Password) 
-        VALUES (" . random_int(1, 999999999) . ", '$this->FirstName', '$this->LastName', '$this->Email', '$this->Username', '$this->Password');";
-        mysqli_query($this->Connection, $query);
+        $query = "CREATE USER '$this->Username'@'localhost' IDENTIFIED BY '$this->Password';";
+        $query.= "CREATE DATABASE $this->Username;";
+        $query.= "GRANT SELECT, INSERT, UPDATE, DELETE ON $this->Username.* to $this->Username@'localhost';";
+        $query.= "INSERT INTO users (FirstName, LastName, Email, Username, Password) 
+                  VALUES ('$this->FirstName', '$this->LastName', '$this->Email', '$this->Username', '$this->Password');";
+        try 
+        {
+            mysqli_multi_query($this->Connection, $query);
+            $this->RegisterStatus = true;
+            
+        }
+        catch(Exception)
+        {
+            $this->RegisterStatus = false;
+        }
     }
 }
 ?>
