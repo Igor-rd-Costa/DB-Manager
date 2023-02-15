@@ -52,7 +52,7 @@ class RegisterRequest
     {
         if(substr($Email, -strlen(".com")) === ".com" && strpos($Email, "@") != 0)
         {
-            $this->Email = mysqli_real_escape_string($this->Connection, $Email);
+            $this->Email = $Email;
             return true;
         }
         else { return false; }
