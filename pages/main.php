@@ -22,7 +22,7 @@ if(!$User = $_SESSION['User'])
 </head>
 <body>
     <div id="outsidewrapper">
-        <div id="gradient"></div>
+        
         <div id="header">
             <div id="filler"></div>
             <div id="profilewrapper">
@@ -40,13 +40,13 @@ if(!$User = $_SESSION['User'])
             <div id="addDB">
                 <div id="horz-line"></div><div id="vert-line"></div>
             </div>
-            <div class="database" id="database1"></div>
+            <!--<div class="database" id="database1"></div>
             <div class="database" id="database2"></div>
             <div class="database" id="database3"></div>
             <div class="database" id="database4"></div>
             <div class="database" id="database5"></div>
             <div class="database" id="database6"></div>
-            <div class="database" id="database7"></div>
+            <div class="database" id="database7"></div>-->
         </div>
     </div>
     <div id="form">

@@ -91,9 +91,23 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         
     document.getElementById('formwrapper').addEventListener('submit', (event) => {
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
+        let TargetID = event.target.id;
+        if(TargetID === "login")
+        {
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
         event.preventDefault();
-        SendLoginRequest(username, password);
+        REQUEST_Login(username, password);
+        }
+        else if(TargetID === "register")
+        {
+            let firstname = document.getElementById('firstname').value;
+            let lastname = document.getElementById('lastname').value;
+            let email = document.getElementById('email').value;
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            event.preventDefault();
+            REQUEST_Register(firstname, lastname, email, username, password);
+        }
     })
 })

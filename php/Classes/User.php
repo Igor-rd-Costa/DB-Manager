@@ -11,7 +11,7 @@ class User
         $connection = SQL_Connect('db_users');
         $query = "SELECT * from users";
         $result = mysqli_query($connection, $query);
-        $is_login_correct = false;
+
         
         while($row = mysqli_fetch_assoc($result))
         {

@@ -39,6 +39,8 @@
         <label for="password" class="input-passwordlabel">Password</label>
         <input type="text" name="passwordRegister" id="password" class="input-password" required=""/>
     </div>
+    <div id="error-wrapper">
+    </div>
     <button type="submit" class="submit register" id="register-button">Register</button>
 </form>
 </REGISTER>
