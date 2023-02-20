@@ -98,6 +98,7 @@ div#mainwrapper {
 
 div.background-gradient {
     background-image: linear-gradient(to bottom right, #7d4b7d 5%, #b25bb2 95%);
+    display: grid;
 }
 
 #sub-secondary-text {

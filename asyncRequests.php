@@ -20,31 +20,27 @@ switch($request)
     break;
     case 'LoginRequest':
         include "php/Classes/User.php";
-        $User = new User($_POST);
+        $User = new User($_POST["usernameLogin"], $_POST["passwordLogin"], $_POST["passwordLogin"]);
         if($User->LoginStatus)
         {
-            session_start();
-            $_SESSION["User"] = $User;
-            echo true;
+
         }
         else
         {
-            echo false;
+            echo $User->LoginError;
         }
     break;
     case 'RegisterRequest':
         include "php/Classes/RegisterRequest.php";
         include "php/Classes/User.php";
-        $REG_Request = new RegisterRequest($_POST);
+        $REG_Request = new RegisterRequest($_POST["REG_FirstName"], $_POST["REG_LastName"], $_POST["REG_Email"], $_POST["REG_Username"], $_POST["REG_Password"]);
         if($REG_Request->RegisterStatus)
         {
-            $User = new User($REG_Request->LoginRequest);
-            echo true;
+           $User = new User($_POST["REG_Username"], $_POST["REG_Password"], $_POST["REG_Password"]);
         }
         else
         {
-            echo false;
-            exit;
+            echo $REG_Request->RegisterError;
         }
     break;
         

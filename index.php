@@ -3,14 +3,14 @@ session_start();
 session_unset();
 include "php/Functions.php";
 try {
-    SQL_Connect("db_users");
+    include "config.php";
+    SQL_Connect($Server_Hostname, $Server_User, $Server_Password, "db_users");
 }
-catch(mysqli_sql_exception $e)
+catch(mysqli_sql_exception)
 {
     $connection = mysqli_connect('localhost', 'root', '');
     $sql = file_get_contents("DB_Setup.sql");
     mysqli_multi_query($connection, $sql);
-
 }
 
 if(isset($_GET['logoutRequest']))
@@ -19,11 +19,6 @@ if(isset($_GET['logoutRequest']))
     header("Location: http://localhost/BancodeDados/");
 }
 
-if(isset($_POST["usernameRegister"], $_POST["passwordRegister"]))
-{
-    include "php/Classes/RegisterRequest.php";
-    $RegisterRequest = new RegisterRequest($_POST);
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,6 +36,15 @@ if(isset($_POST["usernameRegister"], $_POST["passwordRegister"]))
 </head>
 <body>
 <div class="background-gradient">
+<div id="form">
+        <div id="form-header">
+            <div id="menu-title"></div>
+            <div id="close-menu">
+                <span id="x">X</span>
+            </div>
+        </div>
+        <div id="formwrapper"></div>
+</div>
 <header id="header">
         <div id="loginwrapper">
             <span>
@@ -62,15 +66,6 @@ if(isset($_POST["usernameRegister"], $_POST["passwordRegister"]))
 
 </div>
 </div>
-</div>
-<div id="form">
-        <div id="form-header">
-            <div id="menu-title"></div>
-            <div id="close-menu">
-                <span id="x">X</span>
-            </div>
-        </div>
-        <div id="formwrapper"></div>
 </div>
 <?php
 ?>
