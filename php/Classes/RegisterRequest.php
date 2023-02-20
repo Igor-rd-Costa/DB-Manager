@@ -7,7 +7,6 @@ Class RegisterRequest {
     private $Password;
     protected $Connection;
     public $RegisterStatus;
-    public $LoginRequest;
     public $RegisterError;
 
 
@@ -17,7 +16,6 @@ Class RegisterRequest {
         {
         include "./config.php";
         $this->Connection = SQL_Connect($Server_Hostname, $Server_User, $Server_Password, 'db_users');
-        $this->LoginRequest = array("usernameLogin" => $username, "passwordLogin" => $password);
         $this->ValidateFirstName($firstname);
         $this->ValidateLastName($lastname);
         $this->ValidateEmail($email);

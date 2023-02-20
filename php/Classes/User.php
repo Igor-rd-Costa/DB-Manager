@@ -9,7 +9,7 @@ Class User {
     public $Username;
     protected $Password;
 
-    function __construct($username, $password, $connectpassword)
+    function __construct($username, $password)
     {   
         include "./config.php";
 
@@ -41,7 +41,7 @@ Class User {
                     $this->Email = $row["Email"];
                     $this->Username = $row["Username"];
                     $this->Password = $row["Password"];
-                    $this->Connection = SQL_Connect($Server_Hostname, $username, $connectpassword, $this->Username);
+                    $this->Connection = SQL_Connect($Server_Hostname, $username, $password, $this->Username);
                     $this->LoginStatus = true;
                     session_start();
                     $_SESSION["User"] = $this;
