@@ -29,7 +29,7 @@ function LoadRegisterForm()
     xmlhttp.send();
 };
 
-function LoadLoginForm(error)
+function LoadLoginForm()
 {
     document.getElementById('form').style = 'display: block';
 
@@ -39,12 +39,7 @@ function LoadLoginForm(error)
         if(this.readyState == 4 && this.status == 200)
         {
             document.getElementById('menu-title').innerHTML = "Login";
-           
             document.getElementById('formwrapper').innerHTML = this.response;
-            if(error)
-            {
-                document.getElementById("error-wrapper").innerHTML = error;
-            }
         }
     }
     xmlhttp.open('GET', 'asyncRequests.php?request=Login', true);
@@ -76,12 +71,13 @@ function REQUEST_Login(username, password)
     xmlhttplogin.onreadystatechange=function(){
         if(this.readyState == 4 && this.status == 200)
         {
-            if(!this.responseText)
+            if(this.responseText)
             {
-                document.getElementById("error-wrapper").innerHTML = "Password or Username incorrect, please check the information provided and try again.";
+                document.getElementById("error-msg").innerHTML = this.responseText;
             }
             else
             {
+                document.getElementById("error-msg").innerHTML = "";
                 window.location.href = "http://localhost/BancodeDados/pages/main.php";
             }
         }
@@ -97,13 +93,15 @@ function REQUEST_Register(firstname, lastname, email, username, password)
     xmlhttp.onreadystatechange=function(){
         if(this.readyState == 4 && this.status == 200)
         {
-            if(!this.responseText)
+            if(this.responseText)
             {
-               console.log("Registration Failed");
+                console.log(this.response);
+                document.getElementById('error-msg').innerHTML = this.responseText; 
             }
             else
             {
-                REQUEST_Login(username, password);
+                document.getElementById("error-msg").innerHTML = "";
+                window.location.href = "http://localhost/BancodeDados/pages/main.php";
             }
         }
     }

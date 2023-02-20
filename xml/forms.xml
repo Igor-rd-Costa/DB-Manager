@@ -1,46 +1,32 @@
 <FORMS>
 <LOGIN>
 <form id="login" method="post">
-    <div id="usernamewrapper">
     <label for="username">Username</label>
-    <br/>
-    <input type="text" name="usernameLogin" id="username" required=""/>
-    </div>
-    
-    <div id="passwordwrapper">
+    <input type="text" name="usernameLogin" id="username" required=""/>    
+
     <label for="password">Password</label>
-    <br/>
     <input type="text" name="passwordLogin" id="password" required=""/>
-    </div>
-    <div id="error-wrapper">
-    </div>
-    <div id="buttonwrapper" style="height: 31px">
-        <button type="submit" class="submit login">Login</button>
-        <button type="button" class="submit register" id="button-register">Register</button>
-    </div>
+    <p id="error-msg">
+    </p>
+    <button type="submit" class="submit login">Login</button>
+    <button type="button" class="submit register" id="button-register">Register</button>
 </form>
 </LOGIN>
 
 <REGISTER>
 <form id="register" method="post">
-    <div id="register-info">
-        <label for="firstname" class="input-firstnamelabel">First Name</label>
-        <input type="text" name="firstnameRegister" id="firstname" class="input-firstname" required=""/>
-        <br/>
-        <label for="lastname" class="input-lastnamelabel">Last Name</label>
-        <input type="text" name="lastnameRegister" id="lastname" class="input-lastname" required=""/>
-        <br/>
-        <label for="email" class="input-emaillabel">E-Mail</label>
-        <input type="text" name="emailRegister" id="email" class="input-email" required=""/>
-        <br/>
-        <label for="username" class="input-usernamelabel">Username</label>
-        <input type="text" name="usernameRegister" id="username" class="input-username" required=""/>
-        <br/>
-        <label for="password" class="input-passwordlabel">Password</label>
-        <input type="text" name="passwordRegister" id="password" class="input-password" required=""/>
-    </div>
-    <div id="error-wrapper">
-    </div>
+        <label for="firstname">First Name</label>
+        <input type="text" name="firstnameRegister" id="firstname" required=""/>
+        <label for="lastname">Last Name</label>
+        <input type="text" name="lastnameRegister" id="lastname" required=""/>
+        <label for="email">E-Mail</label>
+        <input type="text" name="emailRegister" id="email" required=""/>
+        <label for="username">Username</label>
+        <input type="text" name="usernameRegister" id="username" required=""/>
+        <label for="password">Password</label>
+        <input type="text" name="passwordRegister" id="password" required=""/>
+    <p id="error-msg">
+    </p>
     <button type="submit" class="submit register" id="register-button">Register</button>
 </form>
 </REGISTER>
