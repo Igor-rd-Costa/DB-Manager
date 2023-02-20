@@ -15,7 +15,7 @@ Class User {
 
         try
         {
-            $connection = SQL_Connect($Server_Hostname, $Server_User, $Server_Password, 'db_users');
+            $connection = SQL_Connect($Server_Hostname, $Server_User, $Server_Password, 'admin');
         }
         catch(Exception $e)
         {

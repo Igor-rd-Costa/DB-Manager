@@ -4,11 +4,11 @@ session_unset();
 include "php/Functions.php";
 try {
     include "config.php";
-    SQL_Connect($Server_Hostname, $Server_User, $Server_Password, "db_users");
+    SQL_Connect($Server_Hostname, $Server_User, $Server_Password, "admin");
 }
 catch(mysqli_sql_exception)
 {
-    $connection = mysqli_connect('localhost', 'root', '');
+    $connection = SQL_Connect($Server_Hostname, $Server_User, $Server_Password);
     $sql = file_get_contents("DB_Setup.sql");
     mysqli_multi_query($connection, $sql);
 }
