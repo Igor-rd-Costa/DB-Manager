@@ -15,7 +15,7 @@ Class RegisterRequest {
         try
         {
         include "./config.php";
-        $this->Connection = SQL_Connect($Server_Hostname, $Server_User, $Server_Password, 'db_users');
+        $this->Connection = SQL_Connect($Server_Hostname, $Server_User, $Server_Password, 'admin');
         $this->ValidateFirstName($firstname);
         $this->ValidateLastName($lastname);
         $this->ValidateEmail($email);
