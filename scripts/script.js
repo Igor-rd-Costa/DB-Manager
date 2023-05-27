@@ -1,61 +1,150 @@
-document.addEventListener('DOMContentLoaded', () => {
-    let display = false;
-    //Database Adder events
-    const addDB_element = document.getElementById('addDB');
-    addDB_element.addEventListener('click', () => {
-        document.getElementById('dbwrapper').style = 'pointer-events: none';
-        document.getElementById('profilewrapper').style = 'pointer-events: none';
-        document.getElementById('pr-options').style = 'display: none';
-        display = false;
-        LoadDatabaseAdderForm();
-    })
+class ColumnEntryRequest 
+{
+    Entry_Name;
+    Entry_Type;
+    Entry_Default;
+    Entry_Collation;
+    Entry_Attributes;
+    Entry_Null;
+    Entry_Index;
+    Entry_AI;
+    Entry_Comments;
 
-    addDB_element.addEventListener('mouseover', () => {
-        addDB_element.style = 'background-color: rgb(121, 49, 121); scale: 106%';
-
-        document.getElementById('horz-line').style = 'background-color: var(--BorderColor); border: 1px solid var(--BorderColor)';
-        document.getElementById('vert-line').style = 'background-color: var(--BorderColor); border: 1px solid var(--BorderColor)';
-    })
-
-    addDB_element.addEventListener('mouseout', () => {
-        addDB_element.style = 'background-color: transparent; scale: 100%';
-
-        document.getElementById('horz-line').style = 'background-color: var(--PlusColor); border: 1px solid var(--PlusColor)';
-        document.getElementById('vert-line').style = 'background-color: var(--PlusColor); border: 1px solid var(--PlusColor)';
-    })
-
-    //Database displayer events
-
-    /* for(x = 1; x <= 7; x++)
+    constructor(Rows)
     {
-        var DatabaseID = "database" + x;
-        const selected = document.getElementById(DatabaseID);
-        selected.addEventListener('mouseover', () => {
-            selected.style = 'background-color: rgb(121, 49, 121); scale: 106%';
-        })
-        selected.addEventListener('mouseout', () => {
-            selected.style = 'background-color: transparent; scale: 100%';
-        })
-    } */
-    
-    
 
-    //profile events
-
-    document.getElementById('user-img').addEventListener('click', () => {
         
-        if(!display)
+        this.Entry_Name = Rows.getElementsByClassName("Entry_Name")[0].value;
+        let Type = Rows.getElementsByClassName("Entry_Type")[0];
+        let LenVal = Rows.getElementsByClassName("Entry_LenVal")[0];
+
+        if(LenVal.value)
         {
-        document.getElementById('pr-options').style = 'display: block;';
-        display = true;
+            this.Entry_Type = Type.value + "("+LenVal.value+")";
         }
-        else
+        
+        
+        this.Entry_Default = Rows.getElementsByClassName("Entry_Default")[0].value;
+        this.Entry_Collation = Rows.getElementsByClassName("Entry_Collation")[0].value;
+        this.Entry_Attributes = Rows.getElementsByClassName("Entry_Attributes")[0].value;
+        this.Entry_Null = Rows.getElementsByClassName("Entry_Null")[0].checked;
+        this.Entry_Index = Rows.getElementsByClassName("Entry_Index")[0].value;
+        this.Entry_AI = Rows.getElementsByClassName("Entry_AI")[0].checked;
+        this.Entry_Comments = Rows.getElementsByClassName("Entry_Comments")[0].value;
+    }
+}
+
+window.addEventListener('resize', () => {
+    const Main = document.getElementById("tablewrapper");
+    const ListWrapper = document.getElementById("list-wrapper");
+    ResizeForm("table-structure");
+    ResizeForm("add-entry");
+    if(ListWrapper) {
+        const ListItemWrappers = document.getElementsByClassName("list-item-wrapper");
+        const TableList = document.getElementById("list-wrapper");    
+        const ListItemHeight = parseInt(getComputedStyle(ListItemWrappers[0]).height);
+        const TableListHeight = parseInt(getComputedStyle(TableList).height);
+        if((ListItemHeight * ListItemWrappers.length) < TableListHeight) {
+            ListItemWrappers[ListItemWrappers.length - 1].style.borderBottom = "var(--DefaultBorder)";
+        }
+        else {
+            ListItemWrappers[ListItemWrappers.length - 1].style.borderBottom = "";
+        }
+    }
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+    let profileOptionsDisplay = false;
+    const Header = document.getElementById("header");
+    const TableWrapper = document.getElementById("tablewrapper");
+    const ShowTableList = document.getElementById('tbl-list-display');
+    const AddTableElement = document.getElementById('addTable');
+    
+    TableWrapper.addEventListener('click', (event) => {
+        const Target = event.target;
+        const TargetTable = Target.closest(".table"); 
+        if(TargetTable && TargetTable === AddTableElement) { // Show table creation form
+            document.body.style = 'pointer-events: none';
+            document.getElementById('pr-options').style.display = "none";
+            profileOptionsDisplay = false;
+            document.getElementById('menu-title').innerHTML = "Create Table";
+            document.getElementById("form").style.display = "block";
+            document.getElementById("form").style.height = "fit-content";
+            document.getElementById("create-table").style.display = "";
+            document.getElementById("add-columns").style.display = "none";
+        }
+        if (ShowTableList && TargetTable === ShowTableList) { // Show list with all the user's tables
+            LoadTableList();
+        }
+        if (TargetTable && TargetTable != AddTableElement && TargetTable != ShowTableList) { //Show chosen table 
+            LoadTable(TargetTable.getAttribute("tablename"), "main");
+        }
+        if (Target.closest("#back-icon")) {
+                switch (Target.closest("#back-icon").getAttribute("backto"))
+            {
+                case "main": window.location.href = "http://localhost/BancodeDados/pages/main.php"; 
+                    break;
+                case "table-list": LoadTableList();
+                    break;
+            }
+        }
+        if(Target.closest(".add-icon-wrapper")) {
+            switch (Target.closest(".add-icon-wrapper").getAttribute("id"))
+            {
+                case "add-table": {
+                    document.body.style = 'pointer-events: none';
+                    document.getElementById('pr-options').style.display = "none";
+                    profileOptionsDisplay = false;
+                    document.getElementById('menu-title').innerHTML = "Create Table";
+                    document.getElementById("form").style.display = "block";
+                    document.getElementById("form").style.height = "fit-content";
+                    document.getElementById("create-table").style.display = "grid";
+                    document.getElementById("add-columns").style.display = "none";
+                } break;
+                case "add-columns": {
+                    document.body.style = 'pointer-events: none';
+                    document.getElementById('pr-options').style.display = "none";
+                    profileOptionsDisplay = false;
+                    document.getElementById('menu-title').innerHTML = "Add Columns";
+                    document.getElementById("form").style.display = "block";
+                    document.getElementById("form").style.height = "fit-content";
+                    document.getElementById("create-table").style.display = "none";
+                    document.getElementById("add-columns").style.display = "grid";
+                } break;
+            }
+        }
+        if(Target.closest(".options-li")) {
+            const Option = Target.closest(".options-li");
+            switch (Option.id) {
+                case "tbl-new-entry": { LoadTableEntryForm();
+                } break;
+                case "tbl-add-column": {
+                    console.log("Add Column");
+                } break;
+            }
+        }
+        if (Target.closest(".list-item-wrapper"))
         {
-        document.getElementById('pr-options').style = 'display: none;';
-        display = false;
+            let table = Target.closest(".list-item-wrapper");
+            LoadTable(table.getAttribute("tablename"), "table-list");
+        }
+
+    
+    })
+    
+    //profile events
+    document.addEventListener('click', (event) => {
+        const Target = event.target;
+        const Profile = Target.closest("#profilewrapper");
+        const TblMoreOptions = Target.closest("#tbl-options");
+        if(Profile) {
+            ToggleOptionMenuDisplay("pr-options");
+        }
+        else if (TblMoreOptions) {
+            ToggleOptionMenuDisplay("tbl-option-list");
+        }
+        else {
+            CloseAllOptionMenus();
         }
     })
 })
-
-
-

@@ -1,16 +1,13 @@
 <?php
 session_start();
 session_unset();
-include "php/Functions.php";
 try {
-    include "config.php";
-    SQL_Connect($Server_Hostname, $Server_User, $Server_Password, "admin");
+    include_once "Config.php";
+    SQL_Connect(CONFIG_INFO::$ServerHostname, CONFIG_INFO::$ServerUser, CONFIG_INFO::$ServerPassword, CONFIG_INFO::$AdminDatabaseName);
 }
 catch(mysqli_sql_exception)
 {
-    $connection = SQL_Connect($Server_Hostname, $Server_User, $Server_Password);
-    $sql = file_get_contents("DB_Setup.sql");
-    mysqli_multi_query($connection, $sql);
+    CONFIG_InitialSetup();
 }
 
 if(isset($_GET['logoutRequest']))
@@ -28,6 +25,8 @@ if(isset($_GET['logoutRequest']))
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="http://localhost/BancodeDados/css/Index.css"/>
     <link rel="stylesheet" href="http://localhost/BancodeDados/css/Forms.css"/>
+    <link rel="stylesheet" href="http://localhost/BancodeDados/css/LoginForm.css"/>
+    <link rel="stylesheet" href="http://localhost/BancodeDados/css/RegisterForm.css"/>
     <link rel="php" href="login.php"/>
     <script src="http://localhost/BancodeDados/scripts/Functions.js"></script>
     <script src="http://localhost/BancodeDados/scripts/IndexScript.js"></script>
@@ -35,38 +34,60 @@ if(isset($_GET['logoutRequest']))
     <title>DB Manager</title>
 </head>
 <body>
-<div class="background-gradient">
 <div id="form">
         <div id="form-header">
-            <div id="menu-title"></div>
-            <div id="close-menu">
-                <span id="x">X</span>
-            </div>
+            <div id="menu-title">Login</div>
+            <div id="close-menu">X</div>
         </div>
-        <div id="formwrapper"></div>
+        <div id="formwrapper">
+            <form id="login" method="post">
+                <label for="username">Username</label>
+                <input type="text" name="usernameLogin" id="username" class="form-input" required=""/>    
+                <label for="password">Password</label>
+                <input type="text" name="passwordLogin" id="password" class="form-input" required=""/>
+                <p id="error-msg"></p>
+                <button type="submit" class="submit login form-button">Login</button>
+                <button type="button" class="submit register form-button" id="button-register">Register</button>
+            </form>
+
+            <form id="register" method="post">
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstnameRegister" id="reg-firstname" class="form-input" required=""/>
+                <label for="lastname">Last Name</label>
+                <input type="text" name="lastnameRegister" id="reg-lastname" class="form-input" required=""/>
+                <label for="email">E-Mail</label>
+                <input type="text" name="emailRegister" id="reg-email" class="form-input" required=""/>
+                <label for="username">Username</label>
+                <input type="text" name="usernameRegister" id="reg-username" class="form-input" required=""/>
+                <label for="password">Password</label>
+                <input type="text" name="passwordRegister" id="reg-password" class="form-input" required=""/>
+                <p id="reg-error-msg">
+                </p>
+                <button type="submit" class="submit register form-button" id="register-button">Register</button>
+            </form>
+        </div>
 </div>
 <header id="header">
         <div id="loginwrapper">
-            <span>
             <img id="login-img" src="http://localhost/BancodeDados/img/User.png" alt="Login"/>
-            </span>
         </div>
 </header>
-
-<div id="mainwrapper">
+<main>
 <div id="main-text-wrapper">
-    <span class="large-font" id="main-text">Database Management</span>
+    <span class="large-font" id="main-text">DB Manager</span>
     <br/>
-    <span class="small-font" id="sub-main-text">But with prety UI</span>
+    <div id="sub-main-text">
+    <span class="small-font">Small Placeholder</span>
+    </div>
 </div>
 <div id="secondary-text-wrapper">
-    <span class="large-font" id="secondary-text">Create</span>
+    <span class="large-font" id="secondary-text">Placeholder</span>
     <br/>
-    <!--<span class="small-font" id="sub-secondary-text"></span>-->
-
+    <div id="sub-secondary-text">
+    <span class="small-font">Small Placeholder</span>
+    </div>
 </div>
-</div>
-</div>
+</main>
 <?php
 ?>
 </body>

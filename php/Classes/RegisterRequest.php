@@ -1,11 +1,11 @@
 <?php
 Class RegisterRequest {
-    protected $FirstName;
-    protected $LastName;
-    protected $Email;
-    protected $Username;
-    private $Password;
-    protected $Connection;
+    protected string $FirstName;
+    protected string $LastName;
+    protected string $Email;
+    protected string $Username;
+    private string $Password;
+    protected  $Connection;
     public $RegisterStatus;
     public $RegisterError;
 
@@ -14,8 +14,14 @@ Class RegisterRequest {
     {
         try
         {
-        include "./config.php";
-        $this->Connection = SQL_Connect($Server_Hostname, $Server_User, $Server_Password, 'admin');
+        include_once "../../config.php";
+        $ServerHostname = CONFIG_INFO::$ServerHostname;
+        $ServerUser = CONFIG_INFO::$ServerUser;
+        $ServerPassword = CONFIG_INFO::$ServerPassword;
+        $AdminUsername = CONFIG_INFO::$AdminUsername;
+        $AdminDatabase = CONFIG_INFO::$AdminDatabaseName;
+
+        $this->Connection = SQL_Connect($ServerHostname, $ServerUser, $ServerPassword, $AdminDatabase);
         $this->ValidateFirstName($firstname);
         $this->ValidateLastName($lastname);
         $this->ValidateEmail($email);
@@ -115,22 +121,24 @@ Class RegisterRequest {
 
     function SendRegistrationRequest($userpassword)
     {
+        include_once "../../config.php";
+        $ServerHostname = CONFIG_INFO::$ServerHostname;
+        
         try
         {
-        $stmt = $this->Connection->prepare("INSERT INTO users (FirstName, LastName, Email, Username, Password) 
-        VALUES (?, ?, ?, ?, ?);");
+        $stmt = $this->Connection->prepare("INSERT INTO users (FirstName, LastName, Email, Username, Password) VALUES (?, ?, ?, ?, ?);");
         $stmt->bind_param("sssss", $this->FirstName, $this->LastName, $this->Email, $this->Username, $this->Password);
         $stmt->execute();
-        $usercreation_stmt = $this->Connection->prepare("CREATE USER '$this->Username'@'localhost' IDENTIFIED BY '$userpassword';");
+        $usercreation_stmt = $this->Connection->prepare("CREATE USER '$this->Username'@'$ServerHostname' IDENTIFIED BY '$userpassword';");
         $usercreation_stmt->execute();
         $dbcreation = $this->Connection->prepare("CREATE DATABASE $this->Username;");
         $dbcreation->execute();
-        $setpermissions = $this->Connection->prepare("GRANT SELECT, INSERT, UPDATE, DELETE ON $this->Username.* to $this->Username@'localhost';");
+        $setpermissions = $this->Connection->prepare("GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP ON $this->Username.* to '$this->Username'@'$ServerHostname';");
         $setpermissions->execute();
         }
         catch(Exception $e)
         {
-            throw $e;
+            throw new Exception($e->getMessage());
         }
     }
 }

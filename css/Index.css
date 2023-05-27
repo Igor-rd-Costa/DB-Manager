@@ -1,8 +1,17 @@
 :root {
-    --BorderColor: rgb(100, 39, 100);
-    --PlusColor: rgb(111, 39, 111); 
+    --BodyColor: rgb(18, 18, 18);
+    --DefaultColor: rgb(28, 28, 28);
+    --SelectColor: rgb(50, 50, 50);
+    --ContrastColor: rgb(187, 134, 252);
+    --ContrastColor: rgb(207, 154, 252);
+    --TextColor: rgb(147, 147, 147);
+    --HighlightTextColor: rgb(237, 237, 237);
+    --DefaultBorderWidth: 0.2rem;
+    --DefaultBorder: var(--DefaultBorderWidth) solid var(--BodyColor);
+    --ContrastBorder: var(--DefaultBorderWidth) solid var(--ContrastColor);
 }
 
+    
 * {
     box-sizing: border-box;
 }
@@ -32,53 +41,53 @@ body {
     padding: 0px;
     margin: 0px;
     width: 100vw;
-    height: fit-content;
+    height: 100vh;
     text-align: center;
     font-family: 'Times New Roman', Times, serif;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 3.2rem 1fr;
 }
 
-header#header {
-    height: 3.125rem;
-    display: flex;
-    justify-content: end;
-}
-
-div#main-img-wrapper {
-    width: 100%;
-    height: 2.125rem;
+header {
+    grid-row: 1;
+    background-color: var(--DefaultColor);
+    display: grid;
+    grid-template-columns: 1fr 3.125rem;
+    grid-template-rows: 3.2rem;
+    justify-items: end;
 }
 
 div#loginwrapper {
+    grid-column: 2;
     position: relative;
     cursor: pointer;
-    height: 3.125rem;
-    width: 3.125rem;
+    height: 3.2rem;
+    width: 3.2rem;
     display: grid;
     align-items: center;
     justify-items: center;
 }
 
 img#login-img {
-    position: relative;
-    float: right;
     width: 2.5rem;
     height: 2.5rem;
-    margin-top: 0.125rem;
-    margin-right: 0.125rem;
-    border: 1px transparent;
     border-radius: 50%;
 }
 
-#mainwrapper {
+main {
+    grid-row: 2;
     display: grid;
+    height: 100%;
+    background-color: var(--BodyColor);
 }
 
 #main-text-wrapper {
     cursor: default;
     position: absolute;
-    width: 44.25rem;
+    width: fit-content;
     height: fit-content;
-    color: rgb(230, 230, 230);
+    color: var(--ContrastColor);
     text-align: left;
     font-family: Garamond;
     align-self: center;
@@ -87,7 +96,7 @@ img#login-img {
 
 #sub-main-text {
     position: relative;
-    width: 10.3125rem;
+    width: fit-content;
 }   
 
 div#mainwrapper {
@@ -97,32 +106,27 @@ div#mainwrapper {
 
 
 div.background-gradient {
-    background-image: linear-gradient(to bottom right, #7d4b7d 5%, #b25bb2 95%);
+    background-color: var(--BodyColor);
     display: grid;
 }
 
 #sub-secondary-text {
-    position: relative;
-    width: 10.25rem;
+   width: fit-content;
 }
 
 #secondary-text-wrapper {
     scale: 0;
     cursor: default;
     position: absolute;
-    width: 18rem;
+    width: fit-content;
     height: fit-content;
-    color: rgb(230, 230, 230);
+    color: var(--ContrastColor);
     text-align: center;
     font-family: Garamond;
     align-self: center;
     justify-self: center;
 
 }
-
-
-
-
 
 div.testss {
     position: absolute;

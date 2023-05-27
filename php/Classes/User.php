@@ -1,21 +1,30 @@
 <?php
-Class User {
-    public $Connection;
-    public $LoginStatus;
-    public $LoginError;
-    public $FirstName;
-    public $LastName;
-    public $Email;
-    public $Username;
-    protected $Password;
+include_once "Connection.php";
+include_once "UserTable.php";
+Class User extends Connection {
+    public bool $LoginStatus;
+    public string $LoginError;
+    public string $FirstName;
+    public string $LastName;
+    public string $Username;
+    public string $DatabaseName;
+    private string $Email;
+    private string $Password;
+    public $Tables;
+    public array $Test;
 
     function __construct($username, $password)
     {   
-        include "./config.php";
+        include_once "../../Config.php";
+        $ServerHostname = CONFIG_INFO::$ServerHostname;
+        $ServerUser = CONFIG_INFO::$ServerUser;
+        $ServerPassword = CONFIG_INFO::$ServerPassword;
+        $AdminUsername = CONFIG_INFO::$AdminUsername;
+        $AdminDatabase = CONFIG_INFO::$AdminDatabaseName;
 
         try
         {
-            $connection = SQL_Connect($Server_Hostname, $Server_User, $Server_Password, 'admin');
+            $connection = SQL_Connect($ServerHostname, $ServerUser, $ServerPassword, $AdminDatabase);
         }
         catch(Exception $e)
         {
@@ -41,7 +50,22 @@ Class User {
                     $this->Email = $row["Email"];
                     $this->Username = $row["Username"];
                     $this->Password = $row["Password"];
-                    $this->Connection = SQL_Connect($Server_Hostname, $username, $password, $this->Username);
+                    $this->ConnectionInfo["username"] = $username;
+
+                    if($username == $AdminUsername)
+                    {
+                        $this->DatabaseName = $AdminDatabase;
+                        $this->ConnectionInfo["database"] = $AdminDatabase;
+                    }    
+                    else
+                    {
+                        $this->DatabaseName = $username;
+                        $this->ConnectionInfo["database"] = $username;
+                    } 
+
+                    $this->ConnectionInfo["password"] = $password;
+                    $this->Connect();
+                    $this->FetchTables();
                     $this->LoginStatus = true;
                     session_start();
                     $_SESSION["User"] = $this;
@@ -49,16 +73,35 @@ Class User {
                 else 
                 {
                     $this->LoginStatus = false;
-                    $this->LoginError = "Password or Username is incorrect. <br> Please try again.";
+                    $this->LoginError = "Password or Username are incorrect. <br> Please try again.";
                 }
             }
         }
         else 
         {
             $this->LoginStatus = false;
-            $this->LoginError = "Password or Username is incorrect. <br> Please try again.";
+            $this->LoginError = "Password or Username are incorrect. <br> Please try again.";
 
         }
     }
 
+    public function FetchTables()
+    {
+            $gettables = $this->Connection->prepare("SHOW TABLES;");
+            $gettables->execute();
+            $return = $gettables->get_result();
+            $tables = array();
+            while($row = $return->fetch_assoc())
+            {
+                $string = "Tables_in_" . strtolower($this->DatabaseName);
+                $tables[] = $row[$string];
+                
+            }
+            $this->Tables = NULL;
+            for($x = 0; $x < sizeof($tables); $x++)
+            {
+                $this->Tables[$tables[$x]] = new Table($this->Connection, $tables[$x], $x);
+                $this->Test[$x] = $this->Tables[$tables[$x]]->Index;
+            }
+    }
 }

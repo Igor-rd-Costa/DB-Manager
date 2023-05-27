@@ -1,0 +1,27 @@
+form#login {
+    display: grid;
+    grid-template-rows: 1.8rem 1.5rem 1.8rem 1.5rem max-content max-content;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    margin: auto;
+    width: 23.44rem;
+    margin-top: 1.25rem;
+    row-gap: 1.1rem;
+}
+
+form#login > label {
+    grid-column: 1/3;
+    font-size: 1.8rem;
+}
+
+form#login > input {
+    grid-column: 1/3;
+    width: 20rem;
+    text-align: center;
+
+}
+
+form#login > p#error-wrapper {
+    grid-column: 1/3;
+    grid-row: 5;
+}

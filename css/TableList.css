@@ -1,0 +1,49 @@
+main.tableList {
+    grid-template-columns: 1fr;
+    grid-template-rows: 2rem 1fr;
+    row-gap: calc(var(--DefaultBorderWidth) * 2);
+}
+
+#list-wrapper {
+    background-color: var(--DefaultColor);
+    border-bottom-left-radius: 0.625rem;
+    border-bottom-right-radius: 0.625rem;
+    overflow: scroll;
+}
+
+#list-wrapper > :first-child {
+    border-top: none;
+}
+
+.list-item-wrapper {
+    height: 5.5rem; 
+    border-top: var(--DefaultBorder);
+    color: var(--TextColor);
+    cursor: pointer;
+}
+
+.list-item-wrapper:hover {
+    background-color: var(--SelectColor);
+}
+
+.list-item-wrapper:hover > .list-item {
+    color: var(--ContrastColor);
+}
+
+.list-item {
+    border-right: var(--DefaultBorder);
+    height: 100%;
+    width: 12rem;
+    color: whitesmoke;
+    display:flex;
+    align-items: center;
+    font-size: 2rem;
+}
+
+#tbl-list-info {
+    width: 100%;
+    height: fit-content;
+    font-size: 1rem;
+    color: var(--HighlightTextColor);
+    padding-left: 0.2rem;
+}

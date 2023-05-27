@@ -1,0 +1,95 @@
+main.addEntryForm {
+    grid-template-columns: auto 1fr; 
+    grid-template-rows: 2rem auto; 
+    row-gap: calc(var(--DefaultBorderWidth) * 2);
+}
+
+main.addEntryForm > #default-menu {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+main.addEntryForm > #new-entry-form-wrapper {
+    grid-column: 1;
+    grid-row: 2;
+    color: var(--TextColor);
+}
+
+form#add-entry {
+    background-color: var(--DefaultColor);
+    border-bottom-left-radius: 0.625rem;
+    border-bottom-right-radius: 0.625rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 3.5rem;
+}
+
+form#add-entry .addEntryName {
+    width: fit-content;
+}
+
+form#add-entry .addEntryType {
+    width: fit-content;
+}
+
+form#add-entry .addEntryData {
+    width: 25rem;
+}
+
+
+form#add-entry .addEntryData > input {
+    width: 90%;
+}
+
+form#add-entry .addEntryData > textarea {
+    width: 90%;
+    height: 7rem;
+}
+
+form#add-entry th {
+    background-color: var(--DefaultColor);
+    color: var(--HighlightTextColor);
+}
+
+form#add-entry td {
+    background-color: var(--DefaultColor);
+    text-align: center;
+}
+
+form#add-entry th, form#add-entry td {
+    padding: 0.5rem;
+    border: 0.1rem solid var(--BodyColor);
+}
+
+#column-info {
+    border: 0.1rem solid var(--ContrastColor);
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--BodyColor);
+    color: var(--ContrastColor);
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+
+table#add-entry-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+main.addEntryForm #newEntry {
+    justify-self: end;
+}
+
+#entry-form-footer {
+    background-color: var(--DefaultColor);
+    height: 3.5rem;
+    border-top: calc(var(--DefaultBorderWidth) * 2) solid var(--BodyColor);
+    border-bottom-left-radius: 0.625rem;
+    border-bottom-right-radius: 0.625rem;
+    display: grid;
+    align-items: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}

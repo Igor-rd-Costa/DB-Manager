@@ -1,0 +1,25 @@
+form#add-columns {
+    display: grid;
+    grid-template-columns: 10rem 10rem 6rem;
+    grid-template-rows: 3rem;
+    align-items: center;
+    column-gap: 1.5rem;
+    padding: 0.5rem;
+}
+
+form#add-columns > label {
+    grid-row: 1;
+    grid-column: 1;
+    font-size: 1.2rem;
+}
+
+form#add-columns > input {
+    grid-row: 1;
+    grid-column: 2;
+}
+
+form#add-columns > button {
+    grid-row: 1;
+    grid-column: 3;
+    align-self: center;
+}

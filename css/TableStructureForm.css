@@ -1,0 +1,55 @@
+main.tableStructureForm {
+    grid-template-columns: 1fr;
+    grid-template-rows: 2rem 1fr;
+    row-gap: calc(var(--DefaultBorderWidth) * 2);
+}
+
+#structure-form-wrapper {
+    height: 100%;
+}
+
+form#table-structure {
+    background-color: var(--DefaultColor);
+    border-bottom-left-radius: 0.625rem;
+    border-bottom-right-radius: 0.625rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 3.5rem;
+}
+
+table#structure-table {
+    border-collapse: collapse;
+}
+
+form#table-structure th {
+    background-color: var(--DefaultColor);
+    color: var(--HighlightTextColor);
+}
+
+form#table-structure td {
+    background-color: var(--DefaultColor);
+}
+
+form#table-structure th, form#table-structure td {
+    padding: 0.5rem;
+    border: 0.1rem solid var(--BodyColor);
+}
+
+form#table-structure td > * {
+    color: var(--BodyColor);
+}
+
+table#structure-table {
+    width: 100%;
+}
+
+#structure-form-footer {
+    background-color: var(--DefaultColor);
+    height: 3.5rem;
+    border-top: calc(var(--DefaultBorderWidth) * 2) solid var(--BodyColor);
+    border-bottom-left-radius: 0.625rem;
+    border-bottom-right-radius: 0.625rem;
+    display: grid;
+    align-items: center;
+    padding-left: 0.5rem;
+}
