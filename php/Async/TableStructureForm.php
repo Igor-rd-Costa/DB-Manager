@@ -40,8 +40,6 @@ print
         <select name='Entry_Type' class='Entry_Type'>
             <option>INT</option>
             <option>VARCHAR</option>
-            <option>TEXT</option>
-            <option>DATE</option>
         </select>
     </td>
     <td>
@@ -51,7 +49,6 @@ print
         <select name='Entry_Default' class='tbl-str-field Entry_Default'>
             <option>None</option>
             <option>NULL</option>
-            <option>CURRENT_TIMESTAMP</option>
         </select>
     </td>
     <td>

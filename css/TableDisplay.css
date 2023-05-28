@@ -1,46 +1,65 @@
 main.displayTable {
-    grid-template-columns: 1fr;
-    grid-template-rows: 2rem 1fr;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+main.displayTable > * {
+    min-width: 20rem;
+}
+
+#table-display-wrapper {
+    width: fit-content;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 2rem auto;
     row-gap: calc(var(--DefaultBorderWidth) * 2);
 }
+
 #tbl-option-list {
     display: none;
     grid-row: 2;
     grid-column: 3;
     z-index: 1;
+    min-width: 8rem;
 }
 
 div#tbl-display-content {
-    height: 100%;
+    height: fit-content;
     grid-column: 1;
     grid-row: 2;
     background-color: var(--DefaultColor);
+    border: 0.1rem solid var(--ContrastColor);
     border-bottom-left-radius: 0.625rem;
     border-bottom-right-radius: 0.625rem;
     overflow: scroll;
 }
 
 table#tabledisplay {
-    border: 0.1rem solid var(--ContrastColor);
-    border-collapse: separate;
-    border-spacing: 0px;
+    border-collapse: collapse;
     width: 100%;
     color: var(--TextColor);
+}
+
+table#tabledisplay tr:last-of-type {
+    border-bottom: none;
 }
 
 table#tabledisplay .tbl-content-row:hover {
     background-color: var(--SelectColor);
 }
 
-table#tabledisplay > * > tr.tbl-header-row > th {
+table#tabledisplay tr {
+    border-bottom: 0.1rem solid var(--ContrastColor);
+}
+
+table#tabledisplay tr.tbl-header-row > th {
     padding: 0.5rem;    
     color: var(--HighlightTextColor);
     border-right: 0.1rem solid var(--ContrastColor);
 }
 
-table#tabledisplay > * > * > td {
+table#tabledisplay td {
     padding: 0.1rem;
+    padding-left: 0.2rem;
     border-right: 0.1rem solid var(--ContrastColor);
-    border-top: 0.1rem solid var(--ContrastColor);
-    text-overflow: ellipsis;
 }

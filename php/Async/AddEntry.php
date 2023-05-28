@@ -55,5 +55,6 @@ for ($x = 0; $x < sizeof($Entry); $x++) {
     else $Command .= ")";
 }
 
-print_r($Command);
+SQL_Query($User->Connection, $Command);
+$User->FetchTables();
 ?>

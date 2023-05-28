@@ -42,35 +42,63 @@
     }
 
     if(isset($_SESSION['CreateTableName'])) {
-        $command = "CREATE TABLE `$User->DatabaseName`.`". $_SESSION['CreateTableName'] . "` (`" . $rowData[0]->Name . "` " . $rowData[0]->Type;
-        if($rowData[0]->Length != 0) {
-            $command .= "(" . $rowData[0]->Length . ")";
+        $command = "CREATE TABLE `$User->DatabaseName`.`". $_SESSION['CreateTableName'] . "` (";
+        $ErrorMsg = null;
+        $AutoIncrement = false;
+        $PrimaryKey = null;
+        for ($x = 0; $x < sizeof($rowData); $x++) {
+            $command .= "`" . $rowData[$x]->Name . "` " . $rowData[$x]->Type;
+            if($rowData[$x]->Length != 0) {
+                $command .= "(" . $rowData[$x]->Length . ")";
+            }
+            if($rowData[$x]->Attributes != "") {
+                $command .= " " . $rowData[$x]->Attributes;
+            }
+            if(!$rowData[$x]->Null) {
+                $command .= " NOT";
+            }
+            $command .= " NULL";
+            if($rowData[$x]->Default != "None") {
+                $command .= " DEFAULT " . $rowData[$x]->Default;
+            }
+            if($rowData[$x]->AutoIncrement) {
+                if (!$AutoIncrement) {
+                    $command .= " AUTO_INCREMENT";
+                    $AutoIncrement = true;
+                    if ($rowData[$x]->Index == "---") $ErrorMsg = "[Query Error]There can be only one auto column and it must be defined as a key.";
+                }
+                else $ErrorMsg = "[Query Error]There can be only one auto column and it must be defined as a key.";
+            }
+            if(str_replace(" ", "", $rowData[$x]->Comment) != "") {
+                $command .= " COMMENT '" . $rowData[$x]->Comment . "'";
+            }
+            if($rowData[$x]->Index != "---") {
+                switch ($rowData[$x]->Index) {
+                    case "PRIMARY": if($PrimaryKey == null) $PrimaryKey = $rowData[$x]->Name;
+                        break;
+                }
+            }
+
+            if ($x != (sizeof($rowData) - 1)) $command .= ", ";
         }
-        if($rowData[0]->Attributes != "") {
-            $command .= " " . $rowData[0]->Attributes;
+        if($PrimaryKey) {
+            $command .= ", PRIMARY KEY (`$PrimaryKey`)";
         }
-        if(!$rowData[0]->Null) {
-            $command .= " NOT";
-        }
-        $command .= " NULL";
-        if($rowData[0]->Default != "None") {
-            $command .= " DEFAULT " . $rowData[0]->Default;
-        }
-        if($rowData[0]->AutoIncrement) {
-            $command .= " AUTO_INCREMENT";
-        }
-        if(str_replace(" ", "", $rowData[0]->Comment) != "") {
-            $command .= " COMMENT '" . $rowData[0]->Comment . "'";
-        }
-        $command .= " ) ENGINE = InnoDB;";
+
+        $command .= ") ENGINE = InnoDB;";
         
-        try {
-            $User->Connect();
-            $query = $User->Connection->prepare($command);
-            $query->execute();
+        if ($ErrorMsg) {
+            print $ErrorMsg;
         }
-        catch (mysqli_sql_exception $e) {
-            print $e->getMessage();
+        else {
+            try {
+                $User->Connect();
+                $query = $User->Connection->prepare($command);
+                $query->execute();
+            }
+            catch (mysqli_sql_exception $e) {
+                print $e->getMessage();
+            }
         }
     }
 

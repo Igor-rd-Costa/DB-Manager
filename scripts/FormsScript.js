@@ -182,11 +182,8 @@ document.addEventListener('submit', (event) => {
                 Data[x].Null = Null;
                 Data[x].Data = EntryData;
             }
-
-            console.log(Data);
-
             if(ErrorMsg != "") {
-
+                alert(ErrorMsg);
             }
             else {
                 const jsonData = JSON.stringify(Data);
@@ -197,9 +194,8 @@ document.addEventListener('submit', (event) => {
                             alert(this.responseText);
                         }
                         else {
-                            
+                            LoadTable("", "main");
                         }
-                        
                     }
                 }
                 newEntryRequest.open('POST', 'http://localhost/BancodeDados/php/Async/AddEntry.php', true);
@@ -253,9 +249,8 @@ document.addEventListener('submit', (event) => {
                             alert(this.responseText);
                         }
                         else {
-                            window.location.href = "http://localhost/BancodeDados/pages/main.php";
+                            LoadTable("", "main")
                         }
-                        
                     }
                 }
                 newTableRequest.open('POST', 'http://localhost/BancodeDados/php/Async/CreateTable.php', true);

@@ -17,10 +17,10 @@ function BuildNewTableEntryInput($TableStructure, $ColumnName) {
         case "VARCHAR": {
             $Type = "type='text'";
             if ($Length <= 50) {
-                $Input["Element"] = "<input $Type maxlength='$Length' ></input>"; 
+                $Input["Element"] = "<input $Type maxlength='$Length' $Required></input>"; 
             }
-            else {                                                       //re-add $Required
-                $Input["Element"] = "<textarea maxlength='$Length' ></textarea>";
+            else {                                                       
+                $Input["Element"] = "<textarea maxlength='$Length' $Required></textarea>";
             }
         } break;
     }
@@ -37,7 +37,7 @@ $User = $_SESSION["User"];
 $Table = $User->Tables[$_SESSION["DisplayedTable"]];
 print 
 "<div id='default-menu'>
-    <div id='back-icon' backto='main'>
+    <div id='back-icon' backto='$_SESSION[DisplayedTable]'>
         <img class='back-arrow' src='http://localhost/BancodeDados/img/Arrow.png'></img>
     </div>
     <div id='title'> 

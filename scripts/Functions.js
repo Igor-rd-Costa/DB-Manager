@@ -79,7 +79,7 @@ function LoadTable(TableName, Origin)
         if(this.readyState == 4 && this.status == 200)
         {
             const Main = document.getElementById('tablewrapper');
-            Main.innerHTML = this.response;
+            Main.innerHTML = this.responseText;
             Main.className = "displayTable";
 
             document.getElementById('back-icon').setAttribute("backto", Origin);

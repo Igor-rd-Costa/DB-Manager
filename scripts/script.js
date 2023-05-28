@@ -80,12 +80,14 @@ document.addEventListener('DOMContentLoaded', () => {
             LoadTable(TargetTable.getAttribute("tablename"), "main");
         }
         if (Target.closest("#back-icon")) {
-                switch (Target.closest("#back-icon").getAttribute("backto"))
+                const Destination = Target.closest("#back-icon").getAttribute("backto");
+                switch (Destination)
             {
                 case "main": window.location.href = "http://localhost/BancodeDados/pages/main.php"; 
                     break;
                 case "table-list": LoadTableList();
                     break;
+                default: LoadTable(Destination, "main");
             }
         }
         if(Target.closest(".add-icon-wrapper")) {
@@ -130,6 +132,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     
+    })
+
+    TableWrapper.addEventListener('change', (event) => {
+        const Target = event.target;
+
+        if(Target.name == "Entry_AI" && Target.checked) {
+            const Row = Target.closest(".tableStructureRow");
+            Row.getElementsByClassName("Entry_Index")[0].selectedIndex = 1; //PRIMARY
+        }
+        if(Target.name == "Entry_Default") {
+            if (Target.selectedIndex == 1) { //NULL
+                const Row = Target.closest(".tableStructureRow");
+                Row.getElementsByClassName("Entry_Null")[0].checked = true;
+            }
+        }
+
     })
     
     //profile events
