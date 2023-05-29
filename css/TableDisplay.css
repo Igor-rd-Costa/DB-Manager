@@ -58,8 +58,41 @@ table#tabledisplay tr.tbl-header-row > th {
     border-right: 0.1rem solid var(--ContrastColor);
 }
 
+table#tabledisplay tr.tbl-header-row > th > img.commentIconImg {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    float: right;
+}
+
 table#tabledisplay td {
     padding: 0.1rem;
     padding-left: 0.2rem;
     border-right: 0.1rem solid var(--ContrastColor);
+}
+
+div#comment-box {
+    z-index: 2;
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-items: center;
+    padding: 0.5rem;
+    min-width: 10rem;
+    max-width: 20rem;
+    width: fit-content;
+    min-height: 2rem;
+    height: fit-content; 
+    background-color: var(--DefaultColor);
+    border: 0.1rem solid var(--ContrastColor);
+    border-radius: 0.625rem;
+    border-top-left-radius: 0rem;
+    color: var(--HighlightTextColor);
+}
+
+div#hover-test {
+    width: 16px;
+    height: 16px;
+    min-width: 0px; 
+    background-color: red;
 }

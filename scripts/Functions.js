@@ -79,7 +79,9 @@ function LoadTable(TableName, Origin)
         if(this.readyState == 4 && this.status == 200)
         {
             const Main = document.getElementById('tablewrapper');
-            Main.innerHTML = this.responseText;
+            let response = this.responseText.split("$@#$");
+            TableComments = JSON.parse(response[1]);
+            Main.innerHTML = response[0];
             Main.className = "displayTable";
 
             document.getElementById('back-icon').setAttribute("backto", Origin);

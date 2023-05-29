@@ -56,8 +56,7 @@ document.addEventListener('focusin', (event) => {
             Input.style.borderRight = "var(--DefaultBorderWidth) solid var(--ContrastColor)"; 
         }
     })    
-})
-
+    
 document.addEventListener('focusout', (event) => {
     const Target = event.target;
     const EntryFormRow = Target.closest(".newEntryRow");
@@ -154,6 +153,8 @@ document.addEventListener('submit', (event) => {
             for(x = 0; x < NumberOfColumns; x++) {
                 StructureTable.firstElementChild.appendChild(GenerateStructureTableRow());
             }
+            FormDiv.style = 'display:none';
+            document.body.style = 'pointer-events: all;';
                 
 
         } break;
@@ -259,4 +260,6 @@ document.addEventListener('submit', (event) => {
             }        
         } break;
     }
+})
+
 })

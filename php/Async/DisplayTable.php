@@ -35,9 +35,9 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
             <div id='back-icon' backto='main'>
                 <img class='back-arrow' src='http://localhost/BancodeDados/img/Arrow.png'></img>
             </div>
-            <div id='title'>" .
-                $Table->TableName . 
-            "</div>
+            <div id='title'>
+                $Table->TableName 
+            </div>
             <div id='tbl-options'>
                 <div class='circle' id='circle1'></div>
                 <div class='circle' id='circle2'></div>
@@ -50,7 +50,10 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
         </div>
         <div id='tbl-display-content'>";
         $Table->DisplayTable();
-    print "</div></div>";
+    print "</div></div>  $@#$";
+    print_r(json_encode($Table->ColumnComments));
+    
+
 }
 else header("location: http://localhost/BancodeDados/");
 ?>

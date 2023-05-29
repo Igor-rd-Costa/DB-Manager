@@ -52,7 +52,7 @@ window.addEventListener('resize', () => {
         }
     }
 })
-
+let TableComments;
 document.addEventListener('DOMContentLoaded', () => {
     let profileOptionsDisplay = false;
     const Header = document.getElementById("header");
@@ -130,8 +130,34 @@ document.addEventListener('DOMContentLoaded', () => {
             let table = Target.closest(".list-item-wrapper");
             LoadTable(table.getAttribute("tablename"), "table-list");
         }
+    })
 
-    
+    TableWrapper.addEventListener('mouseover', (event) => {
+        const Target = event.target;
+        const CommentIcon = Target.closest(".commentIconImg"); 
+        if (CommentIcon) {
+            const CommentBox = document.getElementById("comment-box");
+            let offSetX = CommentIcon.offsetLeft / 16;
+            let offSetY = CommentIcon.offsetTop / 16;
+            let TargetWidth = parseInt(getComputedStyle(CommentIcon).width) / 16;
+            let TargetHeight = parseInt(getComputedStyle(CommentIcon).height) / 16;
+            CommentBox.style.display = "grid";
+            CommentBox.style.left = (offSetX + TargetWidth) + "rem";
+            CommentBox.style.top = (offSetY + TargetHeight) + "rem";
+            const columnName = Target.closest(".tbl-header").firstElementChild.innerHTML;
+            CommentBox.innerHTML = "<span>" + TableComments[columnName] + "</span>";
+        }
+    })
+    TableWrapper.addEventListener('mouseout', (event) => {
+        const Target = event.target;
+        const CommentIcon = Target.closest(".commentIconImg"); 
+        if (CommentIcon) {
+            const CommentBox = document.getElementById("comment-box");
+            CommentBox.style.left = "";
+            CommentBox.style.display = "";
+            CommentBox.style.top = "";
+            CommentBox.innerHTML = "";
+        }
     })
 
     TableWrapper.addEventListener('change', (event) => {

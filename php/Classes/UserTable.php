@@ -7,10 +7,9 @@ public int $Rows;
 public $TableData;    //make private
 public $TableStructure; //make private
 public array $ColumnNames;
-public array $Test;
-public array $Test2;
+public array $ColumnComments;
 
-public function __construct($connection, string $table_name, int $index)
+public function __construct($connection, string $databaseName, string $table_name, int $index)
 {
     $this->Index = $index;
     $this->Rows = 0;
@@ -33,13 +32,17 @@ public function __construct($connection, string $table_name, int $index)
     }
     $ArrayKeys = $resultArray[0];
     $ArrayKeys = array_keys($ArrayKeys);
-    $this->Test = $resultArray;
     foreach ($resultArray as $result) {
         foreach ($ArrayKeys as $key) {
             $this->TableStructure[$result["Field"]][$key] = $result[$key];
         }
     }
     $this->ColumnNames = array_keys($this->TableStructure);
+
+    foreach ($this->ColumnNames as $ColumnName) {
+        $result = SQL_Query($connection, "SELECT COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$databaseName' AND TABLE_NAME = '$this->TableName' AND COLUMN_NAME = '$ColumnName';");
+        $this->ColumnComments[$ColumnName] = $result->fetch_row()[0];
+    }
 }
 
 public function Update($connection) {
@@ -59,16 +62,17 @@ public function Update($connection) {
     $getColumnInfo->execute();
     $result = $getColumnInfo->get_result();
     $resultArray = array();
-    $resultArray = $result->fetch_assoc();
-    $ArrayKeys = array_keys($resultArray);
-    $this->Test = $resultArray;
-    /* 
+    while($data = $result->fetch_assoc()) {
+        $resultArray[] = $data;
+    }
+    $ArrayKeys = $resultArray[0];
+    $ArrayKeys = array_keys($ArrayKeys);
     foreach ($resultArray as $result) {
         foreach ($ArrayKeys as $key) {
-            $this->TableColumns[$key][] = $result[$key];
+            $this->TableStructure[$result["Field"]][$key] = $result[$key];
         }
-    } */
-
+    }
+    $this->ColumnNames = array_keys($this->TableStructure);
 }
     
 public function DisplayTableCard()
@@ -99,7 +103,7 @@ public function DisplayTableListItem()
 
 public function DisplayTable()
 {
-    $totalFields = sizeof(array_keys($this->ColumnNames));
+    $totalFields = sizeof($this->ColumnNames);
     $fieldCount = 0;
     print 
     "<table id='tabledisplay'>
@@ -108,7 +112,11 @@ public function DisplayTable()
         $style = "";
         if($fieldCount == ($totalFields - 1)) $style = "style='border-right: none;'";
         print "<th class='tbl-header' $style>";
-        print $field . "</th>";
+        print "<span>$field</span>";
+        if ($this->ColumnComments[$field]) {
+            print "<img class='commentIconImg' src='http://localhost/BancodeDados/img/Comment.png'></img>";
+        }
+        print "</th>";
         $fieldCount++;
     }
     print "</tr>";

@@ -33,6 +33,9 @@ if(isset($_SESSION["DisplayedTable"])) {
     <title>DB Manager</title>
 </head>
 <body>
+    <div id='comment-box'>
+        <span>This is a comment</span>
+    </div>
     <div id="form">
         <div id="form-header">
             <div id="menu-title"></div>
@@ -59,7 +62,7 @@ if(isset($_SESSION["DisplayedTable"])) {
         <img id="user-img" src="../img/User.png" alt="Profile"/>
             <ul id="pr-options" class="options-ul">
                 <li id="pr-logout" class="options-li"><a href="http://localhost/BancodeDados/?logoutRequest=true">Logout</a></li>
-                <?php if ($User->Username == CONFIG_INFO::$AdminUsername) : ?>
+                <?php if (true /*$User->Username == CONFIG_INFO::$AdminUsername */) : ?>
                 <li class="options-li"><a href="http://localhost/BancodeDados/pages/test.php">Test Page</a></li>
                 <?php endif; ?>
             </ul>

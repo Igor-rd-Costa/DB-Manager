@@ -10,14 +10,14 @@ function SQL_Connect($Server, $User, $Password,  $table = null)
 }
 
 function SQL_Query($Connection, string $Query, array $Params = null, string $ParamTypes = "") {
-    $qry = $Connection->Prepare($Query);
-    if ($Params != null) {
-        for ($x = 0; $x < sizeof($Params); $x++) {
-            $qry->bind_param($ParamTypes[$x], $Params[$x]);
+        $qry = $Connection->Prepare($Query);
+        if ($Params != null) {
+            for ($x = 0; $x < sizeof($Params); $x++) {
+                $qry->bind_param($ParamTypes[$x], $Params[$x]);
+            }
         }
-    }
-    $qry->execute();
-    return $qry->get_result();
+        $qry->execute();
+        return $qry->get_result();
 }
 
 function STR_FirstToUpper($String)

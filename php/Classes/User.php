@@ -100,7 +100,7 @@ Class User extends Connection {
             $this->Tables = NULL;
             for($x = 0; $x < sizeof($tables); $x++)
             {
-                $this->Tables[$tables[$x]] = new Table($this->Connection, $tables[$x], $x);
+                $this->Tables[$tables[$x]] = new Table($this->Connection, $this->DatabaseName, $tables[$x], $x);
                 $this->Test[$x] = $this->Tables[$tables[$x]]->Index;
             }
     }

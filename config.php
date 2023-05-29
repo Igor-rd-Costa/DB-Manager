@@ -10,12 +10,12 @@ class CONFIG_INFO {
 }
 
 function CONFIG_InitialSetup() {
-   $ServerHostname = CONFIG_INFO::$ServerHostname;
-   $ServerUser = CONFIG_INFO::$ServerUser;
-   $ServerPassword = CONFIG_INFO::$ServerPassword;
-   $AdminUsername = CONFIG_INFO::$AdminUsername;
-   $AdminPassword = CONFIG_INFO::$AdminPassword;
-   $AdminDatabaseName = CONFIG_INFO::$AdminDatabaseName;
+    $ServerHostname = CONFIG_INFO::$ServerHostname;
+    $ServerUser = CONFIG_INFO::$ServerUser;
+    $ServerPassword = CONFIG_INFO::$ServerPassword;
+    $AdminUsername = CONFIG_INFO::$AdminUsername;
+    $AdminPassword = CONFIG_INFO::$AdminPassword;
+    $AdminDatabaseName = CONFIG_INFO::$AdminDatabaseName;
     
     $Connection = SQL_Connect($ServerHostname, $ServerUser, $ServerPassword);
     $salt = sprintf('$2y$%02d$', 10) . bin2hex(random_bytes(32));
