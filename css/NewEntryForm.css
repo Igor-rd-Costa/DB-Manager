@@ -81,15 +81,3 @@ table#add-entry-table {
 main.addEntryForm #newEntry {
     justify-self: end;
 }
-
-#entry-form-footer {
-    background-color: var(--DefaultColor);
-    height: 3.5rem;
-    border-top: calc(var(--DefaultBorderWidth) * 2) solid var(--BodyColor);
-    border-bottom-left-radius: 0.625rem;
-    border-bottom-right-radius: 0.625rem;
-    display: grid;
-    align-items: center;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-}

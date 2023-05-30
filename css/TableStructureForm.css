@@ -28,6 +28,7 @@ form#table-structure th {
 
 form#table-structure td {
     background-color: var(--DefaultColor);
+    text-align: center;
 }
 
 form#table-structure th, form#table-structure td {
@@ -35,21 +36,24 @@ form#table-structure th, form#table-structure td {
     border: 0.1rem solid var(--BodyColor);
 }
 
-form#table-structure td > * {
-    color: var(--BodyColor);
-}
-
 table#structure-table {
     width: 100%;
 }
 
 #structure-form-footer {
-    background-color: var(--DefaultColor);
-    height: 3.5rem;
-    border-top: calc(var(--DefaultBorderWidth) * 2) solid var(--BodyColor);
-    border-bottom-left-radius: 0.625rem;
-    border-bottom-right-radius: 0.625rem;
-    display: grid;
-    align-items: center;
-    padding-left: 0.5rem;
+    grid-template-columns: auto 10rem 1fr;
+    color: var(--HighlightTextColor);
+}
+
+#structure-form-footer > label {
+    width: 5.1rem;
+}
+
+#structure-form-footer > input {
+    padding-left: 0.4rem;
+    color: var(--HighlightTextColor);
+}
+
+#structure-form-footer button#create-table {
+    justify-self: end;
 }

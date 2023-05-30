@@ -38,7 +38,7 @@ $Table = $User->Tables[$_SESSION["DisplayedTable"]];
 print 
 "<div id='default-menu'>
     <div id='back-icon' backto='$_SESSION[DisplayedTable]'>
-        <img class='back-arrow' src='http://localhost/BancodeDados/img/Arrow.png'></img>
+        <img class='back-arrow' src='../img/Arrow.png'></img>
     </div>
     <div id='title'> 
         Add Entry

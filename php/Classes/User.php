@@ -104,4 +104,13 @@ Class User extends Connection {
                 $this->Test[$x] = $this->Tables[$tables[$x]]->Index;
             }
     }
+
+    public function CheckTableName(string $TableName) {
+        foreach($this->Tables as $Table) {
+            if($Table->TableName == $TableName) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

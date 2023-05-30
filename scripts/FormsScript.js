@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
 const FormDiv = document.getElementById("form");
 const LoginForm = document.getElementById("login");
 const RegisterForm = document.getElementById("register");
-const TableStructureForm = document.getElementById("table-structure");
 const FormHeaderTitle = document.getElementById("menu-title");
 
 
@@ -11,29 +10,45 @@ document.addEventListener('click', (event) => {
     const Target = event.target;
 
     const CloseForm = Target.closest("#close-menu");
-    
-
     if(CloseForm) {
         FormDiv.style = 'display:none';
         document.body.style = 'pointer-events: all;';
     }
+    if (Target.closest("#back-icon")) {
+        const Destination = Target.closest("#back-icon").getAttribute("backto");
+        switch (Destination)
+    {
+        case "main": window.location.href = "../pages/main.php"; 
+            break;
+        case "table-list": LoadTableList();
+            break;
+        case "login": {
+            document.getElementById("back-icon").style.display = "none";
+            FormHeaderTitle.innerHTML = "Login";
+            RegisterForm.style.display = "";
+            LoginForm.style.display = "grid";
+        } break;
+        default: LoadTable(Destination, "main");
+    }
+}
 })
 
 document.addEventListener('mousedown', (event) => {
     const Target = event.target;
-
     const SubmitButton = Target.closest(".submit");
-
     if(SubmitButton) {
         SubmitButton.style.borderBottomWidth = "0.1rem";
         SubmitButton.style.borderRightWidth = "0.1rem";
-        
         if(SubmitButton.id === "button-register") {
+            document.getElementById("back-icon").style.display = "grid";
             FormHeaderTitle.innerHTML = "Register";
             LoginForm.style.display = "none";
             RegisterForm.style.display = "grid";
+            SubmitButton.style.borderBottomWidth = "";
+            SubmitButton.style.borderRightWidth = "";
         }
     }
+
 })
 
 document.addEventListener('mouseup', (event) => {
@@ -45,17 +60,6 @@ document.addEventListener('mouseup', (event) => {
         SubmitButton.style.borderRightWidth = "";
     }
 })
-
-document.addEventListener('focusin', (event) => {
-    const target = event.target;
-
-    const Input = target.closest(".form-input");
-    
-    if(Input) {
-            Input.style.borderBottom = "var(--DefaultBorderWidth) solid var(--ContrastColor)";
-            Input.style.borderRight = "var(--DefaultBorderWidth) solid var(--ContrastColor)"; 
-        }
-    })    
     
 document.addEventListener('focusout', (event) => {
     const Target = event.target;
@@ -72,14 +76,6 @@ document.addEventListener('focusout', (event) => {
             }
         }
         
-    }
-
-
-    const Input = Target.closest(".form-input");
-    
-    if(Input) {
-        Input.style.borderBottomColor = "transparent";
-        Input.style.borderRightColor = "transparent";
     }
 })    
 
@@ -133,18 +129,7 @@ document.addEventListener('submit', (event) => {
                 break;
             }
 
-            let checkTableName = new XMLHttpRequest();
-            checkTableName.onreadystatechange=function(){
-                if(this.readyState == 4 && this.status == 200) {
-                    if(!this.responseText) 
-                        LoadTableStructureForm(tablename, NumberOfColumns);
-                    else 
-                        alert(this.responseText);
-                }
-            }
-            checkTableName.open('POST', 'http://localhost/BancodeDados/php/Async/CheckTableName.php', true);
-            checkTableName.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            checkTableName.send('TableName=' + tablename);    
+            LoadTableStructureForm(tablename, NumberOfColumns);
         } break;
         case "add-columns": {
             const NumberOfColumns = document.getElementById("columns").value;
@@ -199,7 +184,7 @@ document.addEventListener('submit', (event) => {
                         }
                     }
                 }
-                newEntryRequest.open('POST', 'http://localhost/BancodeDados/php/Async/AddEntry.php', true);
+                newEntryRequest.open('POST', '../php/Async/AddEntry.php', true);
                 newEntryRequest.setRequestHeader('Content-Type', 'application/json');
                 newEntryRequest.send(jsonData);
             }
@@ -242,8 +227,11 @@ document.addEventListener('submit', (event) => {
                 alert(ErrorMsg);
             }
             else {
+                let TableName = document.getElementById("Table_Name").value;
                 let jsonData = JSON.stringify(Data);
                 let newTableRequest = new XMLHttpRequest();
+                jsonData = '{"Data": ' + jsonData + ', "TableName": "' + TableName + '"}';
+                console.log(jsonData);
                 newTableRequest.onreadystatechange=function(){
                     if(this.readyState == 4 && this.status == 200) {
                         if(this.responseText) {
@@ -254,7 +242,7 @@ document.addEventListener('submit', (event) => {
                         }
                     }
                 }
-                newTableRequest.open('POST', 'http://localhost/BancodeDados/php/Async/CreateTable.php', true);
+                newTableRequest.open('POST', '../php/Async/CreateTable.php', true);
                 newTableRequest.setRequestHeader('Content-Type', 'application/json');
                 newTableRequest.send(jsonData);
             }        

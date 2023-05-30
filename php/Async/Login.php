@@ -9,6 +9,6 @@ if(isset($_POST["usernameLogin"], $_POST["passwordLogin"])) {
     }
 }
 else {
-    header('Location: http://localhost/BancodeDados/');
+    header('Location: ../../pages/main.php');
 }
 ?>

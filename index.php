@@ -22,20 +22,21 @@ if(isset($_GET['logoutRequest']))
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/Index.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/Forms.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/LoginForm.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/RegisterForm.css"/>
+    <meta name="viewport" content="width=device-width, initial-'scale=1.0"/>
+    <link rel="stylesheet" href="css/Index.css"/>
+    <link rel="stylesheet" href="css/Forms.css"/>
+    <link rel="stylesheet" href="css/LoginForm.css"/>
+    <link rel="stylesheet" href="css/RegisterForm.css"/>
     <link rel="php" href="login.php"/>
-    <script src="http://localhost/BancodeDados/scripts/Functions.js"></script>
-    <script src="http://localhost/BancodeDados/scripts/IndexScript.js"></script>
-    <script src="http://localhost/BancodeDados/scripts/FormsScript.js"></script>
+    <script src="scripts/Functions.js"></script>
+    <script src="scripts/IndexScript.js"></script>
+    <script src="scripts/FormsScript.js"></script>
     <title>DB Manager</title>
 </head>
 <body>
 <div id="form">
         <div id="form-header">
+            <div id="back-icon" backto="login"><img class='back-arrow' src='img/Arrow.png'></img></div>
             <div id="menu-title">Login</div>
             <div id="close-menu">X</div>
         </div>
@@ -69,7 +70,7 @@ if(isset($_GET['logoutRequest']))
 </div>
 <header id="header">
         <div id="loginwrapper">
-            <img id="login-img" src="http://localhost/BancodeDados/img/User.png" alt="Login"/>
+            <img id="login-img" src="img/User.png" alt="Login"/>
         </div>
 </header>
 <main>

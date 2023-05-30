@@ -11,5 +11,5 @@ if(isset($_POST["REG_FirstName"], $_POST["REG_LastName"], $_POST["REG_Email"], $
         print $REG_Request->RegisterError;
     }
 }
-else header('location: http://localhost/BancodeDados/');
+else header('location: ../../pages/main.php');
     ?>

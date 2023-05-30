@@ -31,16 +31,21 @@
 
     $inputData = file_get_contents("php://input");
     $Data = json_decode($inputData, true);
+
+    if($User->CheckTableName($Data["TableName"])) {
+        print "A table with this name already exists in your database!";
+        return;
+    }
     
     $rowData = array();
-    for ($x = 0; $x < sizeof($Data); $x++) {
-        $Entry = $Data[$x];
+    for ($x = 0; $x < sizeof($Data["Data"]); $x++) {
+        $Entry = $Data["Data"][$x];
         if ($Entry["Length"] == "") {
             $Entry["Length"] = 0;
         }
         $rowData[$x] = new StructureRowData($Entry["Name"], $Entry["Type"], $Entry["Length"], $Entry["Default"], $Entry["Attributes"], $Entry["Null"], $Entry["Index"], $Entry["AutoIncrement"], $Entry["Comment"]);
     }
-
+    $_SESSION['CreateTableName'] = $Data["TableName"];
     if(isset($_SESSION['CreateTableName'])) {
         $command = "CREATE TABLE `$User->DatabaseName`.`". $_SESSION['CreateTableName'] . "` (";
         $ErrorMsg = null;

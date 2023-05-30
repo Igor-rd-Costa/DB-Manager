@@ -27,7 +27,7 @@
     box-sizing: border-box;
 }
 
-input {
+input, select, textarea {
     outline: none;
 }
 
@@ -99,19 +99,6 @@ div#default-menu > :first-child {
 
 div#default-menu > div:last-of-type {
     border-top-right-radius: 0.625rem;
-}
-
-div#default-menu > #back-icon {
-    width: 2rem;
-    height: 2rem;
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-div#default-menu > #back-icon:hover {
-    background-color: var(--SelectColor);
 }
 
 div#default-menu > * > img {
@@ -194,13 +181,16 @@ div#default-menu > #tbl-options:hover {
     text-align: right;
     padding-right: 0.5rem;
     color: var(--TextColor);
-    cursor: pointer;
 }
 
 .options-li:hover {
     background-color: var(--SelectColor);
-    color: var(--HighlightTextColor);
+}
+
+.options-li > *:hover {
+    cursor: pointer;
     text-decoration: underline var(--ContrastColor);
+    color: var(--HighlightTextColor);
 }
 
 .options-li:first-child {

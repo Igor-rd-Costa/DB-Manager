@@ -114,7 +114,7 @@ public function DisplayTable()
         print "<th class='tbl-header' $style>";
         print "<span>$field</span>";
         if ($this->ColumnComments[$field]) {
-            print "<img class='commentIconImg' src='http://localhost/BancodeDados/img/Comment.png'></img>";
+            print "<img class='commentIconImg' src='../img/Comment.png'></img>";
         }
         print "</th>";
         $fieldCount++;

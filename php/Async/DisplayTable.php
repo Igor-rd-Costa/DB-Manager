@@ -33,7 +33,7 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
     "<div id='table-display-wrapper'>
     <div id='default-menu'>
             <div id='back-icon' backto='main'>
-                <img class='back-arrow' src='http://localhost/BancodeDados/img/Arrow.png'></img>
+                <img class='back-arrow' src='../img/Arrow.png'></img>
             </div>
             <div id='title'>
                 $Table->TableName 
@@ -44,8 +44,8 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
                 <div class='circle' id='circle3'></div>
             </div>
             <ul id='tbl-option-list' class='options-ul'>
-                <li class='options-li' id='tbl-new-entry'>New Entry</li>
-                <li class='options-li' id='tbl-add-column'>Add Column</li>
+                <li class='options-li' id='tbl-new-entry'><span>New Entry</span></li>
+                <li class='options-li' id='tbl-add-column'><span>Add Column</span></li>
             </ul>
         </div>
         <div id='tbl-display-content'>";
@@ -55,5 +55,5 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
     
 
 }
-else header("location: http://localhost/BancodeDados/");
+else header("location: ../../pages/main.php");
 ?>

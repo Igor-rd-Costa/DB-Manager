@@ -5,7 +5,7 @@ include_once "../Config.php";
 session_start(); 
 if(!$User = $_SESSION['User'])
 {
-    header('Location: http://localhost/BancodeDados/');
+    header('Location: ../');
 } 
 $User->Connect();
 $User->FetchTables();
@@ -19,17 +19,17 @@ if(isset($_SESSION["DisplayedTable"])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/Forms.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/CreateTableForm.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/TableStructureForm.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/AddColumnForm.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/Main.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/TableList.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/TableDisplay.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/NewEntryForm.css"/>
-    <script src="http://localhost/BancodeDados/scripts/functions.js"></script>
-    <script src="http://localhost/BancodeDados/scripts/script.js"></script>
-    <script src="http://localhost/BancodeDados/scripts/FormsScript.js"></script>
+    <link rel="stylesheet" href="../css/Forms.css"/>
+    <link rel="stylesheet" href="../css/CreateTableForm.css"/>
+    <link rel="stylesheet" href="../css/TableStructureForm.css"/>
+    <link rel="stylesheet" href="../css/AddColumnForm.css"/>
+    <link rel="stylesheet" href="../css/Main.css"/>
+    <link rel="stylesheet" href="../css/TableList.css"/>
+    <link rel="stylesheet" href="../css/TableDisplay.css"/>
+    <link rel="stylesheet" href="../css/NewEntryForm.css"/>
+    <script src="../scripts/functions.js"></script>
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/FormsScript.js"></script>
     <title>DB Manager</title>
 </head>
 <body>
@@ -61,9 +61,9 @@ if(isset($_SESSION["DisplayedTable"])) {
         <span id="username"><?php print $User->Username;?></span>
         <img id="user-img" src="../img/User.png" alt="Profile"/>
             <ul id="pr-options" class="options-ul">
-                <li id="pr-logout" class="options-li"><a href="http://localhost/BancodeDados/?logoutRequest=true">Logout</a></li>
-                <?php if (true /*$User->Username == CONFIG_INFO::$AdminUsername */) : ?>
-                <li class="options-li"><a href="http://localhost/BancodeDados/pages/test.php">Test Page</a></li>
+                <li id="pr-logout" class="options-li"><a href="../?logoutRequest=true">Logout</a></li>
+                <?php if ($User->Username == CONFIG_INFO::$AdminUsername) : ?>
+                <li class="options-li"><a href="test.php">Test Page</a></li>
                 <?php endif; ?>
             </ul>
     </div>

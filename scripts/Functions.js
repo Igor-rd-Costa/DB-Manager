@@ -67,7 +67,7 @@ function LoadTableList()
             }
         }
     }
-    LoadTableListRequest.open('POST', 'http://localhost/BancodeDados/php/Async/LoadTableList.php', true);
+    LoadTableListRequest.open('POST', '../php/Async/LoadTableList.php', true);
     LoadTableListRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     LoadTableListRequest.send("LoadTables=true");
 }
@@ -87,7 +87,7 @@ function LoadTable(TableName, Origin)
             document.getElementById('back-icon').setAttribute("backto", Origin);
         }
     }
-    LoadTableRequest.open('POST', 'http://localhost/BancodeDados/php/Async/DisplayTable.php', true);
+    LoadTableRequest.open('POST', '../php/Async/DisplayTable.php', true);
     LoadTableRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     LoadTableRequest.send('TableName=' + TableName);
 }
@@ -98,17 +98,23 @@ function LoadTableStructureForm(TableName, NumberOfColumns)
     tblStructureFormRequest.onreadystatechange=function(){
         if(this.readyState == 4 && this.status == 200)
         {
-            const Main = document.getElementById('tablewrapper');
-            document.getElementById("form").style = "display: none;";
-            
-            document.body.style = "pointer-events: all;";
-            Main.innerHTML = this.response;
-            Main.className = "tableStructureForm";
-            
-            ResizeForm("table-structure");
+            if(this.responseText.includes("[Request Error]")) {
+                alert(this.responseText.split("[Request Error]")[1]);
+            }
+            else {
+                const Main = document.getElementById('tablewrapper');
+                document.getElementById("form").style = "display: none;";
+                
+                document.body.style = "pointer-events: all;";
+                Main.innerHTML = this.response;
+                Main.className = "tableStructureForm";
+                document.getElementById("Table_Name").value = TableName;
+                
+                ResizeForm("table-structure");
+            }
         }
     }
-    tblStructureFormRequest.open('POST', 'http://localhost/BancodeDados/php/Async/TableStructureForm.php', true);
+    tblStructureFormRequest.open('POST', '../php/Async/TableStructureForm.php', true);
     tblStructureFormRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     tblStructureFormRequest.send('TableName=' + TableName + '&NumberOfColumns=' + NumberOfColumns);
 }
@@ -120,12 +126,13 @@ function LoadTableEntryForm() {
         if(this.readyState === 4 && this.status === 200) {
             const Main = document.getElementById("tablewrapper");
             Main.innerHTML = this.responseText;
+            Main.style = "";
             Main.className = "addEntryForm";
 
             ResizeForm("add-entry");
         }
     }
-    TableEntryRequest.open('POST', 'http://localhost/BancodeDados/php/Async/AddEntryForm.php', true);
+    TableEntryRequest.open('POST', '../php/Async/AddEntryForm.php', true);
     TableEntryRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     TableEntryRequest.send();
 }
@@ -173,11 +180,11 @@ function REQUEST_Login(username, password)
             else
             {
                 document.getElementById("error-msg").innerHTML = "";
-                window.location.href = "http://localhost/BancodeDados/pages/main.php";
+                window.location.href = "pages/main.php";
             }
         }
     }
-    loginRequest.open('POST', 'http://localhost/BancodeDados/php/Async/Login.php', true);
+    loginRequest.open('POST', 'php/Async/Login.php', true);
     loginRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     loginRequest.send('usernameLogin=' + username + '&passwordLogin=' + password);
 }
@@ -195,11 +202,11 @@ function REQUEST_Register(firstname, lastname, email, username, password)
             else
             {
                 document.getElementById("reg-error-msg").innerHTML = "";
-                window.location.href = "http://localhost/BancodeDados/pages/main.php";
+                window.location.href = "pages/main.php";
             }
         }
     }
-    registerRequest.open('POST', 'http://localhost/BancodeDados/php/Async/Register.php', true);
+    registerRequest.open('POST', 'php/Async/Register.php', true);
     registerRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     registerRequest.send('REG_FirstName=' + firstname + '&REG_LastName=' + lastname + '&REG_Email=' + email + '&REG_Username=' + username + '&REG_Password=' + password);
 }

@@ -1,17 +1,23 @@
 <?php
-if(isset($_POST['TableName'], $_POST['NumberOfColumns'])) {
+include_once "../Classes/User.php";
+
+if(isset($_POST['NumberOfColumns'])) {
 session_start();
-$_SESSION['CreateTableName'] = $_POST['TableName'];
+$User = $_SESSION["User"];
+if($User->CheckTableName($_POST['TableName'])) {
+    print "[Request Error] A table with this name already exists in your database!";
+    return;
+}
 print 
 "<div id='default-menu'>
         <div id='back-icon' backto='main'>
-            <img class='back-arrow' src='http://localhost/BancodeDados/img/Arrow.png'></img>
+            <img class='back-arrow' src='../img/Arrow.png'></img>
         </div>
         <div id='title'> 
             Column Structure
         </div>
         <div class='add-icon-wrapper' id='add-columns'>
-            <img class='add-icon' src='http://localhost/BancodeDados/img/Add.png'></img>
+            <img class='add-icon' src='../img/Add.png'></img>
         </div>
 </div>
 <div id='structure-form-wrapper'>
@@ -43,7 +49,7 @@ print
         </select>
     </td>
     <td>
-        <input name='Entry_LenVal' class='tbl-str-field Entry_LenVal' type='number'/>
+        <input name='Entry_LenVal' class='tbl-str-field Entry_LenVal' type='text'/>
     </td>
     <td>
         <select name='Entry_Default' class='tbl-str-field Entry_Default'>
@@ -80,11 +86,13 @@ print
 "</table>
     </div>
         <div id='structure-form-footer' class='form-footer'>
+            <label for='Table_Name'>Table Name</label>
+            <input name='Table_Name' id='Table_Name'></input>
             <button type='submit' id='create-table' class='submit form-button'>Submit</button>
         </div>
     </form>
     </div>
 </div>";
 }
-else header('location: http://localhost/BancodeDados');
+else header('location: ../../pages/main.php');
 ?>

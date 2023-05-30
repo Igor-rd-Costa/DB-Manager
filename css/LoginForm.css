@@ -18,7 +18,15 @@ form#login > input {
     grid-column: 1/3;
     width: 20rem;
     text-align: center;
+    border: 0.2rem solid var(--BodyColor);
+    border-top: 0rem solid var(--BodyColor);
+    border-left: 0rem solid var(--BodyColor);
 
+}
+
+.form-input:focus {
+    border-bottom: 0.2rem solid var(--ContrastColor) !important;
+    border-right: 0.2rem solid var(--ContrastColor) !important;
 }
 
 form#login > p#error-wrapper {

@@ -12,15 +12,15 @@ $User->FetchTables();
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/Main.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/Forms.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/NewEntryForm.css"/>
-    <link rel="stylesheet" href="http://localhost/BancodeDados/css/TableDisplay.css"/>
-    <script src="http://localhost/BancodeDados/scripts/functions.js"></script>
-    <script src="http://localhost/BancodeDados/scripts/script.js"></script>
-    <script src="http://localhost/BancodeDados/scripts/FormsScript.js"></script>
+    <link rel="stylesheet" href="../css/Main.css"/>
+    <link rel="stylesheet" href="../css/Forms.css"/>
+    <link rel="stylesheet" href="../css/NewEntryForm.css"/>
+    <link rel="stylesheet" href="../css/TableDisplay.css"/>
+    <script src="../scripts/functions.js"></script>
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/FormsScript.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Test Page</title>
     <style>
         .testPage {
             grid-template-columns: 1fr;
@@ -47,23 +47,13 @@ $User->FetchTables();
 <section id="side-menu">
 </section>
 <main id="tablewrapper" class="displayTable">
-<!-- <div id='default-menu'>
-    <div id='back-icon' backto='main'>
-        <img class='back-arrow' src='http://localhost/BancodeDados/img/Arrow.png'></img>
-    </div>
-    <div id='title'> 
-        Add Entry
-    </div>
-</div>
-<div id='test-wrapper'>
-</div> -->
 <?php
-/* $Table = $User->Tables["ztest"];
+$Table = $User->Tables["ztest"];
 print
     "<div id='table-display-wrapper'>
     <div id='default-menu'>
             <div id='back-icon' backto='main'>
-                <img class='back-arrow' src='http://localhost/BancodeDados/img/Arrow.png'></img>
+                <img class='back-arrow' src='../img/Arrow.png'></img>
             </div>
             <div id='title'>
                 $Table->TableName 
@@ -80,10 +70,8 @@ print
         </div>
         <div id='tbl-display-content'>";
         $Table->DisplayTable();
-print "</div></div>"; */
+print "</div></div>";
 ?>
-<div id='hover-test'>
-</div>
 </main>
 </body>
 </html>

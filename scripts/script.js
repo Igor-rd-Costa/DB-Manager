@@ -79,17 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (TargetTable && TargetTable != AddTableElement && TargetTable != ShowTableList) { //Show chosen table 
             LoadTable(TargetTable.getAttribute("tablename"), "main");
         }
-        if (Target.closest("#back-icon")) {
-                const Destination = Target.closest("#back-icon").getAttribute("backto");
-                switch (Destination)
-            {
-                case "main": window.location.href = "http://localhost/BancodeDados/pages/main.php"; 
-                    break;
-                case "table-list": LoadTableList();
-                    break;
-                default: LoadTable(Destination, "main");
-            }
-        }
         if(Target.closest(".add-icon-wrapper")) {
             switch (Target.closest(".add-icon-wrapper").getAttribute("id"))
             {
