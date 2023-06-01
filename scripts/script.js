@@ -35,7 +35,6 @@ class ColumnEntryRequest
 }
 
 window.addEventListener('resize', () => {
-    const Main = document.getElementById("tablewrapper");
     const ListWrapper = document.getElementById("list-wrapper");
     ResizeForm("table-structure");
     ResizeForm("add-entry");
@@ -70,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('menu-title').innerHTML = "Create Table";
             document.getElementById("form").style.display = "block";
             document.getElementById("form").style.height = "fit-content";
-            document.getElementById("create-table").style.display = "";
-            document.getElementById("add-columns").style.display = "none";
+            document.getElementById("create-table").style.display = "grid";
+            document.getElementById("add-columns").style.display = "";
         }
         if (ShowTableList && TargetTable === ShowTableList) { // Show list with all the user's tables
             LoadTableList();
@@ -89,8 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('menu-title').innerHTML = "Create Table";
                     document.getElementById("form").style.display = "block";
                     document.getElementById("form").style.height = "fit-content";
+                    document.getElementById("add-columns").style.display = "";
+                    document.getElementById("insert-columns").style.display = "";
                     document.getElementById("create-table").style.display = "grid";
-                    document.getElementById("add-columns").style.display = "none";
                 } break;
                 case "add-columns": {
                     document.body.style = 'pointer-events: none';
@@ -99,7 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('menu-title').innerHTML = "Add Columns";
                     document.getElementById("form").style.display = "block";
                     document.getElementById("form").style.height = "fit-content";
-                    document.getElementById("create-table").style.display = "none";
+                    document.getElementById("create-table").style.display = "";
+                    document.getElementById("insert-columns").style.display = "";
                     document.getElementById("add-columns").style.display = "grid";
                 } break;
             }
@@ -107,12 +108,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if(Target.closest(".options-li")) {
             const Option = Target.closest(".options-li");
             switch (Option.id) {
-                case "tbl-new-entry": { LoadTableEntryForm();
+                case "tbl-new-entry": { 
+                    LoadTableEntryForm();
                 } break;
-                case "tbl-add-column": {
-                    console.log("Add Column");
+                case "tbl-add-column": { 
+                    document.body.style = 'pointer-events: none';
+                    document.getElementById('pr-options').style.display = "none";
+                    document.getElementById('tbl-option-list').style.display = "none";
+                    profileOptionsDisplay = false;
+                    document.getElementById('menu-title').innerHTML = "Insert Column"; 
+                    document.getElementById("form").style.display = "block";
+                    document.getElementById("form").style.height = "fit-content";
+                    document.getElementById("create-table").style.display = "";
+                    document.getElementById("add-columns").style.display = "";
+                    document.getElementById("insert-columns").style.display = "grid";
+
+                    const TableHeaders = document.getElementsByClassName("tbl-header-row")[0].children;
+                    let ColumnNames = [];
+                    for (let x = 0; x < TableHeaders.length; x++) {
+                        ColumnNames[x] = TableHeaders[x].querySelector("span").innerHTML;
+                    }
+                    let OptionElement;
+                    document.getElementById("table-columns").innerHTML = "";
+                    ColumnNames.forEach(name => {
+                        OptionElement = document.createElement("option");
+                        OptionElement.innerHTML = name;
+                        document.getElementById("table-columns").appendChild(OptionElement);
+                    })
                 } break;
-            }
+            } 
         }
         if (Target.closest(".list-item-wrapper"))
         {
@@ -133,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             CommentBox.style.display = "grid";
             CommentBox.style.left = (offSetX + TargetWidth) + "rem";
             CommentBox.style.top = (offSetY + TargetHeight) + "rem";
-            const columnName = Target.closest(".tbl-header").firstElementChild.innerHTML;
+            const columnName = Target.closest(".tbl-header").querySelector("span").innerHTML;
             CommentBox.innerHTML = "<span>" + TableComments[columnName] + "</span>";
         }
     })
@@ -142,10 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const CommentIcon = Target.closest(".commentIconImg"); 
         if (CommentIcon) {
             const CommentBox = document.getElementById("comment-box");
-            CommentBox.style.left = "";
             CommentBox.style.display = "";
-            CommentBox.style.top = "";
             CommentBox.innerHTML = "";
+            CommentBox.style.top = "";
+            CommentBox.style.left = "";
         }
     })
 
@@ -157,11 +181,16 @@ document.addEventListener('DOMContentLoaded', () => {
             Row.getElementsByClassName("Entry_Index")[0].selectedIndex = 1; //PRIMARY
         }
         if(Target.name == "Entry_Default") {
+            console.log(Target.selectedIndex);
             if (Target.selectedIndex == 1) { //NULL
                 const Row = Target.closest(".tableStructureRow");
                 Row.getElementsByClassName("Entry_Null")[0].checked = true;
             }
         }
+        if(Target.name == "columnInsertOption") {
+            console.log(Target);
+        }
+
 
     })
     

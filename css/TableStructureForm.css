@@ -54,6 +54,7 @@ table#structure-table {
     color: var(--HighlightTextColor);
 }
 
-#structure-form-footer button#create-table {
+#structure-form-footer button {
+    grid-column: 3;
     justify-self: end;
 }

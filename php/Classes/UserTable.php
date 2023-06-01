@@ -109,12 +109,15 @@ public function DisplayTable()
     "<table id='tabledisplay'>
         <tr class='tbl-header-row'>";
     foreach ($this->ColumnNames as $field) {
-        $style = "";
-        if($fieldCount == ($totalFields - 1)) $style = "style='border-right: none;'";
-        print "<th class='tbl-header' $style>";
-        print "<span>$field</span>";
+        $thstyle = "";
+        $spanStyle = "";
+        if($fieldCount == ($totalFields - 1)) $thstyle = "style='border-right: none;'";
+        if(!$this->ColumnComments[$field]) $spanStyle = "style='grid-column: 1 / 3;'";
+
+        print "<th class='tbl-header' $thstyle>";
+        print "<div><span $spanStyle>$field</span>";
         if ($this->ColumnComments[$field]) {
-            print "<img class='commentIconImg' src='../img/Comment.png'></img>";
+            print "<img class='commentIconImg' src='../img/Comment.png'></img></div>";
         }
         print "</th>";
         $fieldCount++;

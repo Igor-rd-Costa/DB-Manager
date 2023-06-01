@@ -4,22 +4,36 @@ include_once "../Classes/User.php";
 if(isset($_POST['NumberOfColumns'])) {
 session_start();
 $User = $_SESSION["User"];
-if($User->CheckTableName($_POST['TableName'])) {
-    print "[Request Error] A table with this name already exists in your database!";
-    return;
+$BackTo = "";
+if(isset($_POST["TableName"])) {
+    if($User->CheckTableName($_POST['TableName'])) {
+        print "[Request Error] A table with this name already exists in your database!";
+        return;
+    }
+    $BackTo = "main";
 }
-print 
+if(isset($_POST["InsertOption"], $_POST["ColumnName"])) {
+    $_SESSION["InsertColumn"]["InsertOption"] = $_POST["InsertOption"];
+    $_SESSION["InsertColumn"]["ColumnName"] = $_POST["ColumnName"];
+}
+if(isset($_SESSION["DisplayedTable"])) $BackTo = $_SESSION["DisplayedTable"];
+if($_POST["NumberOfColumns"] < 1) $_POST["NumberOfColumns"] = 1;
+
+print
 "<div id='default-menu'>
-        <div id='back-icon' backto='main'>
+        <div id='back-icon' backto='$BackTo'>
             <img class='back-arrow' src='../img/Arrow.png'></img>
         </div>
         <div id='title'> 
             Column Structure
-        </div>
-        <div class='add-icon-wrapper' id='add-columns'>
+        </div>";
+if(isset($_POST["TableName"])) {
+print   "<div class='add-icon-wrapper' id='add-columns'>
             <img class='add-icon' src='../img/Add.png'></img>
-        </div>
-</div>
+        </div>";
+}
+print
+"</div>
 <div id='structure-form-wrapper'>
     <form id='table-structure' method='post'>
         <div id='table-wrapper' style='overflow: scroll;'>
@@ -82,13 +96,19 @@ print
     </td>
 </tr>";
 }
+if(isset($_POST["TableName"])) $ButtonID = "create-table";
+else if (isset($_SESSION["DisplayedTable"])) $ButtonID = "insert-column";
 print 
 "</table>
     </div>
-        <div id='structure-form-footer' class='form-footer'>
-            <label for='Table_Name'>Table Name</label>
-            <input name='Table_Name' id='Table_Name'></input>
-            <button type='submit' id='create-table' class='submit form-button'>Submit</button>
+        <div id='structure-form-footer' class='form-footer'>";
+        if(isset($_POST["TableName"])) {
+            print
+            "<label for='Table_Name'>Table Name</label>
+            <input name='Table_Name' id='Table_Name'></input>";
+        }
+        print
+            "<button type='submit' id='$ButtonID' class='submit form-button'>Submit</button>
         </div>
     </form>
     </div>

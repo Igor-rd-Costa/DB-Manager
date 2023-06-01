@@ -27,6 +27,7 @@ if(isset($_SESSION["DisplayedTable"])) {
     <link rel="stylesheet" href="../css/TableList.css"/>
     <link rel="stylesheet" href="../css/TableDisplay.css"/>
     <link rel="stylesheet" href="../css/NewEntryForm.css"/>
+    <link rel="stylesheet" href="../css/InsertColumnForm.css"/>
     <script src="../scripts/functions.js"></script>
     <script src="../scripts/script.js"></script>
     <script src="../scripts/FormsScript.js"></script>
@@ -53,6 +54,18 @@ if(isset($_SESSION["DisplayedTable"])) {
             <label for="columns">Number of columns</label>
             <input type="number" name="columns" id="columns" required=""/>
             <button type="submit" class="submit create form-button">Add</button>
+        </form>
+        <form id="insert-columns" method="post">
+            <span>Insert</span>
+            <input id="amount-of-columns" type="number"></input>
+            <span>Columns</span>
+            <select id="insert-option">
+                <option>Last</option>
+                <option>First</option>
+                <option>After:</option>
+            </select>
+            <select id="table-columns" disabled></select>
+            <button type="submit" class="submit form-button" id="insert-column-button">Go</button>
         </form>
         </div>
     </div>

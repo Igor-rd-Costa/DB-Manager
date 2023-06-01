@@ -1,0 +1,35 @@
+form#insert-columns {
+    grid-template-columns: auto auto auto auto auto auto;
+    padding: 0.5rem;
+    column-gap: 0.5rem;
+    align-items: center;
+}
+
+form#insert-columns > span {
+    padding-left: 0.3rem;
+    font-size: 1.2rem;
+    color: var(--HighlightTextColor);
+}
+
+form#insert-columns > select {
+    color: var(--HighlightTextColor);
+    padding-left: 0.2rem;
+    
+}
+
+form#insert-columns > input {
+    width: 4rem;
+}
+
+#table-columns {
+    min-width: 7rem;
+}
+
+form#insert-columns > select:disabled {
+    color: var(--TextColor);
+}
+
+#insert-column-button {
+    width: 4rem;
+    justify-self: end;
+}

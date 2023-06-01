@@ -92,8 +92,14 @@ function LoadTable(TableName, Origin)
     LoadTableRequest.send('TableName=' + TableName);
 }
 
-function LoadTableStructureForm(TableName, NumberOfColumns)
+function LoadTableStructureForm(TargetName, NumberOfColumns, Mode, InsertOption = "")
 {
+    // TargetName = Name of the Table or Column, depending on Mode
+    // Mode 0 = Structure Form for a new table, 1 = Structure Form to add columns to an existing table
+    if (Mode === 1){
+        TargetName = document.getElementById("table-columns").value;
+    }
+    
     let tblStructureFormRequest = new XMLHttpRequest();
     tblStructureFormRequest.onreadystatechange=function(){
         if(this.readyState == 4 && this.status == 200)
@@ -108,7 +114,9 @@ function LoadTableStructureForm(TableName, NumberOfColumns)
                 document.body.style = "pointer-events: all;";
                 Main.innerHTML = this.response;
                 Main.className = "tableStructureForm";
-                document.getElementById("Table_Name").value = TableName;
+                if(Mode === 0) {
+                    document.getElementById("Table_Name").value = TargetName;
+                }
                 
                 ResizeForm("table-structure");
             }
@@ -116,7 +124,12 @@ function LoadTableStructureForm(TableName, NumberOfColumns)
     }
     tblStructureFormRequest.open('POST', '../php/Async/TableStructureForm.php', true);
     tblStructureFormRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    tblStructureFormRequest.send('TableName=' + TableName + '&NumberOfColumns=' + NumberOfColumns);
+    if (Mode === 0) { // Create new table
+        tblStructureFormRequest.send('TableName=' + TargetName + '&NumberOfColumns=' + NumberOfColumns);
+    }
+    if (Mode === 1) { // Insert Column
+        tblStructureFormRequest.send('NumberOfColumns=' + NumberOfColumns + "&InsertOption=" + InsertOption + "&ColumnName=" + TargetName);
+    }
 }
 
 function LoadTableEntryForm() {

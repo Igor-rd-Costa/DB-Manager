@@ -149,3 +149,7 @@ p#error-msg, p#reg-error-msg  {
     margin: 0px;
     height: 2.82rem;
 }
+
+form#create-table, form#add-columns, form#insert-columns  {
+    display: none;
+}

@@ -77,7 +77,30 @@ document.addEventListener('focusout', (event) => {
         }
         
     }
-})    
+})
+
+FormDiv.addEventListener('change', (event) => {
+    const Target = event.target;
+    const InsertColumnForm = Target.closest("#insert-columns");
+    if(InsertColumnForm && Target.id == "insert-option") {
+        const ColumnSelector = InsertColumnForm.querySelector("#table-columns");
+        switch (Target.selectedIndex) {
+            case 0: {
+                ColumnSelector.setAttribute("disabled", "");
+            } break;
+            case 1: {
+                ColumnSelector.setAttribute("disabled", "");
+            } break;
+            case 2: {
+                ColumnSelector.removeAttribute("disabled");
+            } break;
+        }
+    }
+    
+})
+
+
+
 
 class StructureRowData {
     Name;
@@ -103,7 +126,8 @@ function GetFieldFromRow(Row, elementClass) {
 }
 
 document.addEventListener('submit', (event) => {
-    switch (event.target.id) {
+    const Target = event.target;
+    switch (Target.id) {
         case "login": {
             let username = document.getElementById('username').value;
             let password = document.getElementById('password').value;
@@ -129,7 +153,7 @@ document.addEventListener('submit', (event) => {
                 break;
             }
 
-            LoadTableStructureForm(tablename, NumberOfColumns);
+            LoadTableStructureForm(tablename, NumberOfColumns, 0);
         } break;
         case "add-columns": {
             const NumberOfColumns = document.getElementById("columns").value;
@@ -190,6 +214,28 @@ document.addEventListener('submit', (event) => {
             }
 
         } break;
+        case "insert-columns": {
+            event.preventDefault();
+            const InsertColumnForm = document.getElementById("insert-columns");
+            const ColumnAmount = InsertColumnForm.querySelector("#amount-of-columns").value;
+            const InsertOptions = InsertColumnForm.querySelector("#insert-option").selectedIndex;
+            const SelectedColumn = InsertColumnForm.querySelector("#table-columns");
+            let ColumnName = "";
+            let InsertOption = "";
+            if(!SelectedColumn.disabled) {
+                ColumnName = SelectedColumn.value; 
+            }
+            switch(InsertOptions){
+                case 0 : InsertOption = "LAST";
+                    break;
+                case 1: InsertOption = "FIRST";
+                    break;
+                case 2: InsertOption = "AFTER";
+                    break;
+            }
+            
+            LoadTableStructureForm("", ColumnAmount, 1, InsertOption);
+        } break;
         case "table-structure": {
             event.preventDefault();
             let Rows = document.getElementsByClassName("tableStructureRow");
@@ -218,7 +264,7 @@ document.addEventListener('submit', (event) => {
                 Data[x].AutoIncrement = GetFieldFromRow(Rows[x], "Entry_AI").checked;
                 Data[x].Comment = GetFieldFromRow(Rows[x], "Entry_Comments").value;
 
-                if((Data[x].Type == "VARCHAR" || Data[x].Type == "VARBINARY" || Data[x].Type == "BIT") && (Data[x].Length == "" || Data[x].Length == 0)) {
+                if(Data[x].Type == "VARCHAR" && (Data[x].Length == "" || Data[x].Length == 0)) {
                     ErrorMsg = "Please enter a valid Lenght!";
                     break;
                 }
@@ -227,24 +273,44 @@ document.addEventListener('submit', (event) => {
                 alert(ErrorMsg);
             }
             else {
-                let TableName = document.getElementById("Table_Name").value;
+                const Button = Target.getElementsByClassName("form-button")[0];
                 let jsonData = JSON.stringify(Data);
-                let newTableRequest = new XMLHttpRequest();
-                jsonData = '{"Data": ' + jsonData + ', "TableName": "' + TableName + '"}';
                 console.log(jsonData);
-                newTableRequest.onreadystatechange=function(){
-                    if(this.readyState == 4 && this.status == 200) {
-                        if(this.responseText) {
-                            alert(this.responseText);
-                        }
-                        else {
-                            LoadTable("", "main")
+                
+                if(Button.id === "create-table") {
+                    let TableName = document.getElementById("Table_Name").value;
+                    jsonData = '{"Data": ' + jsonData + ', "TableName": "' + TableName + '"}';
+                    let newTableRequest = new XMLHttpRequest();
+                    newTableRequest.onreadystatechange=function(){
+                        if(this.readyState == 4 && this.status == 200) {
+                            if(this.responseText) {
+                                alert(this.responseText);
+                            }
+                            else {
+                                LoadTable("", "main")
+                            }
                         }
                     }
+                    newTableRequest.open('POST', '../php/Async/CreateTable.php', true);
+                    newTableRequest.setRequestHeader('Content-Type', 'application/json');
+                    newTableRequest.send(jsonData);
                 }
-                newTableRequest.open('POST', '../php/Async/CreateTable.php', true);
-                newTableRequest.setRequestHeader('Content-Type', 'application/json');
-                newTableRequest.send(jsonData);
+                if(Button.id === "insert-column") {
+                    const insertColumnRequest = new XMLHttpRequest();
+                    insertColumnRequest.onreadystatechange=function(){
+                        if(this.readyState == 4 && this.status == 200) {
+                            if(this.responseText) {
+                                alert(this.responseText);
+                            }
+                            else {
+                                LoadTable("", "main")
+                            }
+                        }
+                    }
+                    insertColumnRequest.open('POST', '../php/Async/InsertColumns.php', true);
+                    insertColumnRequest.setRequestHeader('Content-Type', 'application/json');
+                    insertColumnRequest.send(jsonData);
+                }
             }        
         } break;
     }

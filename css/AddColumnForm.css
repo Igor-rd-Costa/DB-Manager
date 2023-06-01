@@ -1,5 +1,4 @@
 form#add-columns {
-    display: grid;
     grid-template-columns: 10rem 10rem 6rem;
     grid-template-rows: 3rem;
     align-items: center;
