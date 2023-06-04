@@ -90,8 +90,6 @@ $User->FetchTables();
     <div id='default-menu'></div>
     <div id='test-wrapper'>
         <?php
-        $Table = $User->Tables["products"];
-        $Table->Test($User->Connection);
         ?>
     </div>   
 </main>
