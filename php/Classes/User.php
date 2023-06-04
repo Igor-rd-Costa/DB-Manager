@@ -2,18 +2,17 @@
 include_once "Connection.php";
 include_once "UserTable.php";
 Class User extends Connection {
-    public bool $LoginStatus;
-    public string $LoginError;
     public string $FirstName;
     public string $LastName;
     public string $Username;
     public string $DatabaseName;
+    public array $Tables;
     private string $Email;
     private string $Password;
-    public $Tables;
-    public array $Test;
+    public bool $LoginStatus;
+    public string $LoginError;
 
-    function __construct($username, $password)
+    function __construct(string $username, string $password)
     {   
         include_once "../../Config.php";
         $ServerHostname = CONFIG_INFO::$ServerHostname;
@@ -85,24 +84,18 @@ Class User extends Connection {
         }
     }
 
-    public function FetchTables()
-    {
-            $gettables = $this->Connection->prepare("SHOW TABLES;");
-            $gettables->execute();
-            $return = $gettables->get_result();
-            $tables = array();
-            while($row = $return->fetch_assoc())
-            {
-                $string = "Tables_in_" . strtolower($this->DatabaseName);
-                $tables[] = $row[$string];
-                
-            }
-            $this->Tables = NULL;
-            for($x = 0; $x < sizeof($tables); $x++)
-            {
-                $this->Tables[$tables[$x]] = new Table($this->Connection, $this->DatabaseName, $tables[$x], $x);
-                $this->Test[$x] = $this->Tables[$tables[$x]]->Index;
-            }
+    public function FetchTables() {
+        $this->Connect();
+        $return = SQL_Query($this->Connection, "SHOW TABLES;");
+        $tables = array();
+        $string = "Tables_in_" . strtolower($this->DatabaseName);
+        while($row = $return->fetch_assoc()) {
+            $tables[] = $row[$string];
+        }
+        unset($this->Tables);
+        for($x = 0; $x < sizeof($tables); $x++) {
+            $this->Tables[$tables[$x]] = new Table($this->Connection, $this->DatabaseName, $tables[$x], $x);
+        }
     }
 
     public function CheckTableName(string $TableName) {

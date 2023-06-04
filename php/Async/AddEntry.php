@@ -14,14 +14,14 @@ class NewEntryData {
     }
 }
 
-function ProccessData($Entry) {
-    if($Entry->Data == "") return "NULL";
-    switch (explode("(", $Entry->Type)[0]) {
+function ProccessData($connection, $entry) {
+    if($entry->Data == "") return "NULL";
+    switch (explode("(", $entry->Type)[0]) {
         case "INT": {
-            return $Entry->Data;
+            return $entry->Data;
         }break;
         case "VARCHAR": {
-            return "'" . $Entry->Data . "'";
+            return "'" . mysqli_real_escape_string($connection, $entry->Data) . "'";
         }
     }
 }
@@ -50,11 +50,15 @@ for ($x = 0; $x < sizeof($Entry); $x++) {
 $Command .= "VALUES (";
 
 for ($x = 0; $x < sizeof($Entry); $x++) {
-    $Command .= ProccessData($Entry[$x]);
+    $Command .= ProccessData($User->Connection, $Entry[$x]);
     if($x != (sizeof($Entry) - 1)) $Command .= ", ";
     else $Command .= ")";
 }
-
-SQL_Query($User->Connection, $Command);
+try {
+    SQL_Query($User->Connection,$Command);
+}
+catch (mysqli_sql_exception $e) {
+    print $e->getMessage();
+}
 $User->FetchTables();
 ?>

@@ -1,9 +1,14 @@
 <?php
 if(isset($_POST["LoadTables"])) {
 
+    include_once "../Functions.php";
     include_once "../Classes/User.php";
     session_start();
     $User = $_SESSION['User'];
+    $User->Connect();
+    $User->FetchTables();
+
+    if (isset($_SESSION["DisplayedTable"])) unset($_SESSION["DisplayedTable"]);
     print 
     "<div id='default-menu'>
     <div id='back-icon' backto='main'>

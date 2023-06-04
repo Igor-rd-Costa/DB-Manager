@@ -28,12 +28,12 @@ if(isset($_SESSION["DisplayedTable"], $_SESSION["InsertColumn"])) {
         }
         $rowData[$x] = new StructureRowData($Entry["Name"], $Entry["Type"], $Entry["Length"], $Entry["Default"], $Entry["Attributes"], $Entry["Null"], $Entry["Index"], $Entry["AutoIncrement"], $Entry["Comment"]);
     }
-    $command = "ALTER TABLE $Table->TableName";
+    $command = "ALTER TABLE `$Table->TableName`";
     $ErrorMsg = null;
     $AutoIncrement = false;
     $PrimaryKey = null;
     for ($x = 0; $x < sizeof($rowData); $x++) {
-        $command .= " ADD COLUMN " . $rowData[$x]->Name . " " . $rowData[$x]->Type;
+        $command .= " ADD COLUMN `" . $rowData[$x]->Name . "` " . $rowData[$x]->Type;
         if($rowData[$x]->Length != 0) {
             $command .= "(" . $rowData[$x]->Length . ")";
         }
@@ -59,7 +59,7 @@ if(isset($_SESSION["DisplayedTable"], $_SESSION["InsertColumn"])) {
             $command .= " COMMENT '" . $rowData[$x]->Comment . "'";
         }
         if ($Option == "FIRST") $command .= " $Option";
-        if ($Option == "AFTER") $command .= " $Option $ColumnName";
+        if ($Option == "AFTER") $command .= " $Option `$ColumnName`";
         if($x != (sizeof($rowData) - 1)) $command .= ",";
         
         if($Option == "FIRST") $Option = "AFTER"; //subsequent columns will be added after the first column which was added at the front;
@@ -70,8 +70,13 @@ if(isset($_SESSION["DisplayedTable"], $_SESSION["InsertColumn"])) {
         print $ErrorMsg;
         return;
     }
-    try { SQL_Query($User->Connection, $command); }
-    catch (mysqli_sql_exception $e) { print $e->getMessage(); }
+    try { 
+        //$command = mysqli_real_escape_string($User->Connection, $command);
+        SQL_Query($User->Connection, $command); }
+    catch (mysqli_sql_exception $e) { 
+        print $e->getMessage(); 
+        print "\n" . $command;
+    }
     $User->FetchTables();
 }
 else header("location: ../../pages/main.php");

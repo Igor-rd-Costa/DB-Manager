@@ -1,14 +1,17 @@
 <?php
-function BuildNewTableEntryInput($TableStructure, $ColumnName) {
-    $explodeType = explode("(", $TableStructure[$ColumnName]["Type"]);
-    $DataType = strtoupper($explodeType[0]);
-    $Length = explode(")", $explodeType[1])[0];
-    $Type = "";
-    $Required = "required";
-    if($TableStructure["$ColumnName"]["Extra"] === "auto_increment" || $TableStructure["$ColumnName"]["Null"] === "YES") $Required = "";
-    $Input["Null"] = "";
-    if($TableStructure["$ColumnName"]["Null"] === "YES") $Input["Null"] = "<input type='checkbox' checked='true'></input>";  
 
+function BuildNewTableEntryInput(Column $ColumnStructure) {
+    $DataType = strtoupper($ColumnStructure->DataType);
+    $Length = intval(explode("(", $ColumnStructure->Type)[1]);
+    $Required = "required";
+
+    if($ColumnStructure->Extra == "auto_increment" || $ColumnStructure->Nullable) $Required = "";
+    
+    $Input["Null"] = "";
+    if($ColumnStructure->Nullable) 
+        $Input["Null"] = "<input type='checkbox' checked='true'></input>";
+
+    $Type = "";
     switch ($DataType) {
         case "INT": {
             $Type = "type='number'";
@@ -24,10 +27,9 @@ function BuildNewTableEntryInput($TableStructure, $ColumnName) {
             }
         } break;
     }
-    $Input["DataType"] = $DataType . "($Length)";
+    $Input["DataType"] = strtoupper($ColumnStructure->Type);
     return $Input;
 }
-
 
 include_once "../Classes/User.php";
 session_start();
@@ -55,7 +57,7 @@ print
             <th>Value</th>
         </tr>";
         foreach($Table->ColumnNames as $ColumnName) {
-            $Input = BuildNewTableEntryInput($Table->TableStructure, $ColumnName);
+            $Input = BuildNewTableEntryInput($Table->Columns[$ColumnName]);
             print "<tr class='newEntryRow'>
                 <th class='addEntryName'><span>$ColumnName</span></th>
                 <td class='addEntryType'><span>$Input[DataType]</span></td>

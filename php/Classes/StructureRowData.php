@@ -10,7 +10,7 @@ class StructureRowData {
     public bool $AutoIncrement;
     public string $Comment;
 
-    function __construct($name, $type, $length, $default, $attributes, $null, $index, $autoIncrement, $comment)
+    function __construct(string $name, string $type, int $length, string $default, string $attributes, bool $null, string $index, bool $autoIncrement, string $comment)
     {
         $this->Name = $name;
         $this->Type = $type;

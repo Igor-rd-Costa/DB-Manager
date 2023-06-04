@@ -80,7 +80,7 @@ function LoadTable(TableName, Origin)
         {
             const Main = document.getElementById('tablewrapper');
             let response = this.responseText.split("$@#$");
-            TableComments = JSON.parse(response[1]);
+            if(response[1]) TableComments = JSON.parse(response[1]);
             Main.innerHTML = response[0];
             Main.className = "displayTable";
 
@@ -180,7 +180,81 @@ function GenerateStructureTableRow() {
     return TableRow;
 }
 
-function REQUEST_Login(username, password)
+function DeleteTableRow(Data) {
+
+    ShowConfirmationPopUp("Remove row from table?")
+        .then(() => {
+            jsonData = JSON.stringify(Data);
+            const dropTableRequest = new XMLHttpRequest();
+            dropTableRequest.onreadystatechange=function(){
+                if(this.readyState == 4 && this.status == 200) {
+                    if(this.responseText) {
+                        alert(this.responseText);
+                    }
+                    else {
+                        LoadTable("", "main");
+                    }
+                }
+            }
+            dropTableRequest.open('POST', '../php/Async/DeleteRow.php', true);
+            dropTableRequest.setRequestHeader('Content-Type', 'application/json');
+            dropTableRequest.send(jsonData);
+        })
+        .catch(() => {
+            
+        })
+
+}
+
+function DropTable(TableName = "") {
+    return new Promise((resolve) => {
+        ShowConfirmationPopUp("This action is permanent!<br>Destroy table?")
+        .then(() => {
+            const dropTableRequest = new XMLHttpRequest();
+            dropTableRequest.onreadystatechange=function(){
+                if(this.readyState == 4 && this.status == 200) {
+                    if(this.responseText) {
+                        alert(this.responseText);
+                    }
+                    resolve();
+                }
+            }
+            dropTableRequest.open('POST', '../php/Async/DropTable.php', true);
+            dropTableRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            dropTableRequest.send('TableName='+TableName);
+        })
+        .catch(() => {
+            
+        })    
+    })
+}
+
+function ShowConfirmationPopUp(ConfirmationMessage) {
+    return new Promise((confirm, deny) => {
+        const PopUp = document.getElementById("confirmation-popup");
+
+        PopUp.style.display = "grid";
+        PopUp.querySelector("span").innerHTML = ConfirmationMessage;
+        
+        PopUp.addEventListener('click', (event) => {
+            const Target = event.target;
+            if(Target.id == "confirm-popup") {
+                confirm();
+                PopUp.removeEventListener('click', (event));
+                PopUp.style.display = "none";
+                PopUp.querySelector("span").innerHTML = "";
+            }
+            if (Target.id == "deny-popup") {
+                deny();
+                PopUp.removeEventListener('click', (event));
+                PopUp.style.display = "none";
+                PopUp.querySelector("span").innerHTML = "";
+            }
+        })
+    })
+}
+
+function RequestLogin(username, password)
 {
     let loginRequest = new XMLHttpRequest();
     loginRequest.onreadystatechange=function(){
@@ -202,7 +276,7 @@ function REQUEST_Login(username, password)
     loginRequest.send('usernameLogin=' + username + '&passwordLogin=' + password);
 }
 
-function REQUEST_Register(firstname, lastname, email, username, password)
+function RequestRegister(firstname, lastname, email, username, password)
 {
     let registerRequest = new XMLHttpRequest();
     registerRequest.onreadystatechange=function(){
@@ -223,4 +297,3 @@ function REQUEST_Register(firstname, lastname, email, username, password)
     registerRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     registerRequest.send('REG_FirstName=' + firstname + '&REG_LastName=' + lastname + '&REG_Email=' + email + '&REG_Username=' + username + '&REG_Password=' + password);
 }
-

@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById("add-columns").style.display = "";
                     document.getElementById("insert-columns").style.display = "grid";
 
-                    const TableHeaders = document.getElementsByClassName("tbl-header-row")[0].children;
+                    const TableHeaders = document.getElementsByClassName("tbl-header");
                     let ColumnNames = [];
                     for (let x = 0; x < TableHeaders.length; x++) {
                         ColumnNames[x] = TableHeaders[x].querySelector("span").innerHTML;
@@ -136,18 +136,41 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.getElementById("table-columns").appendChild(OptionElement);
                     })
                 } break;
+                case "drop-table": { 
+                    const BackButton = document.getElementById("back-icon");
+                    const event = new Event('click', {'bubbles': true});
+                    DropTable().then(() => {
+                        BackButton.dispatchEvent(event);
+                    })
+                } break;
             } 
         }
-        if (Target.closest(".list-item-wrapper"))
+        if (Target.closest("#list-wrapper"))
         {
-            let table = Target.closest(".list-item-wrapper");
-            LoadTable(table.getAttribute("tablename"), "table-list");
+            const Table = Target.closest(".list-item-wrapper");
+            const DropTableIcon = Target.closest("#drop-table");
+            if(DropTableIcon) {
+                    DropTable(Table.querySelector(".listTblName").innerHTML).then(() => {
+                        LoadTableList();
+                    })
+            }
+            else if (Table) LoadTable(Table.getAttribute("tablename"), "table-list");
+        }
+        if (Target.closest(".removeIcon")) {
+            const Row = Target.closest(".tbl-content-row");
+            const DataElements = Row.getElementsByClassName("tblData");
+            let Data = [];
+            for (let x = 0; x < DataElements.length; x++) {
+                Data[x] = DataElements[x].innerHTML;
+            }
+            DeleteTableRow(Data);
         }
     })
 
     TableWrapper.addEventListener('mouseover', (event) => {
         const Target = event.target;
-        const CommentIcon = Target.closest(".commentIconImg"); 
+        const CommentIcon = Target.closest(".commentIconImg");
+        const TableOptions = Target.closest(".tblEditOptions");
         if (CommentIcon) {
             const CommentBox = document.getElementById("comment-box");
             let offSetX = CommentIcon.offsetLeft / 16;
@@ -160,16 +183,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const columnName = Target.closest(".tbl-header").querySelector("span").innerHTML;
             CommentBox.innerHTML = "<span>" + TableComments[columnName] + "</span>";
         }
+        if(TableOptions) {
+            const Row = Target.closest(".tbl-content-row");
+            const RemoveIcon = Target.closest(".removeIcon");
+            switch(Target) {
+                case RemoveIcon: {
+                    Row.style.color = "rgb(151, 98, 216)";
+                }
+            }
+        }
     })
     TableWrapper.addEventListener('mouseout', (event) => {
         const Target = event.target;
-        const CommentIcon = Target.closest(".commentIconImg"); 
+        const CommentIcon = Target.closest(".commentIconImg");
+        const TableOptions = Target.closest(".tblEditOptions");
         if (CommentIcon) {
             const CommentBox = document.getElementById("comment-box");
             CommentBox.style.display = "";
             CommentBox.innerHTML = "";
             CommentBox.style.top = "";
             CommentBox.style.left = "";
+        }
+        if(TableOptions) {
+            const Row = Target.closest(".tbl-content-row");
+            const RemoveIcon = Target.closest(".removeIcon");
+            switch(Target) {
+                case RemoveIcon: {
+                    Row.style.color = "";
+                }
+            }
         }
     })
 
@@ -181,17 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
             Row.getElementsByClassName("Entry_Index")[0].selectedIndex = 1; //PRIMARY
         }
         if(Target.name == "Entry_Default") {
-            console.log(Target.selectedIndex);
             if (Target.selectedIndex == 1) { //NULL
                 const Row = Target.closest(".tableStructureRow");
                 Row.getElementsByClassName("Entry_Null")[0].checked = true;
             }
         }
-        if(Target.name == "columnInsertOption") {
-            console.log(Target);
-        }
-
-
     })
     
     //profile events

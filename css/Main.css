@@ -78,6 +78,67 @@ main.tableCards {
     grid-template-rows: 1fr 1fr;
 }
 
+#confirmation-popup {
+    position: absolute;
+    justify-self: center;
+    align-self: center;
+    min-width: 25rem;
+    background-color: var(--DefaultColor);
+    border: 0.1rem solid var(--ContrastColor);
+    border-radius: 0.625rem;
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 3.5rem;
+}
+
+#confirmation-popup > div#confirmation-msg {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    min-height: 4rem;
+    border-top-left-radius: 0.625rem;
+    border-top-right-radius: 0.625rem;
+    color: var(--HighlightTextColor);
+    font-size: 1.2rem;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    border-bottom: 0.2rem solid var(--BodyColor);
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+#confirmation-popup > div.popupButtonWrapper {
+    background-color: var(--DefaultColor);
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+div#confirmation-popup > :nth-child(2) {
+    border-bottom-left-radius: 0.625rem;
+}
+
+div#confirmation-popup > :nth-child(3) {
+    border-bottom-right-radius: 0.625rem;
+}
+
+#confirmation-popup > button {
+    justify-self: center;
+    align-self: center;
+}
+
+#confirmation-popup > button#confirm-popup {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#confirmation-popup > button#deny-popup {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+
 /*---------- #Default Menu ----------*/
 
 div#default-menu {
@@ -282,11 +343,16 @@ img#user-img {
 }
 
 .table > #content {
+    padding-top: 0.5rem;
     font-size: 1.2rem;
 }
 
 .table > #content > ul {
     margin: 0px;
+}
+
+.table > #content > ul > li {
+    padding-bottom: 0.5rem;
 }
 
 div#tbl-list-display {

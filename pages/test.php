@@ -1,9 +1,15 @@
 <?php
+include_once "../config.php";
 include_once "../php/Functions.php";
 include_once "../php/Classes/User.php";
 
 session_start();
 $User = $_SESSION["User"];
+
+if($User->Username != CONFIG_INFO::$AdminUsername) {
+    header("location: main.php");
+}
+
 $User->Connect();
 $User->FetchTables();
 ?>
@@ -34,8 +40,14 @@ $User->FetchTables();
             background-color: var(--DefaultColor);
             border-bottom-left-radius: 0.625rem;
             border-bottom-right-radius: 0.625rem;
+            color: var(--HighlightTextColor);
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+           
+        })
+    </script>
 </head>
 <body>
 <div id="form">
@@ -76,7 +88,12 @@ $User->FetchTables();
 </section>
 <main id="tablewrapper" class="testPage">
     <div id='default-menu'></div>
-    <div id="test-wrapper"></div>
+    <div id='test-wrapper'>
+        <?php
+        $Table = $User->Tables["products"];
+        $Table->Test($User->Connection);
+        ?>
+    </div>   
 </main>
 </body>
 </html>

@@ -4,6 +4,7 @@
     include_once "../Classes/StructureRowData.php";
     session_start();
     $User = $_SESSION["User"];
+    $User->Connect();
 
     $inputData = file_get_contents("php://input");
     $Data = json_decode($inputData, true);
@@ -73,14 +74,12 @@
         }
         else {
             try {
-                $User->Connect();
-                $query = $User->Connection->prepare($command);
-                $query->execute();
+                SQL_Query($User->Connection, $command);
             }
             catch (mysqli_sql_exception $e) {
                 print $e->getMessage();
             }
         }
+        $User->FetchTables();
     }
-
 ?>

@@ -19,20 +19,21 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
         $_SESSION["DisplayedTable"] = $_POST['TableName'];
         $Table->Update($User->Connection);
     }
+    else if (isset($_SESSION["DisplayedTable"])) {
+        $Table = $User->Tables[$_SESSION["DisplayedTable"]];
+    } 
     else {
-        if(isset($_SESSION["DisplayedTable"])) $Table = $User->Tables[$_SESSION["DisplayedTable"]];
-        else {
-            $User->FetchTables();
-            $Table = $User->Tables[$_SESSION['CreateTableName']];
-            $_SESSION["DisplayedTable"] = $_SESSION['CreateTableName'];
-            unset($_SESSION['CreateTableName']);
-        }
+        $User->FetchTables();
+        $tableName = strtolower($_SESSION['CreateTableName']);
+        $Table = $User->Tables[$tableName];
+        $_SESSION["DisplayedTable"] = $tableName;
+        unset($_SESSION['CreateTableName']);
     }
 
     print
     "<div id='table-display-wrapper'>
     <div id='default-menu'>
-            <div id='back-icon' backto='main'>
+            <div id='back-icon' backto=''>
                 <img class='back-arrow' src='../img/Arrow.png'></img>
             </div>
             <div id='title'>
@@ -41,19 +42,23 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
             <div id='tbl-options'>
                 <div class='circle' id='circle1'></div>
                 <div class='circle' id='circle2'></div>
-                <div class='circle' id='circle3'></div>
+                <div class='circle' id='circle3'></div> 
             </div>
             <ul id='tbl-option-list' class='options-ul'>
                 <li class='options-li' id='tbl-new-entry'><span>New Entry</span></li>
                 <li class='options-li' id='tbl-add-column'><span>Add Column</span></li>
+                <li class='options-li' id='drop-table'><span>Drop Table</span></li>
             </ul>
         </div>
         <div id='tbl-display-content'>";
         $Table->DisplayTable();
     print "</div></div>  $@#$";
-    print_r(json_encode($Table->ColumnComments));
-    
 
+    $columnComments = array();
+    foreach ($Table->Columns as $Column) {
+        $columnComments[$Column->Name] = $Column->Comment;
+    }
+    print_r(json_encode($columnComments));
 }
 else header("location: ../../pages/main.php");
 ?>

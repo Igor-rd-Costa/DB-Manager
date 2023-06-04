@@ -132,7 +132,7 @@ document.addEventListener('submit', (event) => {
             let username = document.getElementById('username').value;
             let password = document.getElementById('password').value;
             event.preventDefault();
-            REQUEST_Login(username, password);
+            RequestLogin(username, password);
         } break;
         case "register": {
             let firstname = document.getElementById('reg-firstname').value;
@@ -141,7 +141,7 @@ document.addEventListener('submit', (event) => {
             let username = document.getElementById('reg-username').value;
             let password = document.getElementById('reg-password').value;
             event.preventDefault();
-            REQUEST_Register(firstname, lastname, email, username, password);
+            RequestRegister(firstname, lastname, email, username, password);
         } break;
         case "create-table": {
             let tablename = document.getElementById('table-name').value;
@@ -275,7 +275,6 @@ document.addEventListener('submit', (event) => {
             else {
                 const Button = Target.getElementsByClassName("form-button")[0];
                 let jsonData = JSON.stringify(Data);
-                console.log(jsonData);
                 
                 if(Button.id === "create-table") {
                     let TableName = document.getElementById("Table_Name").value;

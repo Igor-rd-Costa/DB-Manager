@@ -10,7 +10,7 @@ Class RegisterRequest {
     public $RegisterError;
 
 
-    function __construct($firstname, $lastname, $email, $username, $password)
+    function __construct(string $firstname, string $lastname, string $email, string $username, string $password)
     {
         try
         {
@@ -37,7 +37,7 @@ Class RegisterRequest {
         }
     }
 
-    function ValidateFirstName($firstname)
+    function ValidateFirstName(string $firstname)
     {
         if(strlen($firstname) < 3)
         {
@@ -53,7 +53,7 @@ Class RegisterRequest {
         }
     }
     
-    function ValidateLastName($lastname)
+    function ValidateLastName(string $lastname)
     {
         if(strlen($lastname) < 3)
         {
@@ -69,7 +69,7 @@ Class RegisterRequest {
         }
     }
 
-    function ValidateEmail($email)
+    function ValidateEmail(string $email)
     {
         if(filter_var($email, FILTER_VALIDATE_EMAIL))
         {
@@ -81,7 +81,7 @@ Class RegisterRequest {
         }
     }
 
-    function ValidateUsername($username)
+    function ValidateUsername(string $username)
     {
         if(strlen($username) < 3)
         {
@@ -101,7 +101,7 @@ Class RegisterRequest {
         }
     }
 
-    function ValidatePassword($password)
+    function ValidatePassword(string $password)
     {
         if(strlen($password) < 8)
         {
@@ -119,7 +119,7 @@ Class RegisterRequest {
         }
     }
 
-    function SendRegistrationRequest($userpassword)
+    function SendRegistrationRequest(string $userpassword)
     {
         include_once "../../config.php";
         $ServerHostname = CONFIG_INFO::$ServerHostname;

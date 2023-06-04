@@ -4,7 +4,7 @@ main.displayTable {
 }
 
 main.displayTable > * {
-    min-width: 20rem;
+    min-width: 15rem;
 }
 
 #table-display-wrapper {
@@ -60,15 +60,15 @@ table#tabledisplay tr.tbl-header-row > th {
 
 table#tabledisplay tr.tbl-header-row > th > div {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto 1rem;
     grid-template-rows: 1rem;
     column-gap: 0.5rem;
 } 
 
 table#tabledisplay tr.tbl-header-row > th > div > img.commentIconImg {
     position: relative;
-    width: 16px;
-    height: 16px;
+    width: 1rem;
+    height: 1rem;
     float: right;
 }
 
@@ -77,6 +77,25 @@ table#tabledisplay td {
     padding: 0.1rem;
     padding-left: 0.2rem;
     border-right: 0.1rem solid var(--ContrastColor);
+}
+
+table#tabledisplay .tblEditOptions {
+    width: 1.7rem;
+    height: 1.7rem;
+}
+
+table#tabledisplay .tblEditOptions > .tblOptionsWrapper {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+table#tabledisplay .tblEditOptions img {
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
 }
 
 div#comment-box {

@@ -1,9 +1,9 @@
 <?php
 Class Connection {
     public $Connection;
-    protected $ConnectionInfo = array("username" => null, "password" => null, "database" => null);
+    protected $ConnectionInfo = array("username" => "", "password" => "", "database" => "");
 
-    function Connect()
+    public function Connect()
     {
         $this->Connection = SQL_Connect("localhost", $this->ConnectionInfo['username'], $this->ConnectionInfo['password'], $this->ConnectionInfo["database"]);
     }

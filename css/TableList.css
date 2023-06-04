@@ -15,11 +15,22 @@ main.tableList {
     border-top: none;
 }
 
+#tbl-list-info {
+    width: 100%;
+    height: fit-content;
+    font-size: 1rem;
+    color: var(--HighlightTextColor);
+    padding-left: 0.2rem;
+}
+
 .list-item-wrapper {
-    height: 5.5rem; 
     border-top: var(--DefaultBorder);
     color: var(--TextColor);
     cursor: pointer;
+    display: grid;
+    grid-template-rows: 5.5rem;
+    grid-template-columns: 12rem auto; 
+
 }
 
 .list-item-wrapper:hover {
@@ -40,10 +51,28 @@ main.tableList {
     font-size: 2rem;
 }
 
-#tbl-list-info {
-    width: 100%;
-    height: fit-content;
-    font-size: 1rem;
+.list-item-wrapper > .tblOptionsWrapper {
+    display: grid;
+    grid-template-rows: 2rem auto;
+    grid-template-columns: 6rem auto;
+}
+
+.list-item-wrapper > .tblOptionsWrapper div {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1.5rem auto;
+    border-bottom: 0.15rem solid var(--BodyColor);
+    border-right: 0.15rem solid var(--BodyColor);
+}
+
+.list-item-wrapper > .tblOptionsWrapper > #drop-table:hover {
     color: var(--HighlightTextColor);
-    padding-left: 0.2rem;
+    text-decoration: underline var(--ContrastColor);
+}
+
+.list-item-wrapper > .tblOptionsWrapper img {
+    width: 1.5rem;
+    height: 1.5rem;
 }

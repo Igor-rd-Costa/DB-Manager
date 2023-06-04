@@ -9,9 +9,8 @@ if(!$User = $_SESSION['User'])
 } 
 $User->Connect();
 $User->FetchTables();
-if(isset($_SESSION["DisplayedTable"])) {
-    unset($_SESSION["DisplayedTable"]);
-}
+if(isset($_SESSION["DisplayedTable"])) unset($_SESSION["DisplayedTable"]);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +34,18 @@ if(isset($_SESSION["DisplayedTable"])) {
 </head>
 <body>
     <div id='comment-box'>
-        <span>This is a comment</span>
+        <span></span>
+    </div>
+    <div id='confirmation-popup'>
+        <div id="confirmation-msg">
+            <span>Confirm?</span>
+        </div>
+        <div class="popupButtonWrapper">
+            <button id="confirm-popup" class="submit form-button" type="submit">Confirm</button>
+        </div>
+        <div class="popupButtonWrapper">
+            <button id="deny-popup" class="submit form-button">Cancel</button>
+        </div>
     </div>
     <div id="form">
         <div id="form-header">
@@ -48,12 +58,12 @@ if(isset($_SESSION["DisplayedTable"])) {
             <input type="text" name="table-name" id="table-name" required=""/>
             <label for="column-amount">Number of columns</label>
             <input type="number" name="column-amount" id="column-amount" required=""/>
-            <button type="submit" class="submit create form-button">Create</button>
+            <button type="submit" class="submit form-button">Create</button>
         </form>
         <form id="add-columns" method="post">
             <label for="columns">Number of columns</label>
             <input type="number" name="columns" id="columns" required=""/>
-            <button type="submit" class="submit create form-button">Add</button>
+            <button type="submit" class="submit form-button">Add</button>
         </form>
         <form id="insert-columns" method="post">
             <span>Insert</span>
