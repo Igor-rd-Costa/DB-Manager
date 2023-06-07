@@ -29,8 +29,8 @@ if(isset($_GET['logoutRequest']))
     <link rel="stylesheet" href="css/RegisterForm.css"/>
     <link rel="php" href="login.php"/>
     <script src="scripts/Functions.js"></script>
-    <script src="scripts/IndexScript.js"></script>
     <script src="scripts/FormsScript.js"></script>
+    <script type="application/javascript" src="scripts/Index.js"></script>
     <title>DB Manager</title>
 </head>
 <body>

@@ -32,11 +32,25 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
 
     print
     "<div id='table-display-wrapper'>
-    <div id='default-menu'>
+        <div id='display-table-menu' class='default-menu'>
             <div id='back-icon' backto=''>
                 <img class='back-arrow' src='../img/Arrow.png'></img>
             </div>
-            <div id='title'>
+            <div id='tbl-browse-opt' class='tbl-display-options opt-selected'>
+                <img class='tbld-option-img' src='../img/TblDisplayBrowse.png'></img>
+                <span class='tbld-option-text'>
+                    Browse
+                </span>
+            </div>
+            <div id='tbl-structure-opt' class='tbl-display-options'>
+                <img class='tbld-option-img' src='../img/TblDisplayStructure.png'></img>
+                <span class='tbld-option-text'>
+                    Structure
+                </span>
+            </div>
+        </div>
+        <div id='table-menu'>
+        <div id='title'>
                 $Table->TableName 
             </div>
             <div id='tbl-options'>
@@ -53,7 +67,6 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
         <div id='tbl-display-content'>";
         $Table->DisplayTable();
     print "</div></div>  $@#$";
-
     $columnComments = array();
     foreach ($Table->Columns as $Column) {
         $columnComments[$Column->Name] = $Column->Comment;

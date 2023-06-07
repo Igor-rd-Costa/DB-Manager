@@ -11,8 +11,73 @@ main.displayTable > * {
     width: fit-content;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 2rem auto;
+    grid-template-rows: 2rem 2rem auto 2rem 1fr;
     row-gap: calc(var(--DefaultBorderWidth) * 2);
+}
+
+#table-display-wrapper > #display-table-menu {
+    grid-row: 1;
+    grid-template-columns: repeat(3, auto) 1fr;
+    color: var(--TextColor);
+    font-size: 1.2rem;
+}
+
+#table-display-wrapper > #display-table-menu > :last-child {
+    border-right: 0.2rem solid var(--BodyColor);
+}
+
+.opt-selected {
+    background-color: var(--SelectColor);
+    color: var(--HighlightTextColor);
+}
+
+.tbld-option-img {
+    grid-column: 1;
+    justify-self: center;
+    width: 1rem;
+    height: 1rem;
+}
+
+.tbld-option-text {
+    grid-column: 2;
+    padding-right: 0.2rem;
+}
+
+#table-display-wrapper .tbl-display-options {
+    width: 100%;
+    height: 100%;
+    border-left: 0.2rem solid var(--BodyColor);
+    display: grid;
+    grid-template-columns: 1.5rem auto;
+    column-gap: 0.2rem;
+    align-items: center;
+}
+
+#table-display-wrapper .tbl-display-options:hover {
+    color: var(--HighlightTextColor);
+    cursor: pointer;
+}
+
+#table-display-wrapper > #table-menu {
+    grid-row: 2;
+    display: grid;
+    height: 2rem;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 2rem;
+    background-color: var(--DefaultColor); 
+    justify-items: center;
+    align-items: center;
+}
+
+div#table-menu > * > img {
+    width: 1rem;
+    height: 1rem;
+}
+
+div#table-menu > div#title {
+    position: absolute;
+    font-size: calc(2rem - var(--DefaultBorderWidth));
+    color: var(--ContrastColor);
 }
 
 #tbl-option-list {
@@ -26,7 +91,7 @@ main.displayTable > * {
 div#tbl-display-content {
     height: fit-content;
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3;
     background-color: var(--DefaultColor);
     border: 0.1rem solid var(--ContrastColor);
     border-bottom-left-radius: 0.625rem;
@@ -45,7 +110,7 @@ table#tabledisplay tr:last-of-type {
 }
 
 table#tabledisplay .tbl-content-row:hover {
-    background-color: var(--SelectColor);
+    background-color: var(--SelectBrightColor);
 }
 
 table#tabledisplay tr {
@@ -75,7 +140,8 @@ table#tabledisplay tr.tbl-header-row > th > div > img.commentIconImg {
 
 table#tabledisplay td {
     padding: 0.1rem;
-    padding-left: 0.2rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
     border-right: 0.1rem solid var(--ContrastColor);
 }
 
@@ -98,10 +164,19 @@ table#tabledisplay .tblEditOptions img {
     cursor: pointer;
 }
 
+img.primary-key {
+    width: 0.75rem;
+    height: 1.18rem;
+    padding-left: 0.2rem;
+    float: right;
+}
+
 div#comment-box {
     z-index: 2;
     position: absolute;
     display: none;
+    overflow-wrap: break-word;
+    word-break: break-word;
     align-items: center;
     justify-items: center;
     padding: 0.5rem;

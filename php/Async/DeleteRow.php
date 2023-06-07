@@ -22,7 +22,13 @@ if(isset($_SESSION["DisplayedTable"])) {
 
     if($Table->PrimaryKey) {
         $data = $Data[$Table->PrimaryKey];
-        $Query .= " `$Table->PrimaryKey` = `$data`";
+        $Query .= " `$Table->PrimaryKey` = ";
+        switch ($Table->Columns[$Table->PrimaryKey]->DataType) {
+            case "int": { $Query .= "$data";
+            } break;
+            case "varchar" : { $Query .= "'$data'";
+            } break;
+        }
     }
     else {
         $x = 0;

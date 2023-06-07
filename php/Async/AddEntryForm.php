@@ -38,7 +38,7 @@ if(isset($_SESSION["DisplayedTable"])) {
 $User = $_SESSION["User"];
 $Table = $User->Tables[$_SESSION["DisplayedTable"]];
 print 
-"<div id='default-menu'>
+"<div class='default-menu'>
     <div id='back-icon' backto='$_SESSION[DisplayedTable]'>
         <img class='back-arrow' src='../img/Arrow.png'></img>
     </div>

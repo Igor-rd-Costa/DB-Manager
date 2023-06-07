@@ -10,12 +10,17 @@ main.tableStructureForm {
 
 form#table-structure {
     background-color: var(--DefaultColor);
-    border-bottom-left-radius: 0.625rem;
-    border-bottom-right-radius: 0.625rem;
+    border-bottom-left-radius: 0.6rem;
+    border-bottom-right-radius: 0.6rem;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 3.5rem;
 }
+
+#tbl-structure-menu > :last-child {
+    border-top-right-radius: 0.6rem;
+}
+
 
 table#structure-table {
     border-collapse: collapse;

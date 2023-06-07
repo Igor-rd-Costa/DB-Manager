@@ -4,7 +4,7 @@ main.addEntryForm {
     row-gap: calc(var(--DefaultBorderWidth) * 2);
 }
 
-main.addEntryForm > #default-menu {
+main.addEntryForm > .default-menu {
     grid-column: 1;
     grid-row: 1;
 }

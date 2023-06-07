@@ -30,11 +30,11 @@ function CloseAllOptionMenus() {
     }
 }
 
-function ResizeForm(FormID, FormHeaderID = "default-menu") {
+function ResizeForm(FormID, FormHeaderClass = "default-menu") {
     const Main = document.getElementById("tablewrapper");
     const Form = document.getElementById(FormID);
     if(Form) {
-        const FormHeader = document.getElementById(FormHeaderID);
+        const FormHeader = document.getElementsByClassName(FormHeaderClass)[0];
         const MainHeight = parseFloat(getComputedStyle(Main).height);
         const FormHeaderHight = parseFloat(getComputedStyle(FormHeader).height);
         const RowGap = parseFloat(getComputedStyle(Main).rowGap);
@@ -92,6 +92,30 @@ function LoadTable(TableName, Origin)
     LoadTableRequest.send('TableName=' + TableName);
 }
 
+function LoadTableBrowse() {
+    const loadTableBrowseRequest = new XMLHttpRequest();
+    loadTableBrowseRequest.onreadystatechange=function(){
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("tbl-display-content").innerHTML = this.responseText;
+        }
+    }
+    loadTableBrowseRequest.open('POST', '../php/Async/TableDisplay.php', true);
+    loadTableBrowseRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    loadTableBrowseRequest.send('Request=Browse');
+}
+
+function LoadTableStructure() {
+    const loadTableStructureRequest = new XMLHttpRequest();
+    loadTableStructureRequest.onreadystatechange=function(){
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("tbl-display-content").innerHTML = this.responseText;
+        }
+    }
+    loadTableStructureRequest.open('POST', '../php/Async/TableDisplay.php', true);
+    loadTableStructureRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    loadTableStructureRequest.send('Request=Structure');
+}
+
 function LoadTableStructureForm(TargetName, NumberOfColumns, Mode, InsertOption = "")
 {
     // TargetName = Name of the Table or Column, depending on Mode
@@ -132,24 +156,6 @@ function LoadTableStructureForm(TargetName, NumberOfColumns, Mode, InsertOption 
     }
 }
 
-function LoadTableEntryForm() {
-    const TableEntryRequest = new XMLHttpRequest();
-
-    TableEntryRequest.onreadystatechange=function(){
-        if(this.readyState === 4 && this.status === 200) {
-            const Main = document.getElementById("tablewrapper");
-            Main.innerHTML = this.responseText;
-            Main.style = "";
-            Main.className = "addEntryForm";
-
-            ResizeForm("add-entry");
-        }
-    }
-    TableEntryRequest.open('POST', '../php/Async/AddEntryForm.php', true);
-    TableEntryRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    TableEntryRequest.send();
-}
-
 function GenerateStructureTableRow() {
     const TableRow = document.getElementsByClassName("tableStructureRow")[0].cloneNode(true);
     const TableData = TableRow.children;
@@ -181,29 +187,49 @@ function GenerateStructureTableRow() {
 }
 
 function DeleteTableRow(Data) {
-
     ShowConfirmationPopUp("Remove row from table?")
         .then(() => {
             jsonData = JSON.stringify(Data);
-            const dropTableRequest = new XMLHttpRequest();
-            dropTableRequest.onreadystatechange=function(){
+            const deleteRowRequest = new XMLHttpRequest();
+            deleteRowRequest.onreadystatechange=function(){
                 if(this.readyState == 4 && this.status == 200) {
                     if(this.responseText) {
                         alert(this.responseText);
                     }
                     else {
-                        LoadTable("", "main");
+                        LoadTableBrowse();
                     }
                 }
             }
-            dropTableRequest.open('POST', '../php/Async/DeleteRow.php', true);
-            dropTableRequest.setRequestHeader('Content-Type', 'application/json');
-            dropTableRequest.send(jsonData);
+            deleteRowRequest.open('POST', '../php/Async/DeleteRow.php', true);
+            deleteRowRequest.setRequestHeader('Content-Type', 'application/json');
+            deleteRowRequest.send(jsonData);
         })
         .catch(() => {
             
         })
+}
 
+function DropTableColumn(ColumnName) {
+    return new Promise((resolve) => {
+
+        ShowConfirmationPopUp("This action is permanent!<br>Drop column " + ColumnName  + "?")
+        .then(() => {
+            const dropColumnRequest = new XMLHttpRequest();
+            dropColumnRequest.onreadystatechange=function(){
+                if(this.readyState == 4 && this.status == 200) {
+                    if(this.responseText) alert(this.responseText);
+                    resolve();
+                }
+            }
+            dropColumnRequest.open('POST', '../php/Async/DropColumn.php', true);
+            dropColumnRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            dropColumnRequest.send("ColumnName="+ColumnName);
+        })
+        .catch(() => {
+            
+        })
+    })
 }
 
 function DropTable(TableName = "") {
@@ -252,6 +278,14 @@ function ShowConfirmationPopUp(ConfirmationMessage) {
             }
         })
     })
+}
+
+function HideCommentBox() {
+    const CommentBox = document.getElementById("comment-box");
+    CommentBox.style.display = "";
+    CommentBox.innerHTML = "";
+    CommentBox.style.top = "";
+    CommentBox.style.left = "";
 }
 
 function RequestLogin(username, password)

@@ -1,18 +1,5 @@
 
 /* --------------------- General Form Styles -------------------- */
-:root {
-    --BodyColor: rgb(18, 18, 18);
-    --DefaultColor: rgb(28, 28, 28);
-    --SelectColor: rgb(50, 50, 50);
-    --ContrastColor: rgb(187, 134, 252);
-    --ContrastColor: rgb(207, 154, 252);
-    --TextColor: rgb(147, 147, 147);
-    --HighlightTextColor: rgb(237, 237, 237);
-    --DefaultBorderWidth: 0.2rem;
-    --DefaultBorder: var(--DefaultBorderWidth) solid var(--BodyColor);
-    --ContrastBorder: var(--DefaultBorderWidth) solid var(--ContrastColor);
-}
-
 input, select, textarea {
     border: 0.1rem solid var(--BodyColor);
     height: 1.5rem;
@@ -65,7 +52,7 @@ div#back-icon {
 }
 
 #back-icon:hover {
-    background-color: var(--SelectColor);
+    background-color: var(--SelectBrightColor);
 }
 
 div#form-header img {
@@ -95,7 +82,7 @@ div#form-header > div#close-menu {
 }
 
 div#form-header > div#close-menu:hover {
-    background-color: var(--SelectColor);
+    background-color: var(--SelectBrightColor);
 }
 
 div#formwrapper > * > * {
@@ -137,7 +124,7 @@ font-size: 1rem;
 }
 
 .form-button:hover {
-    background-color: var(--SelectColor);
+    background-color: var(--SelectBrightColor);
 }
 
 p#error-msg, p#reg-error-msg  {

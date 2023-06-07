@@ -1,9 +1,9 @@
 :root {
     --BodyColor: rgb(18, 18, 18);
     --DefaultColor: rgb(28, 28, 28);
-    --SelectColor: rgb(50, 50, 50);
+    --SelectBrightColor: rgb(50, 50, 50);
+    --SelectColor: rgb(35, 35, 35);
     --ContrastColor: rgb(187, 134, 252);
-    --ContrastColor: rgb(207, 154, 252);
     --TextColor: rgb(147, 147, 147);
     --HighlightTextColor: rgb(237, 237, 237);
     --DefaultBorderWidth: 0.2rem;

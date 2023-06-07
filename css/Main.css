@@ -1,7 +1,8 @@
 :root {
     --BodyColor: rgb(18, 18, 18);
     --DefaultColor: rgb(28, 28, 28);
-    --SelectColor: rgb(50, 50, 50);
+    --SelectBrightColor: rgb(50, 50, 50);
+    --SelectColor: rgb(35, 35, 35);
     --ContrastColor: rgb(187, 134, 252);
     --TextColor: rgb(147, 147, 147);
     --HighlightTextColor: rgb(237, 237, 237);
@@ -11,7 +12,7 @@
 }
 
 .table:hover {
-    background-color: var(--SelectColor);
+    background-color: var(--SelectBrightColor);
     border: 0.1rem solid var(--ContrastColor);
 }
 
@@ -141,7 +142,7 @@ div#confirmation-popup > :nth-child(3) {
 
 /*---------- #Default Menu ----------*/
 
-div#default-menu {
+div.default-menu {
     display: grid;
     height: 2rem;
     grid-template-columns: auto 1fr auto;
@@ -153,27 +154,22 @@ div#default-menu {
     border-top-right-radius: 0.625rem;
 }
 
-div#default-menu > :first-child {
+div.default-menu > :first-child {
     border-top-left-radius: 0.625rem;
 }
 
-
-div#default-menu > div:last-of-type {
-    border-top-right-radius: 0.625rem;
-}
-
-div#default-menu > * > img {
+div.default-menu > * > img {
     width: 1rem;
     height: 1rem;
 }
 
-div#default-menu > div#title {
+div.default-menu > div#title {
     position: absolute;
     font-size: calc(2rem - var(--DefaultBorderWidth));
     color: var(--ContrastColor);
 }
 
-div#default-menu > .add-icon-wrapper {
+div.default-menu > .add-icon-wrapper {
     width: 2rem;
     height: 2rem;
     grid-column: 3;
@@ -183,8 +179,8 @@ div#default-menu > .add-icon-wrapper {
     cursor: pointer;
 }
 
-div#default-menu > .add-icon-wrapper:hover {
-    background-color: var(--SelectColor);
+div.default-menu > .add-icon-wrapper:hover {
+    background-color: var(--SelectBrightColor);
 }
 
 #tbl-options {
@@ -199,8 +195,8 @@ div#default-menu > .add-icon-wrapper:hover {
     cursor: pointer;
 }
 
-div#default-menu > #tbl-options:hover {
-    background-color: var(--SelectColor);
+#tbl-options:hover {
+    background-color: var(--SelectBrightColor);
 }
 
 .circle {
@@ -245,7 +241,7 @@ div#default-menu > #tbl-options:hover {
 }
 
 .options-li:hover {
-    background-color: var(--SelectColor);
+    background-color: var(--SelectBrightColor);
 }
 
 .options-li > *:hover {

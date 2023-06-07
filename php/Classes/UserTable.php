@@ -11,13 +11,13 @@ public int $Rows;
 public string $PrimaryKey = "";
 public string $Engine;
 public string $Collation;
-public int $Size;
+public int $Size; // in KiB
 public string $CreationDate;
 public ?string $LastUpdateDate;
 public ?string $Comment;
 public array $Columns;
 public array $TableData;
-public array $ColumnNames;
+public array $ColumnNames;  
 
 
 public function __construct(mysqli $connection, string $databaseName, string $table_name, int $index)
@@ -85,7 +85,7 @@ public function DisplayTable()
         if(!$this->Columns[$field]->Comment) $spanStyle = "style='grid-column: 1 / 3;'";
 
         print "<th class='tbl-header' $thstyle>";
-        print "<div><span $spanStyle>$field</span>";
+        print "<div><span class='column-name' $spanStyle>$field</span>";
         if ($this->Columns[$field]->Comment) {
             print "<img class='commentIconImg' src='../img/Comment.png'></img></div>";
         }
@@ -99,7 +99,7 @@ public function DisplayTable()
             print "<tr class='tbl-content-row'>
                     <td class='tblEditOptions'>
                         <div class='tblOptionsWrapper'>
-                            <img class='removeIcon' src='../img/Remove.png' title='Remove'></img>
+                            <img id='delete-row' class='removeIcon' src='../img/Remove.png' title='Remove'></img>
                         </div>
                     </td>";
             foreach ($this->ColumnNames as $field) {
@@ -120,6 +120,50 @@ public function DisplayTable()
     print "</table>";
 }
 
+public function DisplayStructure() {
+    $totalFields = sizeof($this->ColumnNames);
+    $fieldCount = 0;
+    $thstyle = "";
+    print
+    "<table id='tabledisplay'>
+        <tr class='tbl-header-row'>
+            <th></th>
+            <th class='tbl-header'>#</th>
+            <th class='tbl-header'>Name</th>
+            <th class='tbl-header'>Type</th>
+            <th class='tbl-header'>Collation</th>
+            <th class='tbl-header'>Attributes</th>
+            <th class='tbl-header'>Null</th>
+            <th class='tbl-header'>Default</th>
+            <th class='tbl-header'>Comments</th>
+            <th class='tbl-header'>Extra</th>
+        </tr>";        
+        foreach ($this->Columns as $Column) {
+            $Null = "No";
+            if($Column->Nullable) $Null = "Yes";
+        print
+        "<tr class='tbl-content-row'>
+            <td class='tblEditOptions'>
+                <div class='tblOptionsWrapper'>
+                    <img id='drop-column' class='removeIcon' src='../img/Remove.png' title='Drop'></img>
+                </div>
+            </td>
+            <td class='tblData'>$Column->Index</td>
+            <td class='tblData column-name'>$Column->Name";
+            if ($Column->Key == "PRI") print "<img class='primary-key' src='../img/PrimaryKey.png' title='Primary Key'></img>";
+            print "</td>
+            <td class='tblData'>$Column->Type</td>
+            <td class='tblData'>$Column->Collation</td>
+            <td class='tblData'></td>
+            <td class='tblData'>$Null</td>
+            <td class='tblData'>$Column->Default</td>
+            <td class='tblData' style='width: 15rem; word-break: break-word;'>$Column->Comment</td>
+            <td class='tblData'>".strtoupper($Column->Extra)."</td>
+        </tr>";
+        }
+    print "</table>";
+}
+
 private function UpdateData(mysqli $connection) {
     $this->Rows = 0;
     unset($this->TableData);
@@ -137,22 +181,22 @@ private function UpdateTableStructure(mysqli $connection) {
     $this->Engine = $tableStructure["ENGINE"];
     $this->DatabaseName = $tableStructure["TABLE_SCHEMA"];
     $this->Collation = $tableStructure["TABLE_COLLATION"];
-    $this->Size = $tableStructure["DATA_LENGTH"] / 1024; // in KiB
+    $this->Size = $tableStructure["DATA_LENGTH"] / 1024;
     $this->CreationDate = $tableStructure["CREATE_TIME"];
     $this->LastUpdateDate = $tableStructure["UPDATE_TIME"];
     $this->Comment = $tableStructure["TABLE_COMMENT"];
 }
 
 private function UpdateColumnStructure(mysqli $connection) {
-    $columnStructure = SQL_Query($connection, "SELECT COLUMN_NAME, COLUMN_DEFAULT, IS_NULLABLE, COLUMN_TYPE, DATA_TYPE, NUMERIC_PRECISION, CHARACTER_MAXIMUM_LENGTH, CHARACTER_SET_NAME, COLLATION_NAME, COLUMN_KEY, EXTRA, COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$this->DatabaseName' AND TABLE_NAME = '$this->TableName';");
+    $columnStructure = SQL_Query($connection, "SELECT COLUMN_NAME, ORDINAL_POSITION, COLUMN_DEFAULT, IS_NULLABLE, COLUMN_TYPE, DATA_TYPE, NUMERIC_PRECISION, CHARACTER_MAXIMUM_LENGTH, CHARACTER_SET_NAME, COLLATION_NAME, COLUMN_KEY, EXTRA, COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$this->DatabaseName' AND TABLE_NAME = '$this->TableName';");
     $columnData = array();
     unset($this->ColumnNames);
     while($data = $columnStructure->fetch_assoc()) {
         $columnData[] = $data;
-        $this->Columns[$data["COLUMN_NAME"]] = new Column($data["COLUMN_NAME"], $data["COLUMN_DEFAULT"], $data["IS_NULLABLE"], $data["COLUMN_TYPE"], $data["DATA_TYPE"], $data["NUMERIC_PRECISION"], $data["CHARACTER_MAXIMUM_LENGTH"], $data["CHARACTER_SET_NAME"], $data["COLLATION_NAME"], $data["COLUMN_KEY"], $data["EXTRA"], $data["COLUMN_COMMENT"]);
+        if (!$data["COLUMN_DEFAULT"]) $data["COLUMN_DEFAULT"] = "None";
+        $this->Columns[$data["COLUMN_NAME"]] = new Column($data["COLUMN_NAME"], $data["ORDINAL_POSITION"], $data["COLUMN_DEFAULT"], $data["IS_NULLABLE"], $data["COLUMN_TYPE"], $data["DATA_TYPE"], $data["NUMERIC_PRECISION"], $data["CHARACTER_MAXIMUM_LENGTH"], $data["CHARACTER_SET_NAME"], $data["COLLATION_NAME"], $data["COLUMN_KEY"], $data["EXTRA"], $data["COLUMN_COMMENT"]);
         $this->ColumnNames[] = $data["COLUMN_NAME"];
         if ($this->Columns[$data["COLUMN_NAME"]]->Key == "PRI") $this->PrimaryKey = $data["COLUMN_NAME"];
-        
     }
 }
 }

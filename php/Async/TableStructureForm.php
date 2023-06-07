@@ -20,7 +20,7 @@ if(isset($_SESSION["DisplayedTable"])) $BackTo = $_SESSION["DisplayedTable"];
 if($_POST["NumberOfColumns"] < 1) $_POST["NumberOfColumns"] = 1;
 
 print
-"<div id='default-menu'>
+"<div id='tbl-structure-menu' class='default-menu'>
         <div id='back-icon' backto='$BackTo'>
             <img class='back-arrow' src='../img/Arrow.png'></img>
         </div>

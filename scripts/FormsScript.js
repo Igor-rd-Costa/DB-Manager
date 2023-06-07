@@ -316,3 +316,78 @@ document.addEventListener('submit', (event) => {
 })
 
 })
+class FORM {
+    static Login = 0;
+    static Register = 1;
+    static CreateTable = 3;
+    static AddColumns = 4;
+    static InsertColumn = 5;
+    static InsertEntry = 6;
+}
+
+function ShowForm(form) {
+    switch (form) {
+        case FORM.Login: {
+            
+        } break;
+        case FORM.Register: {
+            
+        } break;
+        case FORM.CreateTable: {
+            document.body.style = 'pointer-events: none';
+            document.getElementById('pr-options').style.display = "none";
+            document.getElementById('menu-title').innerHTML = "Create Table";
+            document.getElementById("form").style.display = "block";
+            document.getElementById("form").style.height = "fit-content";
+            document.getElementById("create-table").style.display = "grid";
+            document.getElementById("add-columns").style.display = "";
+        } break;
+        case FORM.AddColumns: {
+            document.body.style = 'pointer-events: none';
+            document.getElementById('pr-options').style.display = "none";
+            document.getElementById('menu-title').innerHTML = "Add Columns";
+            document.getElementById("form").style.display = "block";
+            document.getElementById("form").style.height = "fit-content";
+            document.getElementById("create-table").style.display = "";
+            document.getElementById("insert-columns").style.display = "";
+            document.getElementById("add-columns").style.display = "grid";    
+        } break;
+        case FORM.InsertColumn: {
+            document.body.style = 'pointer-events: none';
+            document.getElementById('pr-options').style.display = "none";
+            document.getElementById('tbl-option-list').style.display = "none";
+            document.getElementById('menu-title').innerHTML = "Insert Column"; 
+            document.getElementById("form").style.display = "block";
+            document.getElementById("form").style.height = "fit-content";
+            document.getElementById("create-table").style.display = "";
+            document.getElementById("add-columns").style.display = "";
+            document.getElementById("insert-columns").style.display = "grid";
+
+            const TableColumnsSelect = document.getElementById("table-columns");
+            document.getElementById("table-columns").innerHTML = "";
+            let OptionElement;
+            const ColumnNames = document.getElementsByClassName("column-name");
+            for (let x = 0; x < ColumnNames.length; x++) {
+                OptionElement = document.createElement("option");
+                OptionElement.innerHTML = ColumnNames[x].innerHTML;
+                TableColumnsSelect.appendChild(OptionElement);
+            }
+        } break;
+        case FORM.InsertEntry: {
+            const TableEntryRequest = new XMLHttpRequest();
+            TableEntryRequest.onreadystatechange=function(){
+                if(this.readyState === 4 && this.status === 200) {
+                    HideCommentBox();
+                    const Main = document.getElementById("tablewrapper");
+                    Main.innerHTML = this.responseText;
+                    Main.style = "";
+                    Main.className = "addEntryForm";
+                    ResizeForm("add-entry");
+                }
+            }
+            TableEntryRequest.open('POST', '../php/Async/AddEntryForm.php', true);
+            TableEntryRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            TableEntryRequest.send();
+        } break;
+    }
+}

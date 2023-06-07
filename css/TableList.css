@@ -34,7 +34,7 @@ main.tableList {
 }
 
 .list-item-wrapper:hover {
-    background-color: var(--SelectColor);
+    background-color: var(--SelectBrightColor);
 }
 
 .list-item-wrapper:hover > .list-item {
