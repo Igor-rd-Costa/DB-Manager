@@ -11,32 +11,6 @@
     --ContrastBorder: var(--DefaultBorderWidth) solid var(--ContrastColor);
 }
 
-    
-* {
-    box-sizing: border-box;
-}
-
-.small-font {
-    font-size: 1.5em;
-}
-
-.medium-font {
-    font-size: 2.5rem;
-}
-
-.large-font {
-    font-size: 5rem;
-}
-
-.giant-font {
-    font-size: 10rem;
-}
-
-
-.text-white {
-    color: white;
-}
-
 body {
     padding: 0px;
     margin: 0px;
@@ -69,6 +43,10 @@ div#loginwrapper {
     justify-items: center;
 }
 
+div#loginwrapper:hover {
+    background-color: var(--SelectColor);
+}
+
 img#login-img {
     width: 2.5rem;
     height: 2.5rem;
@@ -84,7 +62,6 @@ main {
 
 #main-text-wrapper {
     cursor: default;
-    position: absolute;
     width: fit-content;
     height: fit-content;
     color: var(--ContrastColor);
@@ -92,32 +69,16 @@ main {
     font-family: Garamond;
     align-self: center;
     justify-self: center;
+    grid-column: 1;
+    grid-row: 1;
 }
 
-#sub-main-text {
-    position: relative;
-    width: fit-content;
-}   
-
-div#mainwrapper {
-    width: 100vw;
-    height: calc(100vh - 3.125rem);
+#main-text-wrapper > #main-text {
+    font-size: 4.5rem;
 }
-
-
-div.background-gradient {
-    background-color: var(--BodyColor);
-    display: grid;
-}
-
-#sub-secondary-text {
-   width: fit-content;
-}
-
 #secondary-text-wrapper {
     scale: 0;
     cursor: default;
-    position: absolute;
     width: fit-content;
     height: fit-content;
     color: var(--ContrastColor);
@@ -125,10 +86,16 @@ div.background-gradient {
     font-family: Garamond;
     align-self: center;
     justify-self: center;
-
+    grid-column: 1;
+    grid-row: 1;
 }
 
-div.testss {
-    position: absolute;
-    bottom: 3.125rem;
+#secondary-text-wrapper > #secondary-text {
+    font-size: 4.5rem;
+}
+
+#sub-main-text, #sub-secondary-text {
+    position: relative;
+    width: fit-content;
+    font-size: 1.5em;
 }

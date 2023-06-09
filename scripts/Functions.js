@@ -143,6 +143,8 @@ function LoadTableStructureForm(TargetName, NumberOfColumns, Mode, InsertOption 
                 }
                 
                 ResizeForm("table-structure");
+                document.getElementById("table-structure").addEventListener('submit', TableStructureOnSubmit);
+                document.getElementById("table-structure").addEventListener('change', TableStructureOnChange);
             }
         }
     }

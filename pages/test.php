@@ -26,8 +26,8 @@ $User->FetchTables();
     <link rel="stylesheet" href="../css/AddColumnForm.css"/>
     <link rel="stylesheet" href="../css/TableDisplay.css"/>
     <link rel="stylesheet" href="../css/TableStructureForm.css"/>
+    <script src="../scripts/Forms.js"></script>
     <script src="../scripts/functions.js"></script>
-    <script src="../scripts/FormsScript.js"></script>
     <script type="application/javascript" src="../scripts/Main.js"></script>
     <script type="application/javascript" src="../scripts/MainEvents.js"></script>
     <title>Test Page</title>

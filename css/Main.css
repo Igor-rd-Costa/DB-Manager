@@ -196,7 +196,7 @@ div.default-menu > .add-icon-wrapper:hover {
 }
 
 #tbl-options:hover {
-    background-color: var(--SelectBrightColor);
+    background-color: var(--SelectColor);
 }
 
 .circle {
@@ -281,6 +281,16 @@ div#profilewrapper {
     display: grid;
     grid-template-columns: auto 3rem;
     grid-template-rows: 3.2rem 1fr;
+    border-left: 0.2rem solid var(--BodyColor);
+    cursor: pointer;
+}
+
+div#profilewrapper:hover {
+    background-color: var(--SelectColor);
+}
+
+div#profilewrapper:hover > span#username {
+    text-decoration: underline var(--ContrastColor);
 }
 
 span#username {
@@ -290,7 +300,6 @@ span#username {
     padding-left: 0.3rem;
     font-size: 1.25rem;
     color: var(--HighlightTextColor);
-    cursor: pointer;
 }
 img#user-img {
     justify-self: center;

@@ -28,8 +28,10 @@ if(isset($_GET['logoutRequest']))
     <link rel="stylesheet" href="css/LoginForm.css"/>
     <link rel="stylesheet" href="css/RegisterForm.css"/>
     <link rel="php" href="login.php"/>
-    <script src="scripts/Functions.js"></script>
-    <script src="scripts/FormsScript.js"></script>
+    <script type="application/javascript" src="scripts/Functions.js"></script>
+    <script type="application/javascript" src="scripts/DocEvents.js"></script>
+    <script type="application/javascript" src="scripts/Forms.js"></script>
+    <script type="application/javascript" src="scripts/IndexEvents.js"></script>
     <script type="application/javascript" src="scripts/Index.js"></script>
     <title>DB Manager</title>
 </head>
@@ -73,21 +75,17 @@ if(isset($_GET['logoutRequest']))
             <img id="login-img" src="img/User.png" alt="Login"/>
         </div>
 </header>
-<main>
-<div id="main-text-wrapper">
-    <span class="large-font" id="main-text">DB Manager</span>
-    <br/>
-    <div id="sub-main-text">
-    <span class="small-font">Small Placeholder</span>
+<main id="main">
+    <div id="main-text-wrapper">
+        <span id="main-text">DB Manager</span>
+        <br/>
+        <div id="sub-main-text">Small Placeholder</div>
     </div>
-</div>
-<div id="secondary-text-wrapper">
-    <span class="large-font" id="secondary-text">Placeholder</span>
-    <br/>
-    <div id="sub-secondary-text">
-    <span class="small-font">Small Placeholder</span>
+    <div id="secondary-text-wrapper">
+        <span id="secondary-text">Placeholder</span>
+        <br/>
+        <div id="sub-secondary-text">Small Placeholder</div>
     </div>
-</div>
 </main>
 <?php
 ?>

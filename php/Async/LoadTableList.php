@@ -10,7 +10,7 @@ if(isset($_POST["LoadTables"])) {
 
     if (isset($_SESSION["DisplayedTable"])) unset($_SESSION["DisplayedTable"]);
     print 
-    "<div class='default-menu'>
+    "<div id='tbl-list-menu' class='default-menu'>
     <div id='back-icon' backto='main'>
         <img class='back-arrow' src='../img/Arrow.png'></img>
     </div>

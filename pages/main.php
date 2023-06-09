@@ -28,8 +28,9 @@ if(isset($_SESSION["DisplayedTable"])) unset($_SESSION["DisplayedTable"]);
     <link rel="stylesheet" href="../css/NewEntryForm.css"/>
     <link rel="stylesheet" href="../css/InsertColumnForm.css"/>
     <script src="../scripts/functions.js"></script>
-    <script src="../scripts/FormsScript.js"></script>
+    <script src="../scripts/Forms.js"></script>
     <script type="application/javascript" src="../scripts/MainEvents.js"></script>
+    <script type="application/javascript" src="../scripts/DocEvents.js"></script>
     <script type="application/javascript" src="../scripts/Main.js"></script>
     <title>DB Manager</title>
 </head>

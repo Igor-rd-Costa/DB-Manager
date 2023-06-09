@@ -4,6 +4,10 @@ main.tableList {
     row-gap: calc(var(--DefaultBorderWidth) * 2);
 }
 
+#tbl-list-menu > :last-child {
+    border-top-right-radius: 0.6rem;
+}
+
 #list-wrapper {
     background-color: var(--DefaultColor);
     border-bottom-left-radius: 0.625rem;
@@ -29,8 +33,7 @@ main.tableList {
     cursor: pointer;
     display: grid;
     grid-template-rows: 5.5rem;
-    grid-template-columns: 12rem auto; 
-
+    grid-template-columns: 12rem auto;
 }
 
 .list-item-wrapper:hover {

@@ -51,88 +51,16 @@ window.addEventListener('resize', () => {
         }
     }
 })
+
 let TableComments;
 document.addEventListener('DOMContentLoaded', () => {
-    let profileOptionsDisplay = false;
-    const ShowTableList = document.getElementById('tbl-list-display');
-    const AddTableElement = document.getElementById('addTable');
-    const Header = document.getElementById("header");
     const Main = document.getElementById("tablewrapper");
     
-    Main.addEventListener('click', HandleMainClick);
-
-    Main.addEventListener('mouseover', (event) => {
-        const Target = event.target;
-        const CommentIcon = Target.closest(".commentIconImg");
-        const TableOptions = Target.closest(".tblEditOptions");
-        if (CommentIcon) {
-            const CommentBox = document.getElementById("comment-box");
-            let offSetX = CommentIcon.offsetLeft / 16;
-            let offSetY = CommentIcon.offsetTop / 16;
-            let TargetWidth = parseInt(getComputedStyle(CommentIcon).width) / 16;
-            let TargetHeight = parseInt(getComputedStyle(CommentIcon).height) / 16;
-            CommentBox.style.display = "grid";
-            CommentBox.style.left = (offSetX + TargetWidth) + "rem";
-            CommentBox.style.top = (offSetY + TargetHeight) + "rem";
-            const columnName = Target.closest(".tbl-header").querySelector("span").innerHTML;
-            CommentBox.innerHTML = "<span>" + TableComments[columnName] + "</span>";
-        }
-        if(TableOptions) {
-            const Row = Target.closest(".tbl-content-row");
-            const RemoveIcon = Target.closest(".removeIcon");
-            switch(Target) {
-                case RemoveIcon: {
-                    Row.style.color = "rgb(151, 98, 216)";
-                }
-            }
-        }
-    })
-    Main.addEventListener('mouseout', (event) => {
-        const Target = event.target;
-        const CommentIcon = Target.closest(".commentIconImg");
-        const TableOptions = Target.closest(".tblEditOptions");
-        if (CommentIcon) {
-            HideCommentBox();
-        }
-        if(TableOptions) {
-            const Row = Target.closest(".tbl-content-row");
-            const RemoveIcon = Target.closest(".removeIcon");
-            switch(Target) {
-                case RemoveIcon: {
-                    Row.style.color = "";
-                }
-            }
-        }
-    })
-
-    Main.addEventListener('change', (event) => {
-        const Target = event.target;
-
-        if(Target.name == "Entry_AI" && Target.checked) {
-            const Row = Target.closest(".tableStructureRow");
-            Row.getElementsByClassName("Entry_Index")[0].selectedIndex = 1; //PRIMARY
-        }
-        if(Target.name == "Entry_Default") {
-            if (Target.selectedIndex == 1) { //NULL
-                const Row = Target.closest(".tableStructureRow");
-                Row.getElementsByClassName("Entry_Null")[0].checked = true;
-            }
-        }
-    })
+    document.addEventListener('click', DocOnClick);
+    document.addEventListener('mousedown', DocOnMouseDown);
+    document.addEventListener('mouseup', DocOnMouseUp);
     
-    //profile events
-    document.addEventListener('click', (event) => {
-        const Target = event.target;
-        const Profile = Target.closest("#profilewrapper");
-        const TblMoreOptions = Target.closest("#tbl-options");
-        if(Profile) {
-            ToggleOptionMenuDisplay("pr-options");
-        }
-        else if (TblMoreOptions) {
-            ToggleOptionMenuDisplay("tbl-option-list");
-        }
-        else {
-            CloseAllOptionMenus();
-        }
-    })
+    Main.addEventListener('click', MainOnClick);
+    Main.addEventListener('mouseover', MainOnMouseOver);
+    Main.addEventListener('mouseout', MainOnMouseOut);
 })
