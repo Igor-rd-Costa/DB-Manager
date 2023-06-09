@@ -9,5 +9,7 @@ you can change this and other connection options by changing the values of the `
 
 ## Currently Supported Features
 
-* Login and Registration
-* Table Visualization and Creation
+* Login and registration
+* Creation and visualization of tables
+* Insertion of columns and table data
+* Removal of tables, columns and table data
