@@ -34,10 +34,6 @@ function IndexMainOnWheel(e) {
             }
             AnimateElement(mainTextWrapper, { transform: 'scale(' + mainElementCurrentSize + ')' }, { transform: 'scale(' + (mainElementCurrentSize - 0.1) + ')' });
             mainElementCurrentSize = mainElementCurrentSize - 0.1;
-            if(secElementCurrentSize >= 1) {
-                console.log(secElementCurrentSize)
-                console.log(secTextWrapper);
-            }
         }
     }
     else { // Mouse up: Increases main texts' size and decreases secondary texts' size;

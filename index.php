@@ -27,7 +27,6 @@ if(isset($_GET['logoutRequest']))
     <link rel="stylesheet" href="css/Forms.css"/>
     <link rel="stylesheet" href="css/LoginForm.css"/>
     <link rel="stylesheet" href="css/RegisterForm.css"/>
-    <link rel="php" href="login.php"/>
     <script type="application/javascript" src="scripts/Functions.js"></script>
     <script type="application/javascript" src="scripts/DocEvents.js"></script>
     <script type="application/javascript" src="scripts/Forms.js"></script>

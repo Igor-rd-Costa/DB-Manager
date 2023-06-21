@@ -1,7 +1,5 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-//login events
-   
     const Main = document.getElementById("main");
     const Header = document.getElementById("header");
     

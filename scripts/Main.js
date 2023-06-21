@@ -53,6 +53,7 @@ window.addEventListener('resize', () => {
 })
 
 let TableComments;
+let displayedTableName;
 document.addEventListener('DOMContentLoaded', () => {
     const Main = document.getElementById("tablewrapper");
     

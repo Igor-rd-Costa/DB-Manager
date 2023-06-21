@@ -83,6 +83,7 @@ function LoadTable(TableName, Origin)
             if(response[1]) TableComments = JSON.parse(response[1]);
             Main.innerHTML = response[0];
             Main.className = "displayTable";
+            Main.addEventListener('dblclick', MainOnDblClick);
 
             document.getElementById('back-icon').setAttribute("backto", Origin);
         }
@@ -214,7 +215,6 @@ function DeleteTableRow(Data) {
 
 function DropTableColumn(ColumnName) {
     return new Promise((resolve) => {
-
         ShowConfirmationPopUp("This action is permanent!<br>Drop column " + ColumnName  + "?")
         .then(() => {
             const dropColumnRequest = new XMLHttpRequest();
@@ -257,13 +257,27 @@ function DropTable(TableName = "") {
     })
 }
 
+function RenameTable(newName) {
+    const renameRequest = new XMLHttpRequest();
+    renameRequest.onreadystatechange=function () {
+        if(this.readyState === 4 && this.status === 200) {
+            if (this.responseText) {
+                alert(this.responseText);
+            }
+        }        
+    }
+    renameRequest.open('POST', '../php/Async/RenameTable.php', true);
+    renameRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    renameRequest.send("NewName="+newName);
+}
+
 function ShowConfirmationPopUp(ConfirmationMessage) {
     return new Promise((confirm, deny) => {
         const PopUp = document.getElementById("confirmation-popup");
 
         PopUp.style.display = "grid";
         PopUp.querySelector("span").innerHTML = ConfirmationMessage;
-        
+        PopUp.querySelector("#confirm-popup").focus();
         PopUp.addEventListener('click', (event) => {
             const Target = event.target;
             if(Target.id == "confirm-popup") {

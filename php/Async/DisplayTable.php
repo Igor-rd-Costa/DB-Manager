@@ -50,9 +50,7 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
             </div>
         </div>
         <div id='table-menu'>
-        <div id='title'>
-                $Table->TableName 
-            </div>
+            <div id='title'>$Table->TableName</div>
             <div id='tbl-options'>
                 <div class='circle' id='circle1'></div>
                 <div class='circle' id='circle2'></div>
@@ -61,6 +59,7 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
             <ul id='tbl-option-list' class='options-ul'>
                 <li class='options-li' id='tbl-new-entry'><span>New Entry</span></li>
                 <li class='options-li' id='tbl-add-column'><span>Add Column</span></li>
+                <li class='options-li' id='rename-table'><span>Rename</span></li>
                 <li class='options-li' id='drop-table'><span>Drop Table</span></li>
             </ul>
         </div>

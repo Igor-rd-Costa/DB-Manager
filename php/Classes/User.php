@@ -99,9 +99,11 @@ Class User extends Connection {
     }
 
     public function CheckTableName(string $TableName) {
-        foreach($this->Tables as $Table) {
-            if($Table->TableName == $TableName) {
-                return true;
+        if (isset($this->Tables)) {
+            foreach($this->Tables as $Table) {
+                if($Table->TableName == $TableName) {
+                    return true;
+                }
             }
         }
         return false;

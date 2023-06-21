@@ -1,3 +1,4 @@
 *.ini
 *.code-workspace
 ToAdd.xml
+.vscode

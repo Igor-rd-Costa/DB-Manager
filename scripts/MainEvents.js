@@ -25,18 +25,18 @@ function MainOnClick(e) {
         if (DisplayTableMenu) {
             const Option = e.target.closest("div");        
             const SelectedOpt = DisplayTableMenu.querySelector(".opt-selected");
-            function SwapSelectedOption() {
+            function ChangeSelectedOption() {
                     SelectedOpt.classList.remove("opt-selected");
                     Option.classList.add("opt-selected");
             }
             if(Option != SelectedOpt) {
                 switch (Option.id) {
                     case "tbl-browse-opt": {
-                        SwapSelectedOption();
+                        ChangeSelectedOption();
                         LoadTableBrowse();
                     } break;
                     case "tbl-structure-opt": {
-                        SwapSelectedOption();
+                        ChangeSelectedOption();
                         LoadTableStructure();
                     } break;
                 }    
@@ -44,9 +44,14 @@ function MainOnClick(e) {
         }
         else if (TableOptions) {
             switch (TableOptions.id) {
-                case "tbl-new-entry": { ShowForm(FORM.InsertEntry);
-                } break;
-                case "tbl-add-column": { ShowForm(FORM.InsertColumn);
+                case "tbl-new-entry": { ShowForm(FORM.InsertEntry); } break;
+                case "tbl-add-column": { ShowForm(FORM.InsertColumn); } break;
+                case "rename-table": { 
+                    const dblClickEvent = new Event('dblclick', { 'bubbles': true });
+                    const TableMenu = e.target.closest("#table-menu");
+                    const Title = TableMenu.querySelector("#title");
+                    Title.dispatchEvent(dblClickEvent);
+
                 } break;
                 case "drop-table": { 
                     const Click = new Event('click', {'bubbles': true});
@@ -100,6 +105,20 @@ function MainOnClick(e) {
     }
 }
 
+function MainOnDblClick(e) {
+    const Target = e.target;
+    const Main = document.getElementById("tablewrapper");
+    if (Main.classList.contains("displayTable") && Target.id == "title") {
+        displayedTableName = Target.innerHTML;
+        Target.contentEditable = true;
+        Target.focus();
+        Target.addEventListener('keydown', TblTitleOnKeyDown);
+        Target.addEventListener('focusout', TblTitleOnFocusOut);
+        document.getElementById("tbl-options").style.pointerEvents = "none";
+        document.getSelection().setPosition(Target, 1);
+    }
+}
+
 function MainOnMouseOver(e) {
     const Target = e.target;
     const CommentIcon = Target.closest(".commentIconImg");
@@ -142,5 +161,37 @@ function MainOnMouseOut(e) {
                 Row.style.color = "";
             }
         }
+    }
+}
+
+function TblTitleOnFocusOut(e) {
+    const Target = e.target;
+    document.getElementById("tbl-options").style.pointerEvents = "all";
+    Target.removeEventListener('focusout', TblTitleOnFocusOut);
+    const Main = document.getElementById("tablewrapper");
+    if (Main.classList.contains("displayTable") && Target.id == "title") {
+        if ((Target.innerHTML != displayedTableName) && (Target.innerHTML != "<br>")) {
+            ShowConfirmationPopUp("Rename table "+displayedTableName+" to "+Target.innerHTML+"?").then(() => {
+                RenameTable(Target.innerHTML.replace(' ', ''));
+            })
+            .catch(() => {
+                Target.contentEditable = false;
+                Target.innerHTML = displayedTableName;
+            })
+            .finally(() => { Target.removeEventListener('keydown', TblTitleOnKeyDown); })
+        }
+        else {
+            Target.contentEditable = false;
+            Target.innerHTML = displayedTableName;
+        }
+    }
+}
+
+function TblTitleOnKeyDown(e) {
+    const Target = e.target;
+    if (e.keyCode === 13) { // Enter
+        e.preventDefault(); 
+        let focusOut = new Event('focusout', {'bubbles': true});
+        Target.dispatchEvent(focusOut);
     }
 }
