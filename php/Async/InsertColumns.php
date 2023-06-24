@@ -71,13 +71,13 @@ if(isset($_SESSION["DisplayedTable"], $_SESSION["InsertColumn"])) {
         return;
     }
     try { 
-        //$command = mysqli_real_escape_string($User->Connection, $command);
-        SQL_Query($User->Connection, $command); }
+        SQL_Query($User->Connection, $command); 
+    }
     catch (mysqli_sql_exception $e) { 
         print $e->getMessage(); 
-        print "\n" . $command;
     }
     $User->FetchTables();
+    unset($_SESSION["InsertColumn"]);
 }
 else header("location: ../../pages/main.php");
 ?>

@@ -3,11 +3,11 @@ session_start();
 session_unset();
 try {
     include_once "Config.php";
-    SQL_Connect(CONFIG_INFO::$ServerHostname, CONFIG_INFO::$ServerUser, CONFIG_INFO::$ServerPassword, CONFIG_INFO::$AdminDatabaseName);
+    SQL_Connect(CONFIG::$ServerHostname, CONFIG::$ServerUser, CONFIG::$ServerPassword, CONFIG::$AdminDatabaseName);
 }
 catch(mysqli_sql_exception)
 {
-    CONFIG_InitialSetup();
+    CONFIG::Init();
 }
 
 if(isset($_GET['logoutRequest']))

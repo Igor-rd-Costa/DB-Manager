@@ -74,4 +74,5 @@ print
     </form>
 </div>";
 }
+else header('location: ../../pages/main.php');
 ?>

@@ -7,6 +7,7 @@ function MainOnClick(e) {
     const AddTableElement = document.getElementById('addTable');
     const AddIcon = e.target.closest(".add-icon-wrapper");
     const DeleteIcon = e.target.closest(".removeIcon");
+    const EditIcon = e.target.closest(".editIcon");
 
     if (Table) {
         switch (Table) {
@@ -25,18 +26,12 @@ function MainOnClick(e) {
         if (DisplayTableMenu) {
             const Option = e.target.closest("div");        
             const SelectedOpt = DisplayTableMenu.querySelector(".opt-selected");
-            function ChangeSelectedOption() {
-                    SelectedOpt.classList.remove("opt-selected");
-                    Option.classList.add("opt-selected");
-            }
             if(Option != SelectedOpt) {
                 switch (Option.id) {
                     case "tbl-browse-opt": {
-                        ChangeSelectedOption();
                         LoadTableBrowse();
                     } break;
                     case "tbl-structure-opt": {
-                        ChangeSelectedOption();
                         LoadTableStructure();
                     } break;
                 }    
@@ -61,6 +56,16 @@ function MainOnClick(e) {
                 } break;
             }
         }
+        else if (EditIcon) {
+            const Row = e.target.closest(".tbl-content-row");
+            switch (EditIcon.id) {
+                case "edit-column": {
+                    LoadTableStructureForm(TableStructureFormMode.AlterColumn, Row.querySelector(".column-name").innerText, 1);
+                }
+            }
+
+
+        }
         else if (DeleteIcon) {
             const Row = e.target.closest(".tbl-content-row");
             switch (DeleteIcon.id) {
@@ -73,7 +78,7 @@ function MainOnClick(e) {
                     DeleteTableRow(Data);
                 } break;
                 case "drop-column": {
-                    const ColumnName = Row.querySelector(".column-name").innerHTML;
+                    const ColumnName = Row.querySelector(".column-name").innerText;
                     DropTableColumn(ColumnName).then(() => {
                         LoadTableStructure();
                     })
@@ -82,7 +87,7 @@ function MainOnClick(e) {
         }
         return;
     }
-    if (TableListWrapper) {
+    else if (TableListWrapper) {
         const TableListItem = e.target.closest(".list-item-wrapper");  
         if (TableListItem) {
             const DropTableIcon = e.target.closest("#drop-table");

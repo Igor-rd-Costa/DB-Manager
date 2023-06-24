@@ -15,11 +15,10 @@ Class RegisterRequest {
         try
         {
         include_once "../../config.php";
-        $ServerHostname = CONFIG_INFO::$ServerHostname;
-        $ServerUser = CONFIG_INFO::$ServerUser;
-        $ServerPassword = CONFIG_INFO::$ServerPassword;
-        $AdminUsername = CONFIG_INFO::$AdminUsername;
-        $AdminDatabase = CONFIG_INFO::$AdminDatabaseName;
+        $ServerHostname = CONFIG::$ServerHostname;
+        $ServerUser = CONFIG::$ServerUser;
+        $ServerPassword = CONFIG::$ServerPassword;
+        $AdminDatabase = CONFIG::$AdminDatabaseName;
 
         $this->Connection = SQL_Connect($ServerHostname, $ServerUser, $ServerPassword, $AdminDatabase);
         $this->ValidateFirstName($firstname);
@@ -113,8 +112,7 @@ Class RegisterRequest {
         }
         else
         {
-            $salt = sprintf('$2y$%02d$', 10) . bin2hex(random_bytes(32));
-            $password = crypt($password, $salt) . "@" . $salt;
+            $password = password_hash($password, null);
             $this->Password = mysqli_real_escape_string($this->Connection, $password);
         }
     }
@@ -122,21 +120,16 @@ Class RegisterRequest {
     function SendRegistrationRequest(string $userpassword)
     {
         include_once "../../config.php";
-        $ServerHostname = CONFIG_INFO::$ServerHostname;
+        $ServerHostname = CONFIG::$ServerHostname;
         
         try
         {
-        $stmt = $this->Connection->prepare("INSERT INTO users (FirstName, LastName, Email, Username, Password) VALUES (?, ?, ?, ?, ?);");
-        $stmt->bind_param("sssss", $this->FirstName, $this->LastName, $this->Email, $this->Username, $this->Password);
-        $stmt->execute();
-        $usercreation_stmt = $this->Connection->prepare("CREATE USER '$this->Username'@'$ServerHostname' IDENTIFIED BY '$userpassword';");
-        $usercreation_stmt->execute();
-        $dbcreation = $this->Connection->prepare("CREATE DATABASE $this->Username;");
-        $dbcreation->execute();
-        $setpermissions = $this->Connection->prepare("GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP ON $this->Username.* to '$this->Username'@'$ServerHostname';");
-        $setpermissions->execute();
+            SQL_Query($this->Connection, "INSERT INTO users (FirstName, LastName, Email, Username, Password) VALUES (?, ?, ?, ?, ?);", "sssss", $this->FirstName, $this->LastName, $this->Email, $this->Username, $this->Password);
+            SQL_Query($this->Connection, "CREATE USER '$this->Username'@'$ServerHostname' IDENTIFIED BY '$userpassword';");
+            SQL_Query($this->Connection, "CREATE DATABASE $this->Username;");
+            SQL_Query($this->Connection, "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP ON $this->Username.* to '$this->Username'@'$ServerHostname';");
         }
-        catch(Exception $e)
+        catch(mysqli_sql_exception $e)
         {
             throw new Exception($e->getMessage());
         }

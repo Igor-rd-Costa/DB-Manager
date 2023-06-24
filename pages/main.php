@@ -9,8 +9,8 @@ if(!$User = $_SESSION['User'])
 } 
 $User->Connect();
 $User->FetchTables();
-if(isset($_SESSION["DisplayedTable"])) unset($_SESSION["DisplayedTable"]);
 
+UnsetCachedVariables();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,12 +59,12 @@ if(isset($_SESSION["DisplayedTable"])) unset($_SESSION["DisplayedTable"]);
             <label for="table-name">Table Name</label>
             <input type="text" name="table-name" id="table-name" required=""/>
             <label for="column-amount">Number of columns</label>
-            <input type="number" name="column-amount" id="column-amount" required=""/>
+            <input type="number" name="column-amount" id="column-amount"/>
             <button type="submit" class="submit form-button">Create</button>
         </form>
         <form id="add-columns" method="post">
             <label for="columns">Number of columns</label>
-            <input type="number" name="columns" id="columns" required=""/>
+            <input type="number" name="columns" id="columns"/>
             <button type="submit" class="submit form-button">Add</button>
         </form>
         <form id="insert-columns" method="post">
@@ -87,13 +87,13 @@ if(isset($_SESSION["DisplayedTable"])) unset($_SESSION["DisplayedTable"]);
         <img id="user-img" src="../img/User.png" alt="Profile"/>
             <ul id="pr-options" class="options-ul">
                 <li id="pr-logout" class="options-li"><a href="../?logoutRequest=true">Logout</a></li>
-                <?php if ($User->Username == CONFIG_INFO::$AdminUsername) : ?>
+                <?php if ($User->Username == CONFIG::$AdminUsername) : ?>
                 <li class="options-li"><a href="test.php">Test Page</a></li>
                 <?php endif; ?>
             </ul>
     </div>
     </header>
-    <section id="side-menu" style="color: var(--TextColor);">
+    <section id="side-menu" style="color: var(--TextColor);"> 
     </section>
     <main id="tablewrapper" class="tableCards">
         <?php
@@ -119,11 +119,9 @@ if(isset($_SESSION["DisplayedTable"])) unset($_SESSION["DisplayedTable"]);
         }}
         ?>
         <div class="table" id="addTable">
-            <div id="horz-line"></div><div id="vert-line"></div>
+            <div id="horz-line"></div>
+            <div id="vert-line"></div>
         </div>
     </main>
-    <?php if(isset($_SESSION["Info"])) {
-        print $_SESSION["Info"];
-    } ?>
 </body>
 </html>

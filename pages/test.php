@@ -6,7 +6,7 @@ include_once "../php/Classes/User.php";
 session_start();
 $User = $_SESSION["User"];
 
-if($User->Username != CONFIG_INFO::$AdminUsername) {
+if($User->Username != CONFIG::$AdminUsername) {
     header("location: main.php");
 }
 
@@ -45,9 +45,6 @@ $User->FetchTables();
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-           
-        })
     </script>
 </head>
 <body>

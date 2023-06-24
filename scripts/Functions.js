@@ -98,6 +98,8 @@ function LoadTableBrowse() {
     loadTableBrowseRequest.onreadystatechange=function(){
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById("tbl-display-content").innerHTML = this.responseText;
+            document.getElementById("tbl-structure-opt").classList.remove("opt-selected");
+            document.getElementById("tbl-browse-opt").classList.add("opt-selected");
         }
     }
     loadTableBrowseRequest.open('POST', '../php/Async/TableDisplay.php', true);
@@ -110,6 +112,8 @@ function LoadTableStructure() {
     loadTableStructureRequest.onreadystatechange=function(){
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById("tbl-display-content").innerHTML = this.responseText;
+            document.getElementById("tbl-browse-opt").classList.remove("opt-selected");
+            document.getElementById("tbl-structure-opt").classList.add("opt-selected");
         }
     }
     loadTableStructureRequest.open('POST', '../php/Async/TableDisplay.php', true);
@@ -117,18 +121,23 @@ function LoadTableStructure() {
     loadTableStructureRequest.send('Request=Structure');
 }
 
-function LoadTableStructureForm(TargetName, NumberOfColumns, Mode, InsertOption = "")
-{
+class TableStructureFormMode {
+    static NewTable = 0;
+    static AddColumn = 1;
+    static AlterColumn = 2;
+}
+
+function LoadTableStructureForm(FormMode, TargetName, NumberOfColumns = 1, InsertOption = "") {
     // TargetName = Name of the Table or Column, depending on Mode
-    // Mode 0 = Structure Form for a new table, 1 = Structure Form to add columns to an existing table
-    if (Mode === 1){
+    if (FormMode === TableStructureFormMode.AddColumn){
         TargetName = document.getElementById("table-columns").value;
     }
+    if (NumberOfColumns < 1) NumberOfColumns = 1;
+
     
-    let tblStructureFormRequest = new XMLHttpRequest();
+    const tblStructureFormRequest = new XMLHttpRequest();
     tblStructureFormRequest.onreadystatechange=function(){
-        if(this.readyState == 4 && this.status == 200)
-        {
+        if(this.readyState == 4 && this.status == 200) {
             if(this.responseText.includes("[Request Error]")) {
                 alert(this.responseText.split("[Request Error]")[1]);
             }
@@ -139,10 +148,59 @@ function LoadTableStructureForm(TargetName, NumberOfColumns, Mode, InsertOption 
                 document.body.style = "pointer-events: all;";
                 Main.innerHTML = this.response;
                 Main.className = "tableStructureForm";
-                if(Mode === 0) {
+                if(FormMode === TableStructureFormMode.NewTable) {
                     document.getElementById("Table_Name").value = TargetName;
                 }
-                
+                else if (FormMode === TableStructureFormMode.AlterColumn) {
+                    GetColumnInfo(TargetName).then((columnInfo) => {
+                        columnInfo = JSON.parse(columnInfo);
+                        const Table = document.getElementById("structure-table");
+                        const Row = Table.querySelector(".tableStructureRow");
+                        const RowChilds = Row.children;
+                        for (x = 0; x < RowChilds.length; x++) {
+                            let Input = RowChilds[x].firstElementChild;
+                            switch (Input.name) {
+                                case "Entry_Name": {
+                                    Input.value = columnInfo.Name;
+                                } break;
+                                case "Entry_Type": {
+                                    switch (columnInfo.DataType) {
+                                        case "int": Input.selectedIndex = 0; break;
+                                        case "varchar": Input.selectedIndex = 1; break;
+                                    }
+                                } break;
+                                case "Entry_LenVal": {
+                                    Input.value = columnInfo.Type.split('(')[1].split(')')[0];
+                                } break;
+                                case "Entry_Default": {
+                                    switch (columnInfo.Default) {
+                                        case "None": Input.selectedIndex = 0; break;
+                                        case "NULL": Input.selectedIndex = 1; break;
+                                    }
+                                } break;
+                                case "Entry_Attributes": {
+                                    if(columnInfo.Collation && columnInfo.Collation.includes("_bin")) Input.selectedIndex = 1;
+                                    else if (columnInfo.Type.includes('unsigned')) {
+                                        if (columnInfo.Type.includes('zerofill')) Input.selectedIndex = 3;
+                                        else Input.selectedIndex = 2;
+                                    } 
+                                } break;
+                                case "Entry_Null": {
+                                    if (columnInfo.Nullable) Input.checked = true;
+                                } break;
+                                case "Entry_Index": {
+                                    if (columnInfo.Key === "PRI") Input.selectedIndex = 1;
+                                } break;
+                                case "Entry_AI": {
+                                    if (columnInfo.Extra === "auto_increment") Input.checked = true;
+                                } break;
+                                case "Entry_Comments": {
+                                    Input.value = columnInfo.Comment;
+                                } break;
+                            }
+                        }
+                    })
+                }
                 ResizeForm("table-structure");
                 document.getElementById("table-structure").addEventListener('submit', TableStructureOnSubmit);
                 document.getElementById("table-structure").addEventListener('change', TableStructureOnChange);
@@ -151,18 +209,36 @@ function LoadTableStructureForm(TargetName, NumberOfColumns, Mode, InsertOption 
     }
     tblStructureFormRequest.open('POST', '../php/Async/TableStructureForm.php', true);
     tblStructureFormRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    if (Mode === 0) { // Create new table
-        tblStructureFormRequest.send('TableName=' + TargetName + '&NumberOfColumns=' + NumberOfColumns);
+
+    if (FormMode === TableStructureFormMode.NewTable) { // Create new table
+        tblStructureFormRequest.send('FormMode='+FormMode+'&TableName=' + TargetName + '&NumberOfColumns=' + NumberOfColumns);
     }
-    if (Mode === 1) { // Insert Column
-        tblStructureFormRequest.send('NumberOfColumns=' + NumberOfColumns + "&InsertOption=" + InsertOption + "&ColumnName=" + TargetName);
+    else if (FormMode === TableStructureFormMode.AddColumn) { // Insert Column
+        tblStructureFormRequest.send('FormMode='+FormMode+'&NumberOfColumns=' + NumberOfColumns + '&InsertOption=' + InsertOption + '&ColumnName=' + TargetName);
     }
+    else if (FormMode === TableStructureFormMode.AlterColumn) { // Alter Column
+        tblStructureFormRequest.send('FormMode='+FormMode+'&NumberOfColumns=' + NumberOfColumns + '&ColumnName=' + TargetName);
+    }
+}
+
+function GetColumnInfo(TargetName) {
+    return new Promise((resolve) => {
+
+        const columnInfoRequest = new XMLHttpRequest();
+        columnInfoRequest.onreadystatechange=function (){
+            if(this.readyState === 4 && this.status === 200) {
+                resolve(this.response);
+            }
+        }
+        columnInfoRequest.open('POST', '../php/Async/Queries.php');
+        columnInfoRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        columnInfoRequest.send("ColumnName="+TargetName);
+    })
 }
 
 function GenerateStructureTableRow() {
     const TableRow = document.getElementsByClassName("tableStructureRow")[0].cloneNode(true);
     const TableData = TableRow.children;
-    TableData.length
     for(let x = 0; x < TableData.length; x++) {
         let Element = TableData[x].firstElementChild;
         switch (Element.name) {
@@ -266,9 +342,9 @@ function RenameTable(newName) {
             }
         }        
     }
-    renameRequest.open('POST', '../php/Async/RenameTable.php', true);
+    renameRequest.open('POST', '../php/Async/EditQueries.php', true);
     renameRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    renameRequest.send("NewName="+newName);
+    renameRequest.send("RenameTable="+newName);
 }
 
 function ShowConfirmationPopUp(ConfirmationMessage) {

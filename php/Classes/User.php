@@ -15,11 +15,11 @@ Class User extends Connection {
     function __construct(string $username, string $password)
     {   
         include_once "../../Config.php";
-        $ServerHostname = CONFIG_INFO::$ServerHostname;
-        $ServerUser = CONFIG_INFO::$ServerUser;
-        $ServerPassword = CONFIG_INFO::$ServerPassword;
-        $AdminUsername = CONFIG_INFO::$AdminUsername;
-        $AdminDatabase = CONFIG_INFO::$AdminDatabaseName;
+        $ServerHostname = CONFIG::$ServerHostname;
+        $ServerUser = CONFIG::$ServerUser;
+        $ServerPassword = CONFIG::$ServerPassword;
+        $AdminUsername = CONFIG::$AdminUsername;
+        $AdminDatabase = CONFIG::$AdminDatabaseName;
 
         try
         {
@@ -31,18 +31,12 @@ Class User extends Connection {
             $this->LoginError = $e->getMessage();
         }
 
-        $selectquery = $connection->prepare("SELECT * FROM users WHERE BINARY Username = ?;");
-        $selectquery->bind_param("s", $username);
-        $selectquery->execute();
-        $result = $selectquery->get_result();
+        $result = SQL_Query($connection, "SELECT * FROM users WHERE BINARY Username = ?;", "s", $username);
         if($result->num_rows != 0)
         {
             while($row = $result->fetch_assoc())
             {
-                $typed_password = $password;
-                $fetched_password = preg_split('/@/', $row["Password"]);
-                $typed_password = crypt($typed_password, $fetched_password[1]);
-                if($typed_password === $fetched_password[0])
+                if(password_verify($password, $row["Password"]))
                 {
                     $this->FirstName = $row["FirstName"];
                     $this->LastName = $row["LastName"];
@@ -86,10 +80,10 @@ Class User extends Connection {
 
     public function FetchTables() {
         $this->Connect();
-        $return = SQL_Query($this->Connection, "SHOW TABLES;");
+        $result = SQL_Query($this->Connection, "SHOW TABLES;");
         $tables = array();
         $string = "Tables_in_" . strtolower($this->DatabaseName);
-        while($row = $return->fetch_assoc()) {
+        while($row = $result->fetch_assoc()) {
             $tables[] = $row[$string];
         }
         unset($this->Tables);

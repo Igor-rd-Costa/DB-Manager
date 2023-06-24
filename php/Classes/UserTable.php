@@ -145,6 +145,7 @@ public function DisplayStructure() {
         "<tr class='tbl-content-row'>
             <td class='tblEditOptions'>
                 <div class='tblOptionsWrapper'>
+                    <img id='edit-column' class='editIcon' src='../img/Edit.png' title='Change'></img>
                     <img id='drop-column' class='removeIcon' src='../img/Remove.png' title='Drop'></img>
                 </div>
             </td>

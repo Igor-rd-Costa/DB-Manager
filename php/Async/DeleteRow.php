@@ -3,14 +3,14 @@ include_once "../Functions.php";
 include_once "../Classes/User.php";
 session_start();
 
-if(isset($_SESSION["DisplayedTable"])) {
+$jsonData = file_get_contents("php://input");
+$jsonData = json_decode($jsonData, true);
+if($jsonData && isset($_SESSION["DisplayedTable"])) {
 
     $User = $_SESSION["User"];
     $User->Connect();
     $Table = $User->Tables[$_SESSION["DisplayedTable"]];
     
-    $jsonData = file_get_contents("php://input");
-    $jsonData = json_decode($jsonData, true);
 
     $index = 0;
     foreach ($Table->ColumnNames as $ColumnName) {

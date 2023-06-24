@@ -119,7 +119,9 @@ function ShowForm(form) {
 }
 
 function GetFieldFromRow(Row, elementClass) {
-    return Row.getElementsByClassName(elementClass)[0];
+    const Element = Row.getElementsByClassName(elementClass)[0];
+    if (Element) return Element;
+    else return null; 
 }
 
 function FormsOnClick(e) {
@@ -167,17 +169,14 @@ function RegisterOnSubmit(e) {
 function CreateTableOnSubmit(e) {
     e.preventDefault();
     const tablename = document.getElementById('table-name').value;
-    const NumberOfColumns = document.getElementById('column-amount').value;
-    if(NumberOfColumns < 1) {
-        alert("Please provide a valid number of columns!");
-        return;
-    }
-    LoadTableStructureForm(tablename, NumberOfColumns, 0);
+    let NumberOfColumns = document.getElementById('column-amount').value;
+    LoadTableStructureForm(TableStructureFormMode.NewTable, tablename, NumberOfColumns);
 }
 
 function AddColumnsOnSubmit(e) {    
     e.preventDefault();
-    const NumberOfColumns = document.getElementById("columns").value;
+    let NumberOfColumns = document.getElementById("columns").value;
+    if (NumberOfColumns < 1) NumberOfColumns = 1;
     const StructureTable = document.getElementById("structure-table");
     for(x = 0; x < NumberOfColumns; x++) {
         StructureTable.firstElementChild.appendChild(GenerateStructureTableRow());
@@ -218,8 +217,8 @@ function AddEntryOnSubmit(e) {
         let newEntryRequest = new XMLHttpRequest();
         newEntryRequest.onreadystatechange=function(){
             if(this.readyState == 4 && this.status == 200) {
-                if(this.responseText) {
-                    alert(this.responseText);
+                if(this.response != " ") {
+                    alert(this.response);
                 }
                 else {
                     LoadTable("", "main");
@@ -251,8 +250,7 @@ function InsertColumnsOnSubmit(e) {
         case 2: InsertOption = "AFTER";
             break;
     }
-    
-    LoadTableStructureForm("", ColumnAmount, 1, InsertOption);
+    LoadTableStructureForm(TableStructureFormMode.AddColumn,  "", ColumnAmount, InsertOption);
 }
 
 function InsertColumnsOnChange(e) {
@@ -298,7 +296,8 @@ function TableStructureOnSubmit(e) {
         Data[x].Default = GetFieldFromRow(Rows[x], "Entry_Default").value;
         Data[x].Attributes = GetFieldFromRow(Rows[x], "Entry_Attributes").value;
         Data[x].Null = GetFieldFromRow(Rows[x], "Entry_Null").checked;
-        Data[x].Index = GetFieldFromRow(Rows[x], "Entry_Index").value;
+        let index = GetFieldFromRow(Rows[x], "Entry_Index");
+        if (index != null) Data[x].Index = index.value; 
         Data[x].AutoIncrement = GetFieldFromRow(Rows[x], "Entry_AI").checked;
         Data[x].Comment = GetFieldFromRow(Rows[x], "Entry_Comments").value;
 
@@ -314,7 +313,7 @@ function TableStructureOnSubmit(e) {
         const Button = document.getElementById("table-structure").getElementsByClassName("form-button")[0];
         let jsonData = JSON.stringify(Data);
         
-        if(Button.id === "create-table") {
+        if (Button.id === "create-table") {
             let TableName = document.getElementById("Table_Name").value;
             jsonData = '{"Data": ' + jsonData + ', "TableName": "' + TableName + '"}';
             let newTableRequest = new XMLHttpRequest();
@@ -332,7 +331,7 @@ function TableStructureOnSubmit(e) {
             newTableRequest.setRequestHeader('Content-Type', 'application/json');
             newTableRequest.send(jsonData);
         }
-        if(Button.id === "insert-column") {
+        else if (Button.id === "insert-column") {
             const insertColumnRequest = new XMLHttpRequest();
             insertColumnRequest.onreadystatechange=function(){
                 if(this.readyState == 4 && this.status == 200) {
@@ -348,6 +347,21 @@ function TableStructureOnSubmit(e) {
             insertColumnRequest.setRequestHeader('Content-Type', 'application/json');
             insertColumnRequest.send(jsonData);
         }
+        else if (Button.id === "alter-column") {
+            const alterColumnsRequest = new XMLHttpRequest();
+            alterColumnsRequest.onreadystatechange=function(){
+                if (this.readyState === 4 && this.status === 200) {
+                    if (this.responseText) alert(this.responseText);
+                    else {
+                        LoadTable("", "main");
+                        LoadTableStructure();
+                    }
+                }
+            }
+            alterColumnsRequest.open('POST', '../php/Async/EditQueries.php', true);
+            alterColumnsRequest.setRequestHeader('Content-Type', 'application/json');
+            alterColumnsRequest.send(jsonData);
+        }
     }
 }
 
@@ -355,7 +369,8 @@ function TableStructureOnChange(e) {
     const Target = e.target;
     if(Target.name == "Entry_AI" && Target.checked) {
         const Row = Target.closest(".tableStructureRow");
-        Row.getElementsByClassName("Entry_Index")[0].selectedIndex = 1; //PRIMARY
+        const EntryIndex = Row.getElementsByClassName("Entry_Index")[0]; //PRIMARY
+        if (EntryIndex) EntryIndex.selectedIndex = 1;
     }
     if(Target.name == "Entry_Default") {
         if (Target.selectedIndex == 1) { //NULL

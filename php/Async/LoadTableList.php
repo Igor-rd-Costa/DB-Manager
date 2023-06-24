@@ -7,8 +7,7 @@ if(isset($_POST["LoadTables"])) {
     $User = $_SESSION['User'];
     $User->Connect();
     $User->FetchTables();
-
-    if (isset($_SESSION["DisplayedTable"])) unset($_SESSION["DisplayedTable"]);
+    unset($_SESSION["DisplayedTable"]);
     print 
     "<div id='tbl-list-menu' class='default-menu'>
     <div id='back-icon' backto='main'>

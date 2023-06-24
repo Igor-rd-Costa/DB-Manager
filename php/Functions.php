@@ -7,12 +7,10 @@ function SQL_Connect(string $Server, string $User, string $Password,  ?string $D
     else return $Connection;
 }
 
-function SQL_Query(mysqli $Connection, string $Query, array $Params = null, string $ParamTypes = "") {
+function SQL_Query(mysqli $Connection, string $Query, string $ParamTypes = "", ...$Params) {
         $qry = $Connection->Prepare($Query);
         if ($Params != null) {
-            for ($x = 0; $x < sizeof($Params); $x++) {
-                $qry->bind_param($ParamTypes[$x], $Params[$x]);
-            }
+            $qry->bind_param($ParamTypes, ...$Params);
         }
         $qry->execute();
         return $qry->get_result();
@@ -21,5 +19,9 @@ function SQL_Query(mysqli $Connection, string $Query, array $Params = null, stri
 function STR_FirstToUpper(string $String) {
     $String[0] = strtoupper($String[0]);
     return $String;
+}
+
+function UnsetCachedVariables() {
+    unset($_SESSION["DisplayedTable"], $_SESSION["AlterColumn"], $_SESSION["InsertColumn"], $_SESSION['CreateTableName']);
 }
 ?>

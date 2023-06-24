@@ -8,7 +8,8 @@
 
     $inputData = file_get_contents("php://input");
     $Data = json_decode($inputData, true);
-
+    
+    if($Data) {
     if($User->CheckTableName($Data["TableName"])) {
         print "A table with this name already exists in your database!";
         return;
@@ -22,51 +23,49 @@
         }
         $rowData[$x] = new StructureRowData($Entry["Name"], $Entry["Type"], $Entry["Length"], $Entry["Default"], $Entry["Attributes"], $Entry["Null"], $Entry["Index"], $Entry["AutoIncrement"], $Entry["Comment"]);
     }
-    $_SESSION['CreateTableName'] = $Data["TableName"];
-    if(isset($_SESSION['CreateTableName'])) {
-        $command = "CREATE TABLE `$User->DatabaseName`.`". $_SESSION['CreateTableName'] . "` (";
-        $ErrorMsg = null;
-        $AutoIncrement = false;
-        $PrimaryKey = null;
-        for ($x = 0; $x < sizeof($rowData); $x++) {
-            $command .= "`" . $rowData[$x]->Name . "` " . $rowData[$x]->Type;
-            if($rowData[$x]->Length != 0) {
-                $command .= "(" . $rowData[$x]->Length . ")";
+    $command = "CREATE TABLE `$User->DatabaseName`.`". $Data["TableName"] . "` (";
+    $ErrorMsg = null;
+    $AutoIncrement = false;
+    $PrimaryKey = null;
+    for ($x = 0; $x < sizeof($rowData); $x++) {
+        $command .= "`" . $rowData[$x]->Name . "` " . $rowData[$x]->Type;
+        if($rowData[$x]->Length != 0) {
+            $command .= "(" . $rowData[$x]->Length . ")";
+        }
+        if($rowData[$x]->Attributes != "") {
+            $command .= " " . $rowData[$x]->Attributes;
+        }
+        if(!$rowData[$x]->Null) {
+            $command .= " NOT";
+        }
+        $command .= " NULL";
+        if($rowData[$x]->Default != "None") {
+            $command .= " DEFAULT " . $rowData[$x]->Default;
+        }
+        if($rowData[$x]->AutoIncrement) {
+            if (!$AutoIncrement) {
+                $command .= " AUTO_INCREMENT";
+                $AutoIncrement = true;
+                if ($rowData[$x]->Index == "---") $ErrorMsg = "[Query Error]There can be only one auto column and it must be defined as a key.";
             }
-            if($rowData[$x]->Attributes != "") {
-                $command .= " " . $rowData[$x]->Attributes;
-            }
-            if(!$rowData[$x]->Null) {
-                $command .= " NOT";
-            }
-            $command .= " NULL";
-            if($rowData[$x]->Default != "None") {
-                $command .= " DEFAULT " . $rowData[$x]->Default;
-            }
-            if($rowData[$x]->AutoIncrement) {
-                if (!$AutoIncrement) {
-                    $command .= " AUTO_INCREMENT";
-                    $AutoIncrement = true;
-                    if ($rowData[$x]->Index == "---") $ErrorMsg = "[Query Error]There can be only one auto column and it must be defined as a key.";
-                }
-                else $ErrorMsg = "[Query Error]There can be only one auto column and it must be defined as a key.";
-            }
-            if(str_replace(" ", "", $rowData[$x]->Comment) != "") {
-                $command .= " COMMENT '" . $rowData[$x]->Comment . "'";
-            }
-            if($rowData[$x]->Index != "---") {
-                switch ($rowData[$x]->Index) {
-                    case "PRIMARY": if($PrimaryKey == null) $PrimaryKey = $rowData[$x]->Name;
-                        break;
+            else $ErrorMsg = "[Query Error]There can be only one auto column and it must be defined as a key.";
+        }
+        if(str_replace(" ", "", $rowData[$x]->Comment) != "") {
+            $command .= " COMMENT '" . $rowData[$x]->Comment . "'";
+        }
+        if($rowData[$x]->Index != "---") {
+            switch ($rowData[$x]->Index) {
+                case "PRIMARY": if($PrimaryKey == null) $PrimaryKey = $rowData[$x]->Name;
+                break;
                 }
             }
-
+            
             if ($x != (sizeof($rowData) - 1)) $command .= ", ";
         }
         if($PrimaryKey) {
             $command .= ", PRIMARY KEY (`$PrimaryKey`)";
         }
-
+        
         $command .= ") ENGINE = InnoDB;";
         
         if ($ErrorMsg) {
@@ -80,6 +79,8 @@
                 print $e->getMessage();
             }
         }
+        $_SESSION["CreateTableName"] = $Data["TableName"];
         $User->FetchTables();
     }
+    else header('location: ../../pages/main.php');
 ?>
