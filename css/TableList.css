@@ -33,7 +33,7 @@ main.tableList {
     cursor: pointer;
     display: grid;
     grid-template-rows: 5.5rem;
-    grid-template-columns: 12rem auto;
+    grid-template-columns: 12rem 15rem 1fr 96px;
 }
 
 .list-item-wrapper:hover {
@@ -52,12 +52,26 @@ main.tableList {
     display:flex;
     align-items: center;
     font-size: 2rem;
+    padding: 0.5rem;
+}
+
+.list-item-wrapper > .tbl-info-wrapper {
+    border-right: var(--DefaultBorder);
+}
+
+.list-item-wrapper:hover > .tbl-info-wrapper {
+    color: var(--HighlightTextColor);
+}
+.list-item-wrapper > .tbl-info-wrapper ul {
+    margin: 0rem;
+    padding-left: 1.5rem;
 }
 
 .list-item-wrapper > .tblOptionsWrapper {
     display: grid;
     grid-template-rows: 2rem auto;
     grid-template-columns: 6rem auto;
+    grid-column: 4;
 }
 
 .list-item-wrapper > .tblOptionsWrapper div {
@@ -67,7 +81,7 @@ main.tableList {
     grid-template-rows: 1fr;
     grid-template-columns: 1.5rem auto;
     border-bottom: 0.15rem solid var(--BodyColor);
-    border-right: 0.15rem solid var(--BodyColor);
+    border-left: 0.15rem solid var(--BodyColor);
 }
 
 .list-item-wrapper > .tblOptionsWrapper > #drop-table:hover {

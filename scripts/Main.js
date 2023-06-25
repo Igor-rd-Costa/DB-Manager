@@ -53,11 +53,11 @@ window.addEventListener('resize', () => {
 })
 
 let TableComments;
-let displayedTableName;
+let EditTargetName;
 let ColumnEditNames;
 document.addEventListener('DOMContentLoaded', () => {
     const Main = document.getElementById("tablewrapper");
-    
+
     document.addEventListener('click', DocOnClick);
     document.addEventListener('mousedown', DocOnMouseDown);
     document.addEventListener('mouseup', DocOnMouseUp);
@@ -65,4 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
     Main.addEventListener('click', MainOnClick);
     Main.addEventListener('mouseover', MainOnMouseOver);
     Main.addEventListener('mouseout', MainOnMouseOut);
+
+    //LoadTableList();
 })

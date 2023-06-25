@@ -2,15 +2,14 @@
 include_once("../Functions.php");
 include_once("../Classes/User.php");
 session_start();
-
+$User = $_SESSION["User"];
+$User->Connect();
+$Table = $User->Tables[$_SESSION["DisplayedTable"]];
 if (isset($_POST["RenameTable"], $_SESSION["DisplayedTable"])) { // Rename table request
-    $User = $_SESSION["User"];
-    $User->Connect();
     if (isset($User->Tables[$_POST["RenameTable"]])) {
         print "A table with this name already exists.";
         return;
     }
-    $Table = $User->Tables[$_SESSION["DisplayedTable"]];
     try {
         SQL_Query($User->Connection, "RENAME TABLE $Table->TableName TO $_POST[RenameTable]");
     }
@@ -21,9 +20,35 @@ if (isset($_POST["RenameTable"], $_SESSION["DisplayedTable"])) { // Rename table
     $_SESSION["DisplayedTable"] = $_POST["RenameTable"];
     $User->FetchTables();
 }
-else if (isset($_SESSION["AlterColumn"], $_SESSION["DisplayedTable"])) { // Alter column request
-    $User = $_SESSION["User"];
-    $User->Connect();
+else if (isset($_POST["RenameColumn"], $_POST["RenameTo"], $_SESSION["DisplayedTable"])) { // Rename column request
+    if (!isset($Table->Columns[$_POST["RenameColumn"]])) {
+        print "Could not find the requested column."; return;
+    }
+    if (isset($Table->Columns[$_POST["RenameTo"]])) {
+        print "A column with this name already exists."; return;
+    }
+    $Column = $Table->Columns[$_POST["RenameColumn"]];
+    $Type = strtoupper($Column->Type);
+    $query = "ALTER TABLE $Table->TableName CHANGE COLUMN $_POST[RenameColumn] $_POST[RenameTo] $Type";
+    if (!$Column->Nullable) $query .= " NOT";
+    $query .= " NULL";
+    if ($Column->Default != "None") $query .= " DEFAULT $Column->Default";
+    if ($Column->Extra == "auto_increment") $query .= " AUTO_INCREMENT";
+    if ($Column->Comment) $query .= " COMMENT '$Column->Comment'";
+    $query .= ";";
+    
+
+    try {
+        SQL_Query($User->Connection, $query);
+    }
+    catch (mysqli_sql_exception $e) {
+        print $e->getMessage();
+        print $query;
+        return;
+    }
+    $User->FetchTables();
+}
+else if (isset($_SESSION["AlterColumn"], $_SESSION["DisplayedTable"])) { // Alter column structure request
     $AlterColumns = file_get_contents("php://input");
     $AlterColumns = json_decode($AlterColumns);
     $newName = $AlterColumns[0]->Name;
@@ -43,14 +68,17 @@ else if (isset($_SESSION["AlterColumn"], $_SESSION["DisplayedTable"])) { // Alte
     } 
     $newComment = "";
     if ($AlterColumns[0]->Comment) $newComment = "COMMENT '" . $AlterColumns[0]->Comment . "'";
-    $query = "ALTER TABLE `$_SESSION[DisplayedTable]` CHANGE COLUMN `$_SESSION[AlterColumn]` `$newName` $newType($newLength) "."$newAttribs" . "$newNull" . "$newDefault" . $newAI . $newComment . $newPrimKey . ";";
+    $query = "ALTER TABLE `$_SESSION[DisplayedTable]` CHANGE COLUMN `$_SESSION[AlterColumn]` `$newName` $newType($newLength) "."$newAttribs" . "$newNull" . "$newDefault" . $newAI . $newComment;
+    if (!$User->Tables[$_SESSION["DisplayedTable"]]->Columns[$_SESSION["AlterColumn"]]->Key == "PRI") $query .= $newPrimKey;
+    $query .= ";";
     try {
         SQL_Query($User->Connection, $query);
+        unset($_SESSION["AlterColumn"]);
     }
     catch (mysqli_sql_exception $e) {
         print $e->getMessage();
     }
-    unset($_SESSION["AlterColumn"]);
+    $User->FetchTables();
 }
 else header('location: ../../pages/main.php');
 ?>

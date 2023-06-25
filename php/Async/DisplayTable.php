@@ -50,7 +50,7 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
             </div>
         </div>
         <div id='table-menu'>
-            <div id='title'>$Table->TableName</div>
+            <div id='tbl-title' class='content-editable'>$Table->TableName</div>
             <div id='tbl-options'>
                 <div class='circle' id='circle1'></div>
                 <div class='circle' id='circle2'></div>

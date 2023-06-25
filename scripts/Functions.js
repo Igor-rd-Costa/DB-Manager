@@ -127,14 +127,21 @@ class TableStructureFormMode {
     static AlterColumn = 2;
 }
 
-function LoadTableStructureForm(FormMode, TargetName, NumberOfColumns = 1, InsertOption = "") {
+async function LoadTableStructureForm(FormMode, TargetName, NumberOfColumns = 1, InsertOption = "") {
     // TargetName = Name of the Table or Column, depending on Mode
+    let columnInfo;
     if (FormMode === TableStructureFormMode.AddColumn){
         TargetName = document.getElementById("table-columns").value;
     }
+    else if (FormMode === TableStructureFormMode.AlterColumn) {
+        await GetColumnInfo(TargetName).then((info) => { columnInfo = JSON.parse(info)})
+        .catch(() => {columnInfo = null})
+        if (columnInfo === null) {
+            alert("Could not find requested column.");
+            return;
+        }
+    }
     if (NumberOfColumns < 1) NumberOfColumns = 1;
-
-    
     const tblStructureFormRequest = new XMLHttpRequest();
     tblStructureFormRequest.onreadystatechange=function(){
         if(this.readyState == 4 && this.status == 200) {
@@ -152,9 +159,7 @@ function LoadTableStructureForm(FormMode, TargetName, NumberOfColumns = 1, Inser
                     document.getElementById("Table_Name").value = TargetName;
                 }
                 else if (FormMode === TableStructureFormMode.AlterColumn) {
-                    GetColumnInfo(TargetName).then((columnInfo) => {
-                        columnInfo = JSON.parse(columnInfo);
-                        const Table = document.getElementById("structure-table");
+                    const Table = document.getElementById("structure-table");
                         const Row = Table.querySelector(".tableStructureRow");
                         const RowChilds = Row.children;
                         for (x = 0; x < RowChilds.length; x++) {
@@ -199,7 +204,6 @@ function LoadTableStructureForm(FormMode, TargetName, NumberOfColumns = 1, Inser
                                 } break;
                             }
                         }
-                    })
                 }
                 ResizeForm("table-structure");
                 document.getElementById("table-structure").addEventListener('submit', TableStructureOnSubmit);
@@ -222,12 +226,12 @@ function LoadTableStructureForm(FormMode, TargetName, NumberOfColumns = 1, Inser
 }
 
 function GetColumnInfo(TargetName) {
-    return new Promise((resolve) => {
-
+    return new Promise((resolve, reject) => {
         const columnInfoRequest = new XMLHttpRequest();
         columnInfoRequest.onreadystatechange=function (){
             if(this.readyState === 4 && this.status === 200) {
-                resolve(this.response);
+                if (this.response) resolve(this.response);
+                else reject();
             }
         }
         columnInfoRequest.open('POST', '../php/Async/Queries.php');
@@ -304,9 +308,7 @@ function DropTableColumn(ColumnName) {
             dropColumnRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             dropColumnRequest.send("ColumnName="+ColumnName);
         })
-        .catch(() => {
-            
-        })
+        .catch(() => {})
     })
 }
 
@@ -347,10 +349,23 @@ function RenameTable(newName) {
     renameRequest.send("RenameTable="+newName);
 }
 
+function RenameColumn(newName, currentName) {
+    const renameRequest = new XMLHttpRequest();
+    renameRequest.onreadystatechange=function () {
+        if(this.readyState === 4 && this.status === 200) {
+            if (this.responseText) {
+                alert(this.responseText);
+            }
+        }        
+    }
+    renameRequest.open('POST', '../php/Async/EditQueries.php', true);
+    renameRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    renameRequest.send("RenameColumn="+currentName+"&RenameTo="+newName);
+}
+
 function ShowConfirmationPopUp(ConfirmationMessage) {
     return new Promise((confirm, deny) => {
         const PopUp = document.getElementById("confirmation-popup");
-
         PopUp.style.display = "grid";
         PopUp.querySelector("span").innerHTML = ConfirmationMessage;
         PopUp.querySelector("#confirm-popup").focus();

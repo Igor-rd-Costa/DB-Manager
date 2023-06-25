@@ -74,14 +74,14 @@ div#table-menu > * > img {
     height: 1rem;
 }
 
-div#table-menu > div#title {
+div#table-menu > div#tbl-title {
     font-size: 1.8rem;
     color: var(--ContrastColor);
     grid-row: 1;
     grid-column: 1;
 }
 
-div#table-menu > div#title > input {
+div#table-menu > div#tbl-title > input {
     padding: 0rem;
     font-size: 1.4rem;
     width: 100%;

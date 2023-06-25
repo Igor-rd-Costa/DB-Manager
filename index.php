@@ -46,7 +46,7 @@ if(isset($_GET['logoutRequest']))
                 <label for="username">Username</label>
                 <input type="text" name="usernameLogin" id="username" class="form-input" required=""/>    
                 <label for="password">Password</label>
-                <input type="text" name="passwordLogin" id="password" class="form-input" required=""/>
+                <input type="password" name="passwordLogin" id="password" class="form-input" required=""/>
                 <p id="error-msg"></p>
                 <button type="submit" class="submit login form-button">Login</button>
                 <button type="button" class="submit register form-button" id="button-register">Register</button>

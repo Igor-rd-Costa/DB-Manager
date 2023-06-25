@@ -44,7 +44,7 @@ function MainOnClick(e) {
                 case "rename-table": { 
                     const dblClickEvent = new Event('dblclick', { 'bubbles': true });
                     const TableMenu = e.target.closest("#table-menu");
-                    const Title = TableMenu.querySelector("#title");
+                    const Title = TableMenu.querySelector("#tbl-title");
                     Title.dispatchEvent(dblClickEvent);
 
                 } break;
@@ -110,20 +110,6 @@ function MainOnClick(e) {
     }
 }
 
-function MainOnDblClick(e) {
-    const Target = e.target;
-    const Main = document.getElementById("tablewrapper");
-    if (Main.classList.contains("displayTable") && Target.id == "title") {
-        displayedTableName = Target.innerHTML;
-        Target.contentEditable = true;
-        Target.focus();
-        Target.addEventListener('keydown', TblTitleOnKeyDown);
-        Target.addEventListener('focusout', TblTitleOnFocusOut);
-        document.getElementById("tbl-options").style.pointerEvents = "none";
-        document.getSelection().setPosition(Target, 1);
-    }
-}
-
 function MainOnMouseOver(e) {
     const Target = e.target;
     const CommentIcon = Target.closest(".commentIconImg");
@@ -137,7 +123,7 @@ function MainOnMouseOver(e) {
         CommentBox.style.display = "grid";
         CommentBox.style.left = (offSetX + TargetWidth) + "rem";
         CommentBox.style.top = (offSetY + TargetHeight) + "rem";
-        const columnName = Target.closest(".tbl-header").querySelector("span").innerHTML;
+        const columnName = Target.closest(".tbl-header").querySelector("span").innerText;
         CommentBox.innerHTML = "<span>" + TableComments[columnName] + "</span>";
     }
     if(TableOptions) {
@@ -169,34 +155,75 @@ function MainOnMouseOut(e) {
     }
 }
 
-function TblTitleOnFocusOut(e) {
+function MainOnDblClick(e) {
     const Target = e.target;
-    document.getElementById("tbl-options").style.pointerEvents = "all";
-    Target.removeEventListener('focusout', TblTitleOnFocusOut);
     const Main = document.getElementById("tablewrapper");
-    if (Main.classList.contains("displayTable") && Target.id == "title") {
-        if ((Target.innerHTML != displayedTableName) && (Target.innerHTML != "<br>")) {
-            ShowConfirmationPopUp("Rename table "+displayedTableName+" to "+Target.innerHTML+"?").then(() => {
-                RenameTable(Target.innerHTML.replace(' ', ''));
-            })
-            .catch(() => {
-                Target.contentEditable = false;
-                Target.innerHTML = displayedTableName;
-            })
-            .finally(() => { Target.removeEventListener('keydown', TblTitleOnKeyDown); })
+    if (Target.classList.contains("content-editable")) {
+        EditTargetName = Target.innerText;
+        Target.contentEditable = true;
+        Target.focus();
+        Main.addEventListener("focusout", MainOnFocusOut);
+        Main.addEventListener('keydown', MainOnKeyDown);
+        document.getElementById("tbl-options").style.pointerEvents = "none";
+        document.getSelection().setPosition(Target, 1);
+        if (Target.nextSibling && Target.nextSibling.nodeName === "IMG" && Target.nextSibling.classList.contains("commentIconImg")) {
+            Target.nextSibling.style.pointerEvents = "none";
         }
-        else {
-            Target.contentEditable = false;
-            Target.innerHTML = displayedTableName;
+        
+    }
+}
+
+
+function MainOnKeyDown(e) {
+    const Target = e.target;
+    if (e.keyCode === 13) { // Enter
+        if (Target.classList.contains("content-editable")) {
+            e.preventDefault(); 
+            let focusOut = new Event('focusout', {'bubbles': true});
+            Target.dispatchEvent(focusOut);
         }
     }
 }
 
-function TblTitleOnKeyDown(e) {
+function MainOnFocusOut(e) {
     const Target = e.target;
-    if (e.keyCode === 13) { // Enter
-        e.preventDefault(); 
-        let focusOut = new Event('focusout', {'bubbles': true});
-        Target.dispatchEvent(focusOut);
+    if (Target.classList.contains("content-editable")) {
+        document.getElementById("tbl-options").style.pointerEvents = "all";
+        const Main = document.getElementById("tablewrapper");
+        Main.removeEventListener('focusout', MainOnFocusOut);
+        Main.removeEventListener('keydown', MainOnKeyDown);
+        let WarningMsg = "";
+        let CallFunction; 
+        switch (Target.id) {
+            case "tbl-title": { WarningMsg = "Rename table "+EditTargetName+" to "+Target.innerText+"?"; CallFunction = RenameTable } break;
+            case "column-name": { WarningMsg = "Rename column "+EditTargetName+" to "+Target.innerText+"?"; CallFunction = RenameColumn } break;
+        }
+        if ((Target.innerText != EditTargetName) && (Target.innerText != "\n") && (Target.innerText != "")) {
+            ShowConfirmationPopUp(WarningMsg).then(() => {
+                CallFunction(Target.innerText.replace(' ', ''), EditTargetName);
+                if (Target.id === "column-name") {
+                    TableComments[Target.innerText.replace(' ', '')] = TableComments[EditTargetName];
+                    delete TableComments[EditTargetName];
+                }
+            })
+            .catch(() => {
+                Target.contentEditable = false;
+                Target.innerHTML = EditTargetName;
+            })
+            .finally(() => {
+                if (Target.nextSibling && Target.nextSibling.nodeName === "IMG" && Target.nextSibling.classList.contains("commentIconImg")) {
+                    Target.nextSibling.style.pointerEvents = "all";
+                }
+            })
+        }
+        else {
+            Target.contentEditable = false;
+            Target.innerHTML = EditTargetName;
+            if (Target.nextSibling && Target.nextSibling.nodeName === "IMG" && Target.nextSibling.classList.contains("commentIconImg")) {
+                Target.nextSibling.style.pointerEvents = "all";
+            }
+        }
+        
+
     }
 }

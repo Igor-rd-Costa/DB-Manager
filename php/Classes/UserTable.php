@@ -61,6 +61,14 @@ public function DisplayTableListItem()
         <div class='list-item'> 
             <span class='listTblName'>$this->TableName</span> 
         </div>
+        <div class='tbl-info-wrapper'>
+            <ul>
+                <li>" . $this->Rows . " Entries</li>
+                <li>Engine: $this->Engine</li>
+                <li>Collation: $this->Collation</li>
+                <li>Size: $this->Size KiB</li>
+            </ul>
+        </div>
         <div class='tblOptionsWrapper'>
             <div id='drop-table'>
                 <img class='removeIcon' src='../img/Remove.png' title='Remove'></img>
@@ -85,7 +93,7 @@ public function DisplayTable()
         if(!$this->Columns[$field]->Comment) $spanStyle = "style='grid-column: 1 / 3;'";
 
         print "<th class='tbl-header' $thstyle>";
-        print "<div><span class='column-name' $spanStyle>$field</span>";
+        print "<div><span id='column-name' class='column-name content-editable' $spanStyle>$field</span>";
         if ($this->Columns[$field]->Comment) {
             print "<img class='commentIconImg' src='../img/Comment.png'></img></div>";
         }
@@ -150,7 +158,7 @@ public function DisplayStructure() {
                 </div>
             </td>
             <td class='tblData'>$Column->Index</td>
-            <td class='tblData column-name'>$Column->Name";
+            <td id='column-name' class='tblData column-name content-editable'>$Column->Name";
             if ($Column->Key == "PRI") print "<img class='primary-key' src='../img/PrimaryKey.png' title='Primary Key'></img>";
             print "</td>
             <td class='tblData'>$Column->Type</td>

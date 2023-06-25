@@ -6,6 +6,7 @@ class Column {
     public bool $Nullable;
     public string $Type;
     public string $DataType;
+    public int $Length;
     public ?int $NumericPrecision;
     public ?string $CharMaxLength;
     public ?string $CharSet;
@@ -23,6 +24,8 @@ class Column {
         else $this->Nullable = true;
         $this->Type = $Type;
         $this->DataType = $DataType;
+        $strPos = strpos($Type, '(') + 1;
+        $this->Length = (int)substr($Type, $strPos, strpos($Type, ')') - $strPos);
         $this->NumericPrecision = $NumPrecision;
         $this->CharMaxLength = $CharMaxLength;
         $this->CharSet = $CharSet;
