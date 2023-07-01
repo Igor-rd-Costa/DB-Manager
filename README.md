@@ -10,7 +10,7 @@ you can change this and other connection options by changing the values of the `
 ### Software used for development
 * PHP 8.2.4;
 * Apache 2.4.56;
-* MariaDB 10.4.28;
+* MariaDB 10.4.28.
 
 ## Currently Supported Features
 
