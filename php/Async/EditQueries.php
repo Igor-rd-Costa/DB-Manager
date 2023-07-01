@@ -80,5 +80,22 @@ else if (isset($_SESSION["AlterColumn"], $_SESSION["DisplayedTable"])) { // Alte
     }
     $User->FetchTables();
 }
+else if (isset($_POST["AlterData"], $_POST["Column"], $_POST["PrimKey"])) {
+    if (!$Table->PrimaryKey) {
+        print "This table does not have a primary key.\nDelete and edit features for data are disabled.";
+        return;
+    }
+    if ($Table->PrimaryKey == $_POST["Column"]) {
+        print "$Table->PrimaryKey has the primary index and its data cannot be changed.";
+        return;
+    }
+    $query = "UPDATE `$Table->TableName` SET `$_POST[Column]` = '$_POST[AlterData]' WHERE `$Table->TableName`.`$Table->PrimaryKey` = $_POST[PrimKey];"; 
+    try {
+        SQL_Query($User->Connection, $query);
+    }
+    catch (mysqli_sql_exception $e) {
+        print $e->getMessage();
+    }
+}
 else header('location: ../../pages/main.php');
 ?>

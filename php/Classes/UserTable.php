@@ -71,7 +71,7 @@ public function DisplayTableListItem()
         </div>
         <div class='tblOptionsWrapper'>
             <div id='drop-table'>
-                <img class='removeIcon' src='../img/Remove.png' title='Remove'></img>
+                <img class='removeIcon' src='img/Remove.png' title='Remove'></img>
                 <span>Remove</span>
             </div>
         </div>
@@ -80,12 +80,14 @@ public function DisplayTableListItem()
 
 public function DisplayTable()
 {
+    $editable = "";
+    if ($this->PrimaryKey) $editable = "content-editable";
     $totalFields = sizeof($this->ColumnNames);
     $fieldCount = 0;
     print 
     "<table id='tabledisplay'>
         <tr class='tbl-header-row'>";
-        if($this->Rows > 0) print "<th></th>";
+        if($this->Rows > 0 && $this->PrimaryKey) print "<th></th>";
     foreach ($this->ColumnNames as $field) {
         $thstyle = "";
         $spanStyle = "";
@@ -95,7 +97,7 @@ public function DisplayTable()
         print "<th class='tbl-header' $thstyle>";
         print "<div><span id='column-name' class='column-name content-editable' $spanStyle>$field</span>";
         if ($this->Columns[$field]->Comment) {
-            print "<img class='commentIconImg' src='../img/Comment.png'></img></div>";
+            print "<img class='commentIconImg' src='img/Comment.png'></img></div>";
         }
         print "</th>";
         $fieldCount++;
@@ -104,16 +106,19 @@ public function DisplayTable()
     $fieldCount = 0;
     if($this->Rows > 0) {
         foreach ($this->TableData as $info) {
-            print "<tr class='tbl-content-row'>
-                    <td class='tblEditOptions'>
-                        <div class='tblOptionsWrapper'>
-                            <img id='delete-row' class='removeIcon' src='../img/Remove.png' title='Remove'></img>
-                        </div>
-                    </td>";
+            print "<tr class='tbl-content-row'>";
+if ($this->PrimaryKey) {
+print
+                "<td class='tblEditOptions'>
+                <div class='tblOptionsWrapper'>
+                <img id='delete-row' class='removeIcon' src='img/Remove.png' title='Remove'></img>
+                </div>
+                </td>";
+            }
             foreach ($this->ColumnNames as $field) {
                 $style = ""; 
                 if ($fieldCount == ($totalFields -1)) $style = "style='border-right: none;'";  
-                print "<td class='tblData' $style>" . $info[$field] . "</td>";
+                print "<td id='table-data' class='tblData $editable' $style>" . $info[$field] . "</td>";
                 $fieldCount++;
             }
         $fieldCount = 0;
@@ -153,13 +158,13 @@ public function DisplayStructure() {
         "<tr class='tbl-content-row'>
             <td class='tblEditOptions'>
                 <div class='tblOptionsWrapper'>
-                    <img id='edit-column' class='editIcon' src='../img/Edit.png' title='Change'></img>
-                    <img id='drop-column' class='removeIcon' src='../img/Remove.png' title='Drop'></img>
+                    <img id='edit-column' class='editIcon' src='img/Edit.png' title='Change'></img>
+                    <img id='drop-column' class='removeIcon' src='img/Remove.png' title='Drop'></img>
                 </div>
             </td>
             <td class='tblData'>$Column->Index</td>
             <td id='column-name' class='tblData column-name content-editable'>$Column->Name";
-            if ($Column->Key == "PRI") print "<img class='primary-key' src='../img/PrimaryKey.png' title='Primary Key'></img>";
+            if ($Column->Key == "PRI") print "<img class='primary-key' src='img/PrimaryKey.png' title='Primary Key'></img>";
             print "</td>
             <td class='tblData'>$Column->Type</td>
             <td class='tblData'>$Column->Collation</td>

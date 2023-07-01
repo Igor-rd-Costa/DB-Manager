@@ -80,6 +80,7 @@ function MainOnClick(e) {
                 case "drop-column": {
                     const ColumnName = Row.querySelector(".column-name").innerText;
                     DropTableColumn(ColumnName).then(() => {
+                        LoadTable('', 'main');
                         LoadTableStructure();
                     })
                 } break;
@@ -179,13 +180,12 @@ function MainOnKeyDown(e) {
     if (e.keyCode === 13) { // Enter
         if (Target.classList.contains("content-editable")) {
             e.preventDefault(); 
-            let focusOut = new Event('focusout', {'bubbles': true});
-            Target.dispatchEvent(focusOut);
+            Target.blur();
         }
     }
 }
 
-function MainOnFocusOut(e) {
+async function MainOnFocusOut(e) {
     const Target = e.target;
     if (Target.classList.contains("content-editable")) {
         document.getElementById("tbl-options").style.pointerEvents = "all";
@@ -195,26 +195,47 @@ function MainOnFocusOut(e) {
         let WarningMsg = "";
         let CallFunction; 
         switch (Target.id) {
-            case "tbl-title": { WarningMsg = "Rename table "+EditTargetName+" to "+Target.innerText+"?"; CallFunction = RenameTable } break;
-            case "column-name": { WarningMsg = "Rename column "+EditTargetName+" to "+Target.innerText+"?"; CallFunction = RenameColumn } break;
+            case "tbl-title": { WarningMsg = "Rename table "+EditTargetName+" to "+Target.innerText+"?"; CallFunction = RenameTable; } break;
+            case "column-name": { WarningMsg = "Rename column "+EditTargetName+" to "+Target.innerText+"?"; CallFunction = RenameColumn; } break;
         }
         if ((Target.innerText != EditTargetName) && (Target.innerText != "\n") && (Target.innerText != "")) {
-            ShowConfirmationPopUp(WarningMsg).then(() => {
-                CallFunction(Target.innerText.replace(' ', ''), EditTargetName);
-                if (Target.id === "column-name") {
-                    TableComments[Target.innerText.replace(' ', '')] = TableComments[EditTargetName];
-                    delete TableComments[EditTargetName];
-                }
-            })
-            .catch(() => {
-                Target.contentEditable = false;
-                Target.innerHTML = EditTargetName;
-            })
-            .finally(() => {
-                if (Target.nextSibling && Target.nextSibling.nodeName === "IMG" && Target.nextSibling.classList.contains("commentIconImg")) {
-                    Target.nextSibling.style.pointerEvents = "all";
-                }
-            })
+            if (Target.id != "table-data") {
+                ShowConfirmationPopUp(WarningMsg).then(() => {
+                    CallFunction(Target.innerText.replace(' ', ''), EditTargetName);
+                    if (Target.id === "column-name") {
+                        TableComments[Target.innerText.replace(' ', '')] = TableComments[EditTargetName];
+                        delete TableComments[EditTargetName];
+                    }
+                })
+                .catch(() => {
+                    Target.contentEditable = false;
+                    Target.innerHTML = EditTargetName;
+                })
+                .finally(() => {
+                    if (Target.nextSibling && Target.nextSibling.nodeName === "IMG" && Target.nextSibling.classList.contains("commentIconImg")) {
+                        Target.nextSibling.style.pointerEvents = "all";
+                    }
+                })
+            }
+            else {
+                GetPrimaryKey().then((PrimKey) => {
+                    const TableHeaders = Array.from(document.getElementsByClassName("tbl-header-row")[0].querySelectorAll(".tbl-header span"));
+                    const Headers = new Array; 
+                    TableHeaders.forEach(element => {
+                        Headers.push(element.innerText);
+                    })
+                    const Row = Array.from(Target.closest(".tbl-content-row").querySelectorAll(".tblData"));
+                    const changeIndex = Row.indexOf(Target.closest(".tblData"));
+                    const ColumnName = document.getElementById("tabledisplay").querySelector(".tbl-header-row").querySelectorAll(".tbl-header")[changeIndex].querySelector("span").innerText; 
+                    UpdateTableData(Target.innerText, ColumnName, Row[Headers.indexOf(PrimKey)].innerText).catch(()=>{
+                        Target.contentEditable = false;
+                        Target.innerHTML = EditTargetName;
+                    })
+                })
+                .catch((error) => {
+                    alert(error);
+                })
+            }
         }
         else {
             Target.contentEditable = false;

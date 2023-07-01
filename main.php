@@ -1,11 +1,11 @@
 <?php
-include_once "../php/Functions.php";
-include_once "../php/Classes/User.php";
-include_once "../Config.php";
+include_once "php/Functions.php";
+include_once "php/Classes/User.php";
+include_once "Config.php";
 session_start(); 
 if(!$User = $_SESSION['User'])
 {
-    header('Location: ../');
+    header('Location: /');
 } 
 $User->Connect();
 $User->FetchTables();
@@ -18,25 +18,28 @@ UnsetCachedVariables();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/Main.css"/>
-    <link rel="stylesheet" href="../css/Forms.css"/>
-    <link rel="stylesheet" href="../css/CreateTableForm.css"/>
-    <link rel="stylesheet" href="../css/TableStructureForm.css"/>
-    <link rel="stylesheet" href="../css/AddColumnForm.css"/>
-    <link rel="stylesheet" href="../css/TableList.css"/>
-    <link rel="stylesheet" href="../css/TableDisplay.css"/>
-    <link rel="stylesheet" href="../css/NewEntryForm.css"/>
-    <link rel="stylesheet" href="../css/InsertColumnForm.css"/>
-    <script src="../scripts/functions.js"></script>
-    <script src="../scripts/Forms.js"></script>
-    <script type="application/javascript" src="../scripts/MainEvents.js"></script>
-    <script type="application/javascript" src="../scripts/DocEvents.js"></script>
-    <script type="application/javascript" src="../scripts/Main.js"></script>
+    <link rel="stylesheet" href="css/Main.css"/>
+    <link rel="stylesheet" href="css/Forms.css"/>
+    <link rel="stylesheet" href="css/CreateTableForm.css"/>
+    <link rel="stylesheet" href="css/TableStructureForm.css"/>
+    <link rel="stylesheet" href="css/AddColumnForm.css"/>
+    <link rel="stylesheet" href="css/TableList.css"/>
+    <link rel="stylesheet" href="css/TableDisplay.css"/>
+    <link rel="stylesheet" href="css/NewEntryForm.css"/>
+    <link rel="stylesheet" href="css/InsertColumnForm.css"/>
+    <script type="application/javascript" src="scripts/functions.js"></script>
+    <script type="application/javascript" src="scripts/Forms.js"></script>
+    <script type="application/javascript" src="scripts/MainEvents.js"></script>
+    <script type="application/javascript" src="scripts/DocEvents.js"></script>
+    <script type="application/javascript" src="scripts/Main.js"></script>
     <title>DB Manager</title>
 </head>
 <body>
     <div id='comment-box'>
         <span></span>
+    </div>
+    <div id='message-popup'>
+        <span>This is a message</span>
     </div>
     <div id='confirmation-popup'>
         <div id="confirmation-msg">
@@ -84,7 +87,7 @@ UnsetCachedVariables();
     <header id="header">
     <div id="profilewrapper">
         <span id="username"><?php print $User->Username;?></span>
-        <img id="user-img" src="../img/User.png" alt="Profile"/>
+        <img id="user-img" src="img/User.png" alt="Profile"/>
             <ul id="pr-options" class="options-ul">
                 <li id="pr-logout" class="options-li"><a href="../?logoutRequest=true">Logout</a></li>
                 <?php if ($User->Username == CONFIG::$AdminUsername) : ?>

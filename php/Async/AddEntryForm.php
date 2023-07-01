@@ -1,5 +1,4 @@
 <?php
-
 function BuildNewTableEntryInput(Column $ColumnStructure) {
     $DataType = strtoupper($ColumnStructure->DataType);
     $Length = intval(explode("(", $ColumnStructure->Type)[1]);
@@ -40,7 +39,7 @@ $Table = $User->Tables[$_SESSION["DisplayedTable"]];
 print 
 "<div class='default-menu'>
     <div id='back-icon' backto='$_SESSION[DisplayedTable]'>
-        <img class='back-arrow' src='../img/Arrow.png'></img>
+        <img class='back-arrow' src='img/Arrow.png'></img>
     </div>
     <div id='title'> 
         Add Entry

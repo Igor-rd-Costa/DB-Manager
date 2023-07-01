@@ -38,7 +38,7 @@ function DocOnClick(e) {
     if (Target.closest("#back-icon")) {
         const Destination = Target.closest("#back-icon").getAttribute("backto");
         switch (Destination) {
-        case "main": window.location.href = "../pages/main.php"; 
+        case "main": window.location.href = "main.php"; 
             break;
         case "table-list": LoadTableList();
             break;

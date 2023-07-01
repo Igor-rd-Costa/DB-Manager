@@ -65,6 +65,4 @@ document.addEventListener('DOMContentLoaded', () => {
     Main.addEventListener('click', MainOnClick);
     Main.addEventListener('mouseover', MainOnMouseOver);
     Main.addEventListener('mouseout', MainOnMouseOut);
-
-    //LoadTableList();
 })

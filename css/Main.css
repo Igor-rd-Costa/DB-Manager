@@ -76,6 +76,27 @@ main.tableCards {
     grid-template-rows: 1fr 1fr;
 }
 
+div#comment-box {
+    z-index: 2;
+    position: absolute;
+    display: none;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    align-items: center;
+    justify-items: center;
+    padding: 0.5rem;
+    min-width: 10rem;
+    max-width: 20rem;
+    width: fit-content;
+    min-height: 2rem;
+    height: fit-content; 
+    background-color: var(--DefaultColor);
+    border: 0.1rem solid var(--ContrastColor);
+    border-radius: 0.625rem;
+    border-top-left-radius: 0rem;
+    color: var(--HighlightTextColor);
+}
+
 #confirmation-popup {
     position: absolute;
     justify-self: center;
@@ -136,6 +157,39 @@ div#confirmation-popup > :nth-child(3) {
     grid-row: 2;
 }
 
+#message-popup {
+    position: absolute;
+    justify-self: center;
+    border: 0.1rem solid var(--ContrastColor);
+    border-left: 0.1rem solid var(--ContrastColor);
+    border-right: 0.1rem solid var(--ContrastColor);
+    border-bottom-left-radius: 0.6rem;
+    border-bottom-right-radius: 0.6rem;
+    z-index: 2;
+    min-width: 25rem;
+    max-width: 45rem;
+    height: 0rem;
+    top: -0.1rem;
+    overflow: hidden;
+    background-color: var(--DefaultColor);
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+#message-popup.info {
+    color: var(--ContrastColor);
+}
+
+#message-popup.warning {
+    color: rgb(190, 190, 0);
+}
+
+#message-popup.error {
+    color: rgb(190, 0, 0);
+}
 
 /*---------- #Default Menu ----------*/
 

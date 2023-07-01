@@ -30,20 +30,22 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
         unset($_SESSION['CreateTableName']);
     }
 
+    $warningClass = "";
+    if (!$Table->PrimaryKey) $warningClass = "class='show-warning'";
     print
-    "<div id='table-display-wrapper'>
+    "<div id='table-display-wrapper' $warningClass>
         <div id='display-table-menu' class='default-menu'>
             <div id='back-icon' backto=''>
-                <img class='back-arrow' src='../img/Arrow.png'></img>
+                <img class='back-arrow' src='img/Arrow.png'></img>
             </div>
             <div id='tbl-browse-opt' class='tbl-display-options opt-selected'>
-                <img class='tbld-option-img' src='../img/TblDisplayBrowse.png'></img>
+                <img class='tbld-option-img' src='img/TblDisplayBrowse.png'></img>
                 <span class='tbld-option-text'>
                     Browse
                 </span>
             </div>
             <div id='tbl-structure-opt' class='tbl-display-options'>
-                <img class='tbld-option-img' src='../img/TblDisplayStructure.png'></img>
+                <img class='tbld-option-img' src='img/TblDisplayStructure.png'></img>
                 <span class='tbld-option-text'>
                     Structure
                 </span>
@@ -62,8 +64,15 @@ if(isset($_POST['TableName']) || isset($_SESSION["DisplayedTable"])) {
                 <li class='options-li' id='rename-table'><span>Rename</span></li>
                 <li class='options-li' id='drop-table'><span>Drop Table</span></li>
             </ul>
-        </div>
-        <div id='tbl-display-content'>";
+        </div>";
+if (!$Table->PrimaryKey) {
+print     
+        "<div id='tbl-edit-warning'>
+            This table does not have a primary key.<br>Delete and edit features for data are disabled.
+        </div>";
+}
+print
+        "<div id='tbl-display-content'>";
         $Table->DisplayTable();
     print "</div></div>  $@#$";
     $columnComments = array();

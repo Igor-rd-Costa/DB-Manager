@@ -32,13 +32,13 @@ if(isset($_POST["FormMode"])) {
 print
 "<div id='tbl-structure-menu' class='default-menu'>
     <div id='back-icon' backto='$BackTo'>
-        <img class='back-arrow' src='../img/Arrow.png'></img>
+        <img class='back-arrow' src='img/Arrow.png'></img>
     </div>
     <div id='title'>Column Structure</div>";
 if(isset($_POST["TableName"])) {
 print   
     "<div class='add-icon-wrapper' id='add-columns'>
-        <img class='add-icon' src='../img/Add.png'></img>
+        <img class='add-icon' src='img/Add.png'></img>
     </div>";
 }
 print 

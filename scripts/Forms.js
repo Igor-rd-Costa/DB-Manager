@@ -111,7 +111,7 @@ function ShowForm(form) {
 
                 }
             }
-            TableEntryRequest.open('POST', '../php/Async/AddEntryForm.php', true);
+            TableEntryRequest.open('POST', 'php/Async/AddEntryForm.php', true);
             TableEntryRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             TableEntryRequest.send();
         } break;
@@ -222,10 +222,11 @@ function AddEntryOnSubmit(e) {
                 }
                 else {
                     LoadTable("", "main");
+                    ShowMessagePopUp(MessageType.Info, "Entry successfully added to table.");
                 }
             }
         }
-        newEntryRequest.open('POST', '../php/Async/AddEntry.php', true);
+        newEntryRequest.open('POST', 'php/Async/AddEntry.php', true);
         newEntryRequest.setRequestHeader('Content-Type', 'application/json');
         newEntryRequest.send(jsonData);
     }
@@ -320,14 +321,15 @@ function TableStructureOnSubmit(e) {
             newTableRequest.onreadystatechange=function(){
                 if(this.readyState == 4 && this.status == 200) {
                     if(this.responseText) {
-                        alert(this.responseText);
+                        ShowMessagePopUp(MessageType.Error, this.responseText);
                     }
                     else {
-                        LoadTable("", "main")
+                        LoadTable("", "main");
+                        ShowMessagePopUp(MessageType.Info, "Created table " + TableName + ".", 400);
                     }
                 }
             }
-            newTableRequest.open('POST', '../php/Async/CreateTable.php', true);
+            newTableRequest.open('POST', 'php/Async/CreateTable.php', true);
             newTableRequest.setRequestHeader('Content-Type', 'application/json');
             newTableRequest.send(jsonData);
         }
@@ -336,14 +338,16 @@ function TableStructureOnSubmit(e) {
             insertColumnRequest.onreadystatechange=function(){
                 if(this.readyState == 4 && this.status == 200) {
                     if(this.responseText) {
-                        alert(this.responseText);
+                        ShowMessagePopUp(MessageType.Error, this.responseText);
                     }
                     else {
-                        LoadTable("", "main")
+                        LoadTable("", "main");
+                        ShowMessagePopUp(MessageType.Info, "Column inserted.", 400);
+
                     }
                 }
             }
-            insertColumnRequest.open('POST', '../php/Async/InsertColumns.php', true);
+            insertColumnRequest.open('POST', 'php/Async/InsertColumns.php', true);
             insertColumnRequest.setRequestHeader('Content-Type', 'application/json');
             insertColumnRequest.send(jsonData);
         }
@@ -351,14 +355,15 @@ function TableStructureOnSubmit(e) {
             const alterColumnsRequest = new XMLHttpRequest();
             alterColumnsRequest.onreadystatechange=function(){
                 if (this.readyState === 4 && this.status === 200) {
-                    if (this.responseText) alert(this.responseText);
+                    if (this.responseText) ShowMessagePopUp(MessageType.Error, this.responseText);
                     else {
                         LoadTable("", "main");
                         LoadTableStructure();
+                        ShowMessagePopUp(MessageType.Info, "Column structure was altered with success.", 400);
                     }
                 }
             }
-            alterColumnsRequest.open('POST', '../php/Async/EditQueries.php', true);
+            alterColumnsRequest.open('POST', 'php/Async/EditQueries.php', true);
             alterColumnsRequest.setRequestHeader('Content-Type', 'application/json');
             alterColumnsRequest.send(jsonData);
         }

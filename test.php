@@ -19,17 +19,17 @@ $User->FetchTables();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/Main.css"/>
-    <link rel="stylesheet" href="../css/Forms.css"/>
-    <link rel="stylesheet" href="../css/NewEntryForm.css"/>
-    <link rel="stylesheet" href="../css/CreateTableForm.css"/>
-    <link rel="stylesheet" href="../css/AddColumnForm.css"/>
-    <link rel="stylesheet" href="../css/TableDisplay.css"/>
-    <link rel="stylesheet" href="../css/TableStructureForm.css"/>
-    <script src="../scripts/Forms.js"></script>
-    <script src="../scripts/functions.js"></script>
-    <script type="application/javascript" src="../scripts/Main.js"></script>
-    <script type="application/javascript" src="../scripts/MainEvents.js"></script>
+    <link rel="stylesheet" href="css/Main.css"/>
+    <link rel="stylesheet" href="css/Forms.css"/>
+    <link rel="stylesheet" href="css/NewEntryForm.css"/>
+    <link rel="stylesheet" href="css/CreateTableForm.css"/>
+    <link rel="stylesheet" href="css/AddColumnForm.css"/>
+    <link rel="stylesheet" href="css/TableDisplay.css"/>
+    <link rel="stylesheet" href="css/TableStructureForm.css"/>
+    <script type="application/javascript" src="scripts/Forms.js"></script>
+    <script type="application/javascript" src="scripts/functions.js"></script>
+    <script type="application/javascript" src="scripts/Main.js"></script>
+    <script type="application/javascript" src="scripts/MainEvents.js"></script>
     <title>Test Page</title>
     <style>
         .testPage {

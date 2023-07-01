@@ -67,7 +67,7 @@ function LoadTableList()
             }
         }
     }
-    LoadTableListRequest.open('POST', '../php/Async/LoadTableList.php', true);
+    LoadTableListRequest.open('POST', 'php/Async/LoadTableList.php', true);
     LoadTableListRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     LoadTableListRequest.send("LoadTables=true");
 }
@@ -88,7 +88,7 @@ function LoadTable(TableName, Origin)
             document.getElementById('back-icon').setAttribute("backto", Origin);
         }
     }
-    LoadTableRequest.open('POST', '../php/Async/DisplayTable.php', true);
+    LoadTableRequest.open('POST', 'php/Async/DisplayTable.php', true);
     LoadTableRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     LoadTableRequest.send('TableName=' + TableName);
 }
@@ -102,7 +102,7 @@ function LoadTableBrowse() {
             document.getElementById("tbl-browse-opt").classList.add("opt-selected");
         }
     }
-    loadTableBrowseRequest.open('POST', '../php/Async/TableDisplay.php', true);
+    loadTableBrowseRequest.open('POST', 'php/Async/TableDisplay.php', true);
     loadTableBrowseRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     loadTableBrowseRequest.send('Request=Browse');
 }
@@ -116,7 +116,7 @@ function LoadTableStructure() {
             document.getElementById("tbl-structure-opt").classList.add("opt-selected");
         }
     }
-    loadTableStructureRequest.open('POST', '../php/Async/TableDisplay.php', true);
+    loadTableStructureRequest.open('POST', 'php/Async/TableDisplay.php', true);
     loadTableStructureRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     loadTableStructureRequest.send('Request=Structure');
 }
@@ -136,8 +136,7 @@ async function LoadTableStructureForm(FormMode, TargetName, NumberOfColumns = 1,
     else if (FormMode === TableStructureFormMode.AlterColumn) {
         await GetColumnInfo(TargetName).then((info) => { columnInfo = JSON.parse(info)})
         .catch(() => {columnInfo = null})
-        if (columnInfo === null) {
-            alert("Could not find requested column.");
+        if (columnInfo === null) { 
             return;
         }
     }
@@ -146,7 +145,7 @@ async function LoadTableStructureForm(FormMode, TargetName, NumberOfColumns = 1,
     tblStructureFormRequest.onreadystatechange=function(){
         if(this.readyState == 4 && this.status == 200) {
             if(this.responseText.includes("[Request Error]")) {
-                alert(this.responseText.split("[Request Error]")[1]);
+                ShowMessagePopUp(MessageType.Error, this.responseText.split("[Request Error]")[1]);
             }
             else {
                 const Main = document.getElementById('tablewrapper');
@@ -211,7 +210,7 @@ async function LoadTableStructureForm(FormMode, TargetName, NumberOfColumns = 1,
             }
         }
     }
-    tblStructureFormRequest.open('POST', '../php/Async/TableStructureForm.php', true);
+    tblStructureFormRequest.open('POST', 'php/Async/TableStructureForm.php', true);
     tblStructureFormRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     if (FormMode === TableStructureFormMode.NewTable) { // Create new table
@@ -231,12 +230,35 @@ function GetColumnInfo(TargetName) {
         columnInfoRequest.onreadystatechange=function (){
             if(this.readyState === 4 && this.status === 200) {
                 if (this.response) resolve(this.response);
-                else reject();
+                else {
+                    ShowMessagePopUp(MessageType.Error, "Could not find requested column.");
+                    reject();
+                }
             }
         }
-        columnInfoRequest.open('POST', '../php/Async/Queries.php');
+        
+        columnInfoRequest.open('POST', 'php/Async/Queries.php');
         columnInfoRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         columnInfoRequest.send("ColumnName="+TargetName);
+    })
+}
+
+function GetPrimaryKey() {
+    return new Promise((resolve, reject) => {
+        const primaryKeyRequest = new XMLHttpRequest();
+        primaryKeyRequest.onreadystatechange=function(){
+            if (this.readyState === 4) {
+                if (this.status === 200) {
+                    resolve(this.responseText);
+                }
+                else if (this.status === 400) {
+                    reject(this.responseText);
+                }
+            }
+        }
+        primaryKeyRequest.open('POST', 'php/Async/Queries.php');
+        primaryKeyRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        primaryKeyRequest.send("GetPrimaryKey");
     })
 }
 
@@ -277,14 +299,15 @@ function DeleteTableRow(Data) {
             deleteRowRequest.onreadystatechange=function(){
                 if(this.readyState == 4 && this.status == 200) {
                     if(this.responseText) {
-                        alert(this.responseText);
+                        ShowMessagePopUp(MessageType.Error, this.responseText);
                     }
                     else {
                         LoadTableBrowse();
+                        ShowMessagePopUp(MessageType.Info, "Row successfully removed.", 400);
                     }
                 }
             }
-            deleteRowRequest.open('POST', '../php/Async/DeleteRow.php', true);
+            deleteRowRequest.open('POST', 'php/Async/DeleteRow.php', true);
             deleteRowRequest.setRequestHeader('Content-Type', 'application/json');
             deleteRowRequest.send(jsonData);
         })
@@ -300,11 +323,14 @@ function DropTableColumn(ColumnName) {
             const dropColumnRequest = new XMLHttpRequest();
             dropColumnRequest.onreadystatechange=function(){
                 if(this.readyState == 4 && this.status == 200) {
-                    if(this.responseText) alert(this.responseText);
-                    resolve();
+                    if(this.responseText) ShowMessagePopUp(MessageType.Error, this.responseText);
+                    else {
+                        ShowMessagePopUp(MessageType.Info, "Removed column " + ColumnName + ".", 400);
+                        resolve();
+                    }
                 }
             }
-            dropColumnRequest.open('POST', '../php/Async/DropColumn.php', true);
+            dropColumnRequest.open('POST', 'php/Async/DropColumn.php', true);
             dropColumnRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             dropColumnRequest.send("ColumnName="+ColumnName);
         })
@@ -314,18 +340,21 @@ function DropTableColumn(ColumnName) {
 
 function DropTable(TableName = "") {
     return new Promise((resolve) => {
-        ShowConfirmationPopUp("This action is permanent!<br>Destroy table?")
+        ShowConfirmationPopUp("This action is permanent!<br>Destroy table "+ TableName + "?")
         .then(() => {
             const dropTableRequest = new XMLHttpRequest();
             dropTableRequest.onreadystatechange=function(){
                 if(this.readyState == 4 && this.status == 200) {
                     if(this.responseText) {
-                        alert(this.responseText);
+                        ShowMessagePopUp(MessageType.Error, this.responseText);
                     }
-                    resolve();
+                    else {
+                        ShowMessagePopUp(MessageType.Info, "Deleted table " + TableName + ".", 400);
+                        resolve();
+                    }
                 }
             }
-            dropTableRequest.open('POST', '../php/Async/DropTable.php', true);
+            dropTableRequest.open('POST', 'php/Async/DropTable.php', true);
             dropTableRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             dropTableRequest.send('TableName='+TableName);
         })
@@ -340,11 +369,14 @@ function RenameTable(newName) {
     renameRequest.onreadystatechange=function () {
         if(this.readyState === 4 && this.status === 200) {
             if (this.responseText) {
-                alert(this.responseText);
+                ShowMessagePopUp(MessageType.Error, this.responseText);
+            }
+            else {
+                ShowMessagePopUp(MessageType.Info, "Table was successfully renamed to " + newName + ".", 300, 500);
             }
         }        
     }
-    renameRequest.open('POST', '../php/Async/EditQueries.php', true);
+    renameRequest.open('POST', 'php/Async/EditQueries.php', true);
     renameRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     renameRequest.send("RenameTable="+newName);
 }
@@ -354,13 +386,37 @@ function RenameColumn(newName, currentName) {
     renameRequest.onreadystatechange=function () {
         if(this.readyState === 4 && this.status === 200) {
             if (this.responseText) {
-                alert(this.responseText);
+                ShowMessagePopUp(MessageType.Error, this.responseText);
+            }
+            else {
+                ShowMessagePopUp(MessageType.Info, "Column " + currentName + "was successfully renamed to " + newName + ".", 300, 500);
             }
         }        
     }
-    renameRequest.open('POST', '../php/Async/EditQueries.php', true);
+    renameRequest.open('POST', 'php/Async/EditQueries.php', true);
     renameRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     renameRequest.send("RenameColumn="+currentName+"&RenameTo="+newName);
+}
+
+function UpdateTableData(newValue, columnName, primKeyValue) {
+    return new Promise((resolve, reject) => {
+        const dataUpdateRequest = new XMLHttpRequest();
+        dataUpdateRequest.onreadystatechange= function(){
+            if (this.readyState === 4 && this.status === 200) {
+                if(this.responseText) {
+                    ShowMessagePopUp(MessageType.Error, this.responseText);
+                    reject()
+                }
+                else {
+                    ShowMessagePopUp(MessageType.Info, newValue + "inserted successfully.", 300, 500);
+                    resolve();
+                }
+            }
+        }
+        dataUpdateRequest.open('POST', 'php/Async/EditQueries.php', true);
+        dataUpdateRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        dataUpdateRequest.send("AlterData="+newValue+"&Column="+columnName+"&PrimKey="+primKeyValue);
+    })
 }
 
 function ShowConfirmationPopUp(ConfirmationMessage) {
@@ -395,6 +451,32 @@ function HideCommentBox() {
     CommentBox.style.left = "";
 }
 
+class MessageType {
+    static Info = 0;
+    static Warning = 1;
+    static Error = 2;
+}
+
+function ShowMessagePopUp(messageType, message, animationTime = 600, displayTime = 1000) {
+    return new Promise((resolve) => {
+        const MsgPopUp = document.getElementById("message-popup"); 
+        MsgPopUp.querySelector("span").innerText = message;
+        switch(messageType) {
+            case MessageType.Info: { MsgPopUp.classList = "info"; } break;
+            case MessageType.Warning: { MsgPopUp.classList = "warning"; } break;
+            case MessageType.Error: { MsgPopUp.classList = "error"; } break;
+        }
+        
+        let MessagePopUp = AnimateElement(MsgPopUp, { height: "0rem" }, { height: "3.1rem" }, animationTime);
+        MessagePopUp.addEventListener('finish', () => {
+            setTimeout(() => { 
+                MessagePopUp = AnimateElement(MsgPopUp, { height: "3.1rem" }, { height: "0rem" }, animationTime);
+                MessagePopUp.addEventListener('finish', () => {resolve();})
+            }, displayTime);
+        })
+    })
+}
+
 function RequestLogin(username, password)
 {
     let loginRequest = new XMLHttpRequest();
@@ -408,7 +490,7 @@ function RequestLogin(username, password)
             else
             {
                 document.getElementById("error-msg").innerHTML = "";
-                window.location.href = "pages/main.php";
+                window.location.href = "main.php";
             }
         }
     }
@@ -430,7 +512,7 @@ function RequestRegister(firstname, lastname, email, username, password)
             else
             {
                 document.getElementById("reg-error-msg").innerHTML = "";
-                window.location.href = "pages/main.php";
+                window.location.href = "main.php";
             }
         }
     }

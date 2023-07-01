@@ -31,7 +31,8 @@ if(isset($_SESSION["DisplayedTable"], $_SESSION["InsertColumn"])) {
     $command = "ALTER TABLE `$Table->TableName`";
     $ErrorMsg = null;
     $AutoIncrement = false;
-    $PrimaryKey = null;
+    $PrimaryKey = false;
+    $PrimaryKeyColumnName = null;
     for ($x = 0; $x < sizeof($rowData); $x++) {
         $command .= " ADD COLUMN `" . $rowData[$x]->Name . "` " . $rowData[$x]->Type;
         if($rowData[$x]->Length != 0) {
@@ -47,8 +48,12 @@ if(isset($_SESSION["DisplayedTable"], $_SESSION["InsertColumn"])) {
         if($rowData[$x]->Default != "None") {
             $command .= " DEFAULT " . $rowData[$x]->Default;
         }
+        if ($rowData[$x]->Index == "PRIMARY") {
+            $PrimaryKey = true;
+            $PrimaryKeyColumnName = $rowData[$x]->Name;
+        }
         if($rowData[$x]->AutoIncrement) {
-            if (!$AutoIncrement) {
+            if (!$AutoIncrement && !$Table->PrimaryKey) {
                 $command .= " AUTO_INCREMENT";
                 $AutoIncrement = true;
                 if ($rowData[$x]->Index == "---") $ErrorMsg = "[Query Error]There can be only one auto column and it must be defined as a key.";
@@ -60,10 +65,12 @@ if(isset($_SESSION["DisplayedTable"], $_SESSION["InsertColumn"])) {
         }
         if ($Option == "FIRST") $command .= " $Option";
         if ($Option == "AFTER") $command .= " $Option `$ColumnName`";
-        if($x != (sizeof($rowData) - 1)) $command .= ",";
-        
+        if($x != (sizeof($rowData) - 1)) $command .= ",";    
         if($Option == "FIRST") $Option = "AFTER"; //subsequent columns will be added after the first column which was added at the front;
         $ColumnName = $rowData[$x]->Name;
+    }
+    if ($PrimaryKey) {
+        $command .= ", ADD PRIMARY KEY (`$PrimaryKeyColumnName`)";
     }
     $command .= ";";
     if($ErrorMsg) {
@@ -72,12 +79,13 @@ if(isset($_SESSION["DisplayedTable"], $_SESSION["InsertColumn"])) {
     }
     try { 
         SQL_Query($User->Connection, $command); 
+        //print_r($rowData[0]);
+        $User->FetchTables();
+        //unset($_SESSION["InsertColumn"]);
     }
     catch (mysqli_sql_exception $e) { 
-        print $e->getMessage(); 
+        print $e->getMessage();
     }
-    $User->FetchTables();
-    unset($_SESSION["InsertColumn"]);
 }
-else header("location: ../../pages/main.php");
+else header("location: ../../main.php");
 ?>

@@ -46,9 +46,9 @@
             if (!$AutoIncrement) {
                 $command .= " AUTO_INCREMENT";
                 $AutoIncrement = true;
-                if ($rowData[$x]->Index == "---") $ErrorMsg = "[Query Error]There can be only one auto column and it must be defined as a key.";
+                if ($rowData[$x]->Index == "---") $ErrorMsg = "There can be only one auto column and it must be defined as a key.";
             }
-            else $ErrorMsg = "[Query Error]There can be only one auto column and it must be defined as a key.";
+            else $ErrorMsg = "There can be only one auto column and it must be defined as a key.";
         }
         if(str_replace(" ", "", $rowData[$x]->Comment) != "") {
             $command .= " COMMENT '" . $rowData[$x]->Comment . "'";
